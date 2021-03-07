@@ -63,8 +63,17 @@ class LoginPage extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   maxLength: 10,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
                       hintText: 'Enter Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
                       prefixIcon: Icon(Icons.phone)),
                 ),
                 Container(
