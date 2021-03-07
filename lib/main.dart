@@ -4,7 +4,7 @@ void main() {
   runApp(LoginPage());
 }
 
-Color backgroundColor = Colors.white;
+Color backgroundColor = Colors.tealAccent;
 Color buttonColor = Colors.blue[900];
 
 
