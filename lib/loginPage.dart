@@ -64,11 +64,11 @@ class LoginPage extends StatelessWidget {
                   maxLength: 10,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                       hintText: 'Enter Phone Number',
