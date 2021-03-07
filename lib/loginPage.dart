@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
                     },
                     color: buttonColor,
                     textColor: Colors.white,
-                    child: Text('Continue'),
+                    child: Text('Log In'),
 
                   ),
                 )
