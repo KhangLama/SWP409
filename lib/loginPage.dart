@@ -64,7 +64,7 @@ class LoginPage extends StatelessWidget {
                   maxLength: 10,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Phone Number',
+                      hintText: 'Enter Phone Number',
                       prefixIcon: Icon(Icons.phone)),
                 ),
                 Container(
