@@ -5,6 +5,6 @@ void main() {
 }
 
 Color backgroundColor = Colors.tealAccent;
-Color buttonColor = Colors.blue[900];
+Color buttonColor = Colors.blueAccent[400];
 
 
