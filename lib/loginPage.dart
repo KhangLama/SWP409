@@ -6,22 +6,23 @@ import 'package:swp409/main.dart';
 import 'package:swp409/homePage.dart';
 
 void buttonClick() {
-  if(_phoneNumberValidator(sdt.text.toString()) == 1) {
+  if (_phoneNumberValidator(sdt.text.toString()) == 1) {
     runApp(HomePage());
   } else {
     ;
   }
 }
+
 TextEditingController sdt = new TextEditingController();
 int _phoneNumberValidator(String value) {
-  Pattern pattern =
-      r'(0)+([0-9]{9})\b';
+  Pattern pattern = r'(0)+([0-9]{9})\b';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value))
     return 0;
   else
     return 1;
 }
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,9 +51,7 @@ class LoginPage extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Sign in to continue',
-                      style: TextStyle(
-                          fontSize: 16
-                      ),
+                      style: TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -71,7 +70,7 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         borderSide: BorderSide(color: Colors.blue),
                       ),
-                      hintText: 'Enter Phone Number',
+                      hintText: 'Enter Your Phone Number',
                       fillColor: Colors.white,
                       filled: true,
                       prefixIcon: Icon(Icons.phone)),
@@ -79,13 +78,10 @@ class LoginPage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.all(30),
                   child: FlatButton(
-                    onPressed: () => {
-                      buttonClick()
-                    },
+                    onPressed: () => {buttonClick()},
                     color: buttonColor,
                     textColor: Colors.white,
                     child: Text('Log In'),
-
                   ),
                 )
               ],
