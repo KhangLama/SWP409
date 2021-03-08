@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:swp409/main.dart';
-
-import 'package:swp409/homePage.dart';
+import 'package:swp409/mainScreen.dart';
 
 void buttonClick() {
   if (_phoneNumberValidator(sdt.text.toString()) == 1) {
-    runApp(HomePage());
+    runApp(MainScreen());
   } else {
     ;
   }
@@ -27,6 +24,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
         body: SafeArea(
