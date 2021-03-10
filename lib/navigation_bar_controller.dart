@@ -12,7 +12,6 @@ class CommonBottomNavigationBar extends StatefulWidget {
         @required this.navigatorKeys,
         @required this.pages,}) {
     assert(navigatorKeys.length == pages.length);
-
     _size = pages.length;
   }
 

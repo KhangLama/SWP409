@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CalendarPage extends StatelessWidget{
+class MessagePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.yellowAccent,
       ),
-
     );
   }
 

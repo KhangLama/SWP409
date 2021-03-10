@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/homePage.dart';
 import 'package:swp409/profilePage.dart';
 import 'package:swp409/calendarPage.dart';
 import 'package:swp409/navigation_bar_controller.dart';
+import 'package:swp409/messagePage.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,9 +18,10 @@ class _MainScreenState extends State<MainScreen> {
   List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>()
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
-
+  String _abc = 'Khang';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,8 +29,15 @@ class _MainScreenState extends State<MainScreen> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
+          leading: Text(
+            'Hello\n$_abc',
+            style: TextStyle(fontSize: 20),
+          ),
+          
+          leadingWidth: 70,
+          titleSpacing: 20,
           actions: <Widget>[
-            IconButton(icon: Icon(Feather.message_square), onPressed: (){})
+            IconButton(icon: Icon(Feather.bell), onPressed: () {})
           ],
         ),
         backgroundColor: Colors.white,
@@ -52,13 +62,19 @@ class _MainScreenState extends State<MainScreen> {
                   color: Colors.orange,
                 )),
             new BottomNavigationBarItem(
-                icon: new Icon(Feather.info, color: Colors.grey),
+                icon: new Icon(Feather.calendar, color: Colors.grey),
+                label: new Text('Calendar').toString(),
+                activeIcon: new Icon(
+                  Feather.calendar,
+                  color: Colors.orange,
+                )),
+            new BottomNavigationBarItem(
+                icon: new Icon(Feather.user, color: Colors.grey),
                 label: new Text('Profile').toString(),
                 activeIcon: new Icon(
-                  Feather.info,
+                  Feather.user,
                   color: Colors.orange,
-                )
-            ),
+                )),
           ],
           onTap: (index) {
             setState(() {
@@ -71,6 +87,7 @@ class _MainScreenState extends State<MainScreen> {
           navigatorKeys: _navigatorKeys,
           pages: [
             HomePage(),
+            MessagePage(),
             CalendarPage(),
             ProfilePage(),
           ],

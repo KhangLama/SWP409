@@ -5,7 +5,18 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(backgroundColor: Colors.tealAccent),
+      home: Scaffold(
+          backgroundColor: Colors.tealAccent,
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Text('asd', style: TextStyle(
+                fontSize: 30
+              ),)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
