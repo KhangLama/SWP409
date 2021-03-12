@@ -6,13 +6,14 @@ class HomePage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          backgroundColor: Colors.tealAccent,
+        backgroundColor: Colors.tealAccent,
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              Text('asd', style: TextStyle(
-                fontSize: 30
-              ),)
+              Text(
+                'asd',
+                style: TextStyle(fontSize: 30),
+              )
             ],
           ),
         ),

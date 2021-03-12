@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CalendarPage extends StatelessWidget{
+class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -8,8 +8,6 @@ class CalendarPage extends StatelessWidget{
       home: Scaffold(
         backgroundColor: Colors.blueAccent,
       ),
-
     );
   }
-
 }

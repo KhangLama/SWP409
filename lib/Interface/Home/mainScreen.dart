@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:swp409/homePage.dart';
-import 'package:swp409/profilePage.dart';
-import 'package:swp409/calendarPage.dart';
-import 'package:swp409/navigation_bar_controller.dart';
-import 'package:swp409/messagePage.dart';
+import 'package:swp409/Interface/History/calendarPage.dart';
+import 'package:swp409/Interface/Message/messagePage.dart';
+import 'package:swp409/Interface/Profile/profilePage.dart';
+import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
+import 'homePage.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -22,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     GlobalKey<NavigatorState>(),
   ];
   String _abc = 'Khang';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +33,6 @@ class _MainScreenState extends State<MainScreen> {
             'Hello\n$_abc',
             style: TextStyle(fontSize: 20),
           ),
-          
           leadingWidth: 70,
           titleSpacing: 20,
           actions: <Widget>[
@@ -87,9 +86,9 @@ class _MainScreenState extends State<MainScreen> {
           navigatorKeys: _navigatorKeys,
           pages: [
             HomePage(),
-            MessagePage(),
             CalendarPage(),
-            ProfilePage(),
+            MessagePage(),
+            ProfilePage()
           ],
         ),
       ),

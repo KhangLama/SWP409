@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CommonBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
   final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -7,10 +8,11 @@ class CommonBottomNavigationBar extends StatefulWidget {
 
   int _size;
 
-  CommonBottomNavigationBar(
-      {@required this.selectedIndex,
-        @required this.navigatorKeys,
-        @required this.pages,}) {
+  CommonBottomNavigationBar({
+    @required this.selectedIndex,
+    @required this.navigatorKeys,
+    @required this.pages,
+  }) {
     assert(navigatorKeys.length == pages.length);
     _size = pages.length;
   }
@@ -23,7 +25,8 @@ class CommonBottomNavigationBar extends StatefulWidget {
 class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    return Stack(children: List.generate(widget._size, (index){
+    return Stack(
+        children: List.generate(widget._size, (index) {
       return _buildOffstageNavigator(index);
     }));
   }
@@ -32,7 +35,7 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
     return WillPopScope(
       onWillPop: () async {
         final isFirstRouteInCurrentTab =
-        !await widget.navigatorKeys[index].currentState.maybePop();
+            !await widget.navigatorKeys[index].currentState.maybePop();
 
         // let system handle back button if we're on the first route
         return isFirstRouteInCurrentTab;
@@ -47,7 +50,6 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
     );
   }
 }
-
 
 class _BottomBarNavigator extends StatelessWidget {
   _BottomBarNavigator({
