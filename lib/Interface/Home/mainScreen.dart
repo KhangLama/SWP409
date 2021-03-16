@@ -15,7 +15,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  List<GlobalKey<NavigatorState>> _navigatorKeys = [
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -29,18 +29,6 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          leading: Text(
-            'Hello\n$_abc',
-            style: TextStyle(fontSize: 20),
-          ),
-          leadingWidth: 70,
-          titleSpacing: 20,
-          actions: <Widget>[
-            IconButton(icon: Icon(Feather.bell), onPressed: () {})
-          ],
-        ),
         backgroundColor: Colors.white,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -48,38 +36,39 @@ class _MainScreenState extends State<MainScreen> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           items: [
-            new BottomNavigationBarItem(
-                icon: new Icon(Feather.home, color: Colors.grey),
-                label: new Text('Home').toString(),
-                activeIcon: new Icon(
+            BottomNavigationBarItem(
+                icon: Icon(Feather.home, color: Colors.grey),
+                label: Text('Home').toString(),
+                activeIcon: Icon(
                   Feather.home,
                   color: Colors.orange,
                 )),
-            new BottomNavigationBarItem(
-                icon: new Icon(Feather.mail, color: Colors.grey),
-                label: new Text('Message').toString(),
-                activeIcon: new Icon(
+            BottomNavigationBarItem(
+                icon: Icon(Feather.mail, color: Colors.grey),
+                label: Text('Message').toString(),
+                activeIcon: Icon(
                   Feather.mail,
                   color: Colors.orange,
                 )),
-            new BottomNavigationBarItem(
-                icon: new Icon(Feather.calendar, color: Colors.grey),
-                label: new Text('Calendar').toString(),
-                activeIcon: new Icon(
+            BottomNavigationBarItem(
+                icon: Icon(MaterialCommunityIcons.google_maps,
+                    color: Colors.grey),
+                label: Text('Map').toString(),
+                activeIcon: Icon(
+                  MaterialCommunityIcons.google_maps,
+                  color: Colors.orange,
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(Feather.calendar, color: Colors.grey),
+                label: Text('Calendar').toString(),
+                activeIcon: Icon(
                   Feather.calendar,
                   color: Colors.orange,
                 )),
-            new BottomNavigationBarItem(
-                icon: new Icon(Feather.user, color: Colors.grey),
-                label: new Text('Map').toString(),
-                activeIcon: new Icon(
-                  Feather.map,
-                  color: Colors.orange,
-                )),
-            new BottomNavigationBarItem(
-                icon: new Icon(Feather.user, color: Colors.grey),
-                label: new Text('Profile').toString(),
-                activeIcon: new Icon(
+            BottomNavigationBarItem(
+                icon: Icon(Feather.user, color: Colors.grey),
+                label: Text('Profile').toString(),
+                activeIcon: Icon(
                   Feather.user,
                   color: Colors.orange,
                 )),
@@ -93,7 +82,13 @@ class _MainScreenState extends State<MainScreen> {
         body: CommonBottomNavigationBar(
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
-          pages: [HomePage(), CalendarPage(),MapViewPage() , MessagePage(), ProfilePage()],
+          pages: [
+            HomePage(),
+            MessagePage(),
+            MapViewPage(),
+            CalendarPage(),
+            ProfilePage()
+          ],
         ),
       ),
     );

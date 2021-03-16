@@ -1,0 +1,17 @@
+
+{
+  "User": [
+    {
+      "name": "Khang",
+      "phone": "0948397339",
+      "email": "lamminhkhang123a@gmail.com",
+      "password": "King0fGod."
+    },
+    {
+      "name": "Trinh",
+      "phone": "0381728374",
+      "email": "haquangtrinh@gmail.com",
+      "password": "haquangtrinh"
+    }
+  ]
+}

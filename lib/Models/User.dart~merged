@@ -4,6 +4,13 @@ class User {
   String email;
   String password;
 
+<<<<<<< HEAD
+  User({this.name, this.phone, this.email, this.password});
+
+  User.fromJson(Map<String, dynamic> json) {
+    name = json['name'] as String;
+    phone = json['phone'] as String; 
+=======
   // ignore: sort_constructors_first
   User({this.name, this.phone, this.email, this.password});
 
@@ -11,11 +18,22 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String;
     phone = json['phone'] as String;
+>>>>>>> feature/khanglm
     email = json['email'] as String;
     password = json['password'] as String;
   }
 
   Map<String, dynamic> toJson() {
+<<<<<<< HEAD
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['phone'] = this.phone;
+    data['email'] = this.email;
+    data['password'] = this.password;
+    return data;
+  }
+
+=======
     final data = <String, dynamic>{};
     data['name'] = name;
     data['phone'] = phone;
@@ -23,4 +41,5 @@ class User {
     data['password'] = password;
     return data;
   }
+>>>>>>> feature/khanglm
 }

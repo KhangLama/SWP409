@@ -8,6 +8,7 @@ class CommonBottomNavigationBar extends StatefulWidget {
 
   int _size;
 
+  // ignore: sort_constructors_first
   CommonBottomNavigationBar({
     @required this.selectedIndex,
     @required this.navigatorKeys,
