@@ -25,7 +25,6 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Future parseJson() async {
-
     // String jsonString = await _loadFromAsset();
     Map<String, dynamic> clinicMap = jsonDecode('assets/json/clinic.mock.json');
     var clinic = Clinic.fromJson(clinicMap);

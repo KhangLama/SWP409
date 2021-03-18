@@ -13,13 +13,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="swp409"
         android:icon="@mipmap/ic_launcher">
-<<<<<<< Updated upstream
-=======
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDmKeMwb8GHvxoptG7nKxIxHJFUJ72DnkE"/>
 
->>>>>>> Stashed changes
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
