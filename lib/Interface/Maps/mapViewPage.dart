@@ -15,26 +15,22 @@ class MapViewPage extends StatefulWidget {
 class _MapViewPageState extends State<MapViewPage> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController newGoogleMapController;
-
+  final Set<Marker> _markers = {};
   Position currentPosition;
   var geoLocator = Geolocator();
+  var clinicList = [];
 
-
-  Future<String>_loadFromAsset() async {
-    return await rootBundle.loadString("assets/json/clinic.mock.json");
-  }
-
-  Future parseJson() async {
-    // String jsonString = await _loadFromAsset();
-    Map<String, dynamic> clinicMap = jsonDecode('assets/json/clinic.mock.json');
-    var clinic = Clinic.fromJson(clinicMap);
-    print(clinic.name);
+  void getClinic() async {
+    var data = await rootBundle.loadString('assets/json/clinic.mock.json');
+    clinicList = json.decode(data)['Clinic'] as List;
+    print(clinicList[1]['lat']);
+    print(_markers);
   }
 
   @override
   void initState() {
     super.initState();
-    this.parseJson();
+    getClinic();
   }
 
   void locatePosition() async {
@@ -53,6 +49,17 @@ class _MapViewPageState extends State<MapViewPage> {
     newGoogleMapController = controller;
     _controllerGoogleMap.complete(controller);
     locatePosition();
+    setState(() {
+      for (var i = 0; i < clinicList.length; i++) {
+        _markers.add(Marker(
+          markerId: MarkerId(clinicList[i]['id']),
+          position: LatLng(clinicList[i]['lat'], clinicList[i]['lng']),
+          infoWindow: InfoWindow(
+            title: clinicList[i]['name'],
+          ),
+        ));
+      }
+    });
   }
 
   @override
@@ -63,17 +70,18 @@ class _MapViewPageState extends State<MapViewPage> {
           children: [
             GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition:
-                  CameraPosition(target: const LatLng(37.7786, -122.4375)),
-              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(target: LatLng(-37, 128)),
+              myLocationButtonEnabled: true,
               myLocationEnabled: true,
               mapToolbarEnabled: true,
               indoorViewEnabled: true,
               zoomControlsEnabled: true,
               zoomGesturesEnabled: true,
               buildingsEnabled: true,
+              onMapCreated: _onMapCreated,
+              markers: _markers,
             ),
-            ElevatedButton(onPressed: parseJson)
+            ElevatedButton(onPressed: getClinic, child: null)
           ],
         ),
       ),
