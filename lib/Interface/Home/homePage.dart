@@ -5,13 +5,22 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.tealAccent,
+      appBar: AppBar(
+        title: Text('Find Clinic You Want')
+      ),
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Text(
-              'Aiya',
-              style: TextStyle(fontSize: 30),
-            )
+            SizedBox(
+              height: 50,
+              child: Row(
+              children: [
+                Card(
+
+                ),
+              ],
+              ),
+            ),
           ],
         ),
       ),

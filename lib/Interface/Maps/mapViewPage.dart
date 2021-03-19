@@ -46,20 +46,30 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    newGoogleMapController = controller;
-    _controllerGoogleMap.complete(controller);
-    locatePosition();
     setState(() {
+      newGoogleMapController = controller;
+      _controllerGoogleMap.complete(controller);
+      markerCreate();
+    });
+    locatePosition();
+  }
+
+  Future<void> markerCreate() async {
+    try {
       for (var i = 0; i < clinicList.length; i++) {
         _markers.add(Marker(
           markerId: MarkerId(clinicList[i]['id']),
-          position: LatLng(clinicList[i]['lat'], clinicList[i]['lng']),
+          draggable: false,
+          position: LatLng(double.parse(clinicList[i]['lat']),
+              double.parse(clinicList[i]['lng'])),
           infoWindow: InfoWindow(
             title: clinicList[i]['name'],
           ),
         ));
       }
-    });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -71,6 +81,8 @@ class _MapViewPageState extends State<MapViewPage> {
             GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: CameraPosition(target: LatLng(-37, 128)),
+              onMapCreated: _onMapCreated,
+              markers: _markers,
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
               mapToolbarEnabled: true,
@@ -78,10 +90,9 @@ class _MapViewPageState extends State<MapViewPage> {
               zoomControlsEnabled: true,
               zoomGesturesEnabled: true,
               buildingsEnabled: true,
-              onMapCreated: _onMapCreated,
-              markers: _markers,
             ),
-            ElevatedButton(onPressed: getClinic, child: null)
+
+            // ElevatedButton(onPressed: getClinic, child: null)
           ],
         ),
       ),
