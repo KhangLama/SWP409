@@ -16,7 +16,15 @@ class HomePage extends StatelessWidget {
               child: Row(
               children: [
                 Card(
-
+                  child: Column(
+                    children: [
+                      Row(
+                      children: [
+                        
+                      ],
+                    )
+                    ],
+                  ),
                 ),
               ],
               ),
