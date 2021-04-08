@@ -87,9 +87,9 @@ class _SignInPageState extends State<SignInPage> {
                               cursorColor: Colors.white,
                               controller: myController,
                               keyboardType: TextInputType.phone,
-                              validator: (value) => value.length < 10
-                                  ? 'Please enter your phone number right'
-                                  : null,
+                              // validator: (value) => value.length < 10
+                              //     ? 'Please enter your phone number right'
+                              //     : null,
                               decoration: InputDecoration(
                                   labelText: 'Phone/Email',
                                   labelStyle:
