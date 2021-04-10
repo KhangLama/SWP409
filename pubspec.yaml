@@ -19,7 +19,7 @@ dependencies:
   geolocator:
   analyzer:
   json_annotation: ^3.0.1
-
+  table_calendar: ^2.0.1
 dev_dependencies:
   json_serializable: ^3.3.0
   pedantic:

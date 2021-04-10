@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Home/homePage.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Services/Booking/booking.dart';
 
 class ClinicPage extends StatelessWidget {
   @override
@@ -56,7 +57,10 @@ class ClinicPage extends StatelessWidget {
                                     onPressed: () {}, child: Text('View on map')),
                                 SizedBox(width: 15),
                                 ElevatedButton(
-                                    onPressed: () {}, child: Text('Chat'))
+                                    onPressed: () {}, child: Text('Chat')),
+                                SizedBox(width: 15),
+                                ElevatedButton(
+                                    onPressed: () {runApp(Booking());}, child: Text('Book an appointment'))
                               ],
                             )
                           ],
