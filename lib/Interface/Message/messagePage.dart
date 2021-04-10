@@ -13,7 +13,6 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-
       body: Column(
         children: [
           Container(
@@ -80,3 +79,4 @@ AppBar buildAppBar() {
     actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
     elevation: 0,
   );
+}
