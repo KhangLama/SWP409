@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:swp409/Interface/History/calendarPage.dart';
+import 'package:swp409/Interface/History/historyPage.dart';
 import 'package:swp409/Interface/Maps/mapViewPage.dart';
 import 'package:swp409/Interface/Message/messagePage.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
@@ -20,7 +20,6 @@ class _MainScreenState extends State<MainScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>()
   ];
   String _abc = 'Khang';
 
@@ -65,13 +64,6 @@ class _MainScreenState extends State<MainScreen> {
                   Feather.calendar,
                   color: Colors.orange,
                 )),
-            BottomNavigationBarItem(
-                icon: Icon(Feather.user, color: Colors.grey),
-                label: Text('Profile').toString(),
-                activeIcon: Icon(
-                  Feather.user,
-                  color: Colors.orange,
-                )),
           ],
           onTap: (index) {
             setState(() {
@@ -86,8 +78,7 @@ class _MainScreenState extends State<MainScreen> {
             HomePage(),
             MessagePage(),
             MapViewPage(),
-            CalendarPage(),
-            ProfilePage()
+            HistoryPage(),
           ],
         ),
       ),

@@ -40,6 +40,10 @@ dev_dependencies:
   geolocator:
   analyzer:
   json_annotation: ^3.0.1
+<<<<<<< Updated upstream
+=======
+  table_calendar: ^2.0.1
+>>>>>>> Stashed changes
 dev_dependencies:
   json_serializable: ^3.3.0
   pedantic:
