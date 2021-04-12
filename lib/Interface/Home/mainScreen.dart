@@ -3,7 +3,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Interface/History/historyPage.dart';
 import 'package:swp409/Interface/Maps/mapViewPage.dart';
 import 'package:swp409/Interface/Message/messagePage.dart';
-import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
 import 'homePage.dart';
 
@@ -21,7 +20,6 @@ class _MainScreenState extends State<MainScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
-  String _abc = 'Khang';
 
   @override
   Widget build(BuildContext context) {

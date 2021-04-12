@@ -56,7 +56,8 @@ class ChatCard extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
+            padding: const EdgeInsets.symmetric(
+                horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

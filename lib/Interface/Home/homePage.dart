@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Authentication/SignIn.dart';
-
 import 'clinicView.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,8 +11,7 @@ class HomePage extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.tealAccent,
         drawer: SideDrawer(),
-        appBar: AppBar(
-            title: Text('Find Clinic You Want')),
+        appBar: AppBar(title: Text('Find Clinic You Want')),
         body: SafeArea(
           child: Container(
             margin: EdgeInsets.all(10),
@@ -37,11 +35,15 @@ class HomePage extends StatelessWidget {
                             '133A Trần Hưng Đạo, P. An Phú, Q. Ninh Kiều, Tp. Cần Thơ'),
                         dense: true,
                       ),
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: () {
-                          runApp(ClinicPage());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClinicPage()),
+                          );
                         },
-                      )
+                      ),
                     ],
                   ),
                   semanticContainer: true,
@@ -54,6 +56,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
 class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class SideDrawer extends StatelessWidget {
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Colors.blue,
             ),
           ),
           ListTile(
@@ -90,7 +93,10 @@ class SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person_rounded),
             title: Text('Profile'),
-            onTap: () => {runApp(ProfilePage())},
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

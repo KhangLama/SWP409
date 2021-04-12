@@ -34,7 +34,6 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    FocusNode myFocusNode;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

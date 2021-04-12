@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swp409/Interface/Home/mainScreen.dart';
-import 'package:swp409/Services/Authentication/SignIn.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -9,12 +7,13 @@ class ProfilePage extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.greenAccent,
         appBar: AppBar(
-          leading: BackButton(onPressed: () => runApp(MainScreen()),),
+          leading: BackButton(
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(8),
-
           ),
         ),
       ),

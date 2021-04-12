@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:swp409/Models/clinic.dart';
 
 class MapViewPage extends StatefulWidget {
   @override
@@ -19,12 +17,9 @@ class _MapViewPageState extends State<MapViewPage> {
   Position currentPosition;
   var geoLocator = Geolocator();
   var clinicList = [];
-
   void getClinic() async {
     var data = await rootBundle.loadString('assets/json/clinic.mock.json');
     clinicList = json.decode(data)['Clinic'] as List;
-    print(clinicList[1]['lat']);
-    print(_markers);
   }
 
   @override
