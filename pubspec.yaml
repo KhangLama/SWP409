@@ -20,6 +20,8 @@ dependencies:
   analyzer:
   json_annotation: ^3.0.1
   table_calendar:
+  flutter_svg: ^0.21.0+1
+  provider: ^5.0.0
 dev_dependencies:
   json_serializable: ^3.3.0
   pedantic:
@@ -33,3 +35,11 @@ flutter:
   assets:
     - images/
     - assets/json/
+  fonts:
+    - family: Muli
+      fonts:
+        - asset: assets/fonts/muli/Muli.ttf
+        - asset: assets/fonts/muli/Muli-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/muli/Muli-Light.ttf
+          weight: 300
