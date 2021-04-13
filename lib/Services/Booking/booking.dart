@@ -33,57 +33,75 @@ class _BookingState extends State<Booking> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(onPressed: () => Navigator.pop(context)),
-        ),
-        body: SafeArea(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                TableCalendar(
-                  initialCalendarFormat: CalendarFormat.week,
-                  calendarController: _calendarController,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pick a date'),
+      ),
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              TableCalendar(
+                initialCalendarFormat: CalendarFormat.week,
+                calendarController: _calendarController,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+              ),
+              Expanded(
+                flex: 1,
+                child: Card(
+                  child: GridView.builder(
+                      itemCount: hours.length,
+                      gridDelegate:
+                          new SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5),
+                      itemBuilder: (BuildContext context, int index) {
+                        return new GestureDetector(
+                            onTap: () => {
+                              TextStyle(
+                                backgroundColor: Colors.green
+                              )
+                            },
+                            child: Center(
+                                child: new Text(
+                                  
+                              hours[index],
+                              style: TextStyle(fontSize: 17),
+                            )));
+                      }),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Card(
-                    child: ListTile(
-                      title: Text('Time'),
-                      subtitle: GridView.count(
-                        crossAxisCount: 3,
-                        children: List.generate(hours.length, (index) {
-                          return Center(
-                            child: Text('[${hours[index]}]',
-                                style: Theme.of(context).textTheme.headline6),
-                          );
-                        }),
-                      ),
-                    ),
+              ),
+              Expanded(
+                flex: 0,
+                child: SizedBox(
+                  height: 40,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                    child:
+                        Text('Continue', style: TextStyle(color: Colors.white)),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MedicalRecords())),
                   ),
                 ),
-                Expanded(
-                  flex: 0,
-                    child: SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)
-                        ),
-                        child: Text('Make an appointment', style: TextStyle(
-                          color: Colors.white
-                        )),
-                      ),
-                    )
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MedicalRecords extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Medical Records'),
       ),
     );
   }

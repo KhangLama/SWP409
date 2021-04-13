@@ -4,13 +4,8 @@ import 'package:swp409/Services/Booking/booking.dart';
 class ClinicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          leading: BackButton(onPressed: () {
-            Navigator.pop(context);
-          }),
           title: Text('Back'),
         ),
         body: SafeArea(
@@ -90,7 +85,6 @@ class ClinicPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }

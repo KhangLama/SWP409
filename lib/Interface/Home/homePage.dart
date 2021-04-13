@@ -6,9 +6,7 @@ import 'clinicView.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.tealAccent,
         drawer: SideDrawer(),
         appBar: AppBar(title: Text('Find Clinic You Want')),
@@ -52,8 +50,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
