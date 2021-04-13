@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
-import 'package:swp409/Services/Authentication/SignIn.dart';
+import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'clinicView.dart';
 
 class HomePage extends StatelessWidget {
@@ -98,7 +98,7 @@ class SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => runApp(SignInPage()),
+            onTap: () => runApp(SplashScreen()),
           ),
         ],
       ),

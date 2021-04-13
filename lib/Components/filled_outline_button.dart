@@ -27,7 +27,7 @@ class FillOutlineButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: isFilled ? kContentColorLightTheme : Colors.white,
+          color: isFilled ? kPrimaryLightColor : Colors.white,
           fontSize: 12,
         ),
       ),
