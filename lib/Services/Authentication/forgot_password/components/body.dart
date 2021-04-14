@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/no_account_text.dart';
+import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -48,6 +49,19 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String email;
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -58,31 +72,20 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
-              if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-                setState(() {
-                  errors.remove(kEmailNullError);
-                });
-              } else if (emailValidatorRegExp.hasMatch(value) &&
-                  errors.contains(kInvalidEmailError)) {
-                setState(() {
-                  errors.remove(kInvalidEmailError);
-                });
+              if (value.isNotEmpty) {
+                removeError(error: kEmailNullError);
+              } else if (emailValidatorRegExp.hasMatch(value)) {
+                removeError(error: kInvalidEmailError);
               }
               return null;
             },
             validator: (value) {
-              if (value.isEmpty && !errors.contains(kEmailNullError)) {
+              if (value.isEmpty) {
+                addError(error: kEmailNullError);
                 return kEmailNullError;
-                setState(() {
-                  errors.add(kEmailNullError);
-                  return kEmailNullError;
-                });
-              } else if (!emailValidatorRegExp.hasMatch(value) &&
-                  !errors.contains(kInvalidEmailError)) {
+              } else if (!emailValidatorRegExp.hasMatch(value)) {
+                addError(error: kInvalidEmailError);
                 return kInvalidEmailError;
-                setState(() {
-                  errors.add(kInvalidEmailError);
-                });
               }
               return null;
             },
@@ -92,6 +95,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: new OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: kPrimaryColor),
                 borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -110,9 +116,13 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           DefaultButton(
             text: "Continue",
             press: () {
-              if (_formKey.currentState.validate()) {
-                // Do what you want to do
-              }
+              // if (_formKey.currentState.validate()) {
+              //   // Do what you want to do
+              // }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SignInScreen()));
             },
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.1),

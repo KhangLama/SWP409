@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/Services/Authentication/login_success/login_success_screen.dart';
+import 'package:swp409/Services/Authentication/otp/otp_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
-
+import 'package:swp409/theme.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
@@ -59,7 +62,7 @@ class _SignFormState extends State<SignForm> {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => LoginSuccessScreen())),
+                        builder: (context) => ForgotPasswordScreen())),
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(decoration: TextDecoration.underline),
@@ -69,6 +72,7 @@ class _SignFormState extends State<SignForm> {
           ),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
+          SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
             text: "Continue",
             press: () {
@@ -79,7 +83,7 @@ class _SignFormState extends State<SignForm> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => LoginSuccessScreen()));
+                        builder: (context) => MainScreen()));
               }
             },
           ),
@@ -113,6 +117,9 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -154,6 +161,9 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

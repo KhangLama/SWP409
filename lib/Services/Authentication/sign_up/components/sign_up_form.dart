@@ -44,8 +44,9 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildConformPassFormField(),
-          FormError(errors: errors),
+          //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
+          SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
             text: "Continue",
             press: () {
@@ -79,16 +80,19 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
+          return kPassNullError;
         } else if ((password != value)) {
           addError(error: kMatchPassError);
-          return "";
+          return kMatchPassError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Confirm Password",
         hintText: "Re-enter your password",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -120,16 +124,19 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
+          return kPassNullError;
         } else if (value.length < 8) {
           addError(error: kShortPassError);
-          return "";
+          return kShortPassError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -161,16 +168,19 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
+          return kEmailNullError;
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
-          return "";
+          return kInvalidEmailError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
