@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/Services/Authentication/login_success/login_success_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 
@@ -123,7 +122,7 @@ class _SignFormState extends State<SignForm> {
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
         suffixIcon: Icon(
-            Icons.lock,
+          Icons.lock,
           size: 30,
         ),
       ),
@@ -159,15 +158,14 @@ class _SignFormState extends State<SignForm> {
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: kPrimaryColor),
-            borderRadius: BorderRadius.all(Radius.circular(50)),
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
         suffixIcon: Icon(
           Icons.mail_outline,
           size: 30,
         ),
-
       ),
     );
   }

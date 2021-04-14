@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swp409/Services/Booking/medical_record.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Booking extends StatefulWidget {
@@ -8,19 +9,21 @@ class Booking extends StatefulWidget {
 
 List hours = [
   '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30',
-  '9:30'
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
 ];
 
 class _BookingState extends State<Booking> {
@@ -42,9 +45,13 @@ class _BookingState extends State<Booking> {
           child: Column(
             children: <Widget>[
               TableCalendar(
-                initialCalendarFormat: CalendarFormat.week,
+                initialCalendarFormat: CalendarFormat.month,
                 calendarController: _calendarController,
                 startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  highlightSelected: true,
+                  highlightToday: true,
+                ),
               ),
               Expanded(
                 flex: 1,
@@ -56,16 +63,11 @@ class _BookingState extends State<Booking> {
                               crossAxisCount: 5),
                       itemBuilder: (BuildContext context, int index) {
                         return new GestureDetector(
-                            onTap: () => {
-                              TextStyle(
-                                backgroundColor: Colors.green
-                              )
-                            },
+                            onTap: () => print('as'),
                             child: Center(
                                 child: new Text(
-                                  
                               hours[index],
-                              style: TextStyle(fontSize: 17),
+                              style: TextStyle(fontSize: 18),
                             )));
                       }),
                 ),
@@ -84,24 +86,14 @@ class _BookingState extends State<Booking> {
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MedicalRecords())),
+                            builder: (context) => MedicalRecords(
+                                calendarController: _calendarController))),
                   ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MedicalRecords extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Medical Records'),
       ),
     );
   }
