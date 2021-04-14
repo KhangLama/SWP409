@@ -46,7 +46,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           buildPhoneNumberFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildAddressFormField(),
-          FormError(errors: errors),
+          //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "continue",
@@ -76,13 +76,20 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kAddressNullError);
-          return "";
+          return kAddressNullError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Address",
         hintText: "Enter your address",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -109,13 +116,20 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPhoneNumberNullError);
-          return "";
+          return kPhoneNumberNullError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Phone Number",
         hintText: "Enter your phone number",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -131,9 +145,29 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildLastNameFormField() {
     return TextFormField(
       onSaved: (newValue) => lastName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kNamelNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kNamelNullError);
+          return kNamelNullError;
+        }
+        return null;
+      },
       decoration: InputDecoration(
         labelText: "Last Name",
         hintText: "Enter your last name",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -158,13 +192,20 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kNamelNullError);
-          return "";
+          return kNamelNullError;
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "First Name",
         hintText: "Enter your first name",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
