@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Services/Authentication/otp/otp_screen.dart';
 
 import '../../../../constants.dart';

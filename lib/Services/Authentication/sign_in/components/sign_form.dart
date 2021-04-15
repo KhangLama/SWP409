@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
-import 'package:swp409/Services/Authentication/login_success/login_success_screen.dart';
-import 'package:swp409/Services/Authentication/otp/otp_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
-import 'package:swp409/theme.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Services/Authentication/complete_profile/complete_profile_screen.dart';
 
 import '../../../../constants.dart';
@@ -15,6 +14,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
+  // ignore: non_constant_identifier_names
   String conform_password;
   bool remember = false;
   final List<String> errors = [];

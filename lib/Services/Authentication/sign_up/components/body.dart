@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swp409/Components/socal_card.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'sign_up_form.dart';
