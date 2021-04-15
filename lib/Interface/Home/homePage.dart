@@ -103,7 +103,10 @@ class SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => runApp(SplashScreen()),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SplashScreen()))
+            },
           ),
         ],
       ),
