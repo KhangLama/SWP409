@@ -14,7 +14,6 @@ class _MapViewPageState extends State<MapViewPage> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController newGoogleMapController;
   final Set<Marker> _markers = {};
-  Position currentPosition;
   var geoLocator = Geolocator();
   var clinicList = [];
   void getClinic() async {
@@ -31,7 +30,6 @@ class _MapViewPageState extends State<MapViewPage> {
   void locatePosition() async {
     var position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
-    currentPosition = position;
 
     var latLngPosition = LatLng(position.latitude, position.longitude);
 
@@ -86,8 +84,6 @@ class _MapViewPageState extends State<MapViewPage> {
               zoomGesturesEnabled: true,
               buildingsEnabled: true,
             ),
-
-            // ElevatedButton(onPressed: getClinic, child: null)
           ],
         ),
       ),

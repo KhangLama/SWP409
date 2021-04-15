@@ -1,12 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'clinicView.dart';
 
 class HomePage extends StatelessWidget {
+  var clinicList = [];
+  void getClinic() async {
+    var data = await rootBundle.loadString('assets/json/clinic.mock.json');
+    clinicList = json.decode(data)['Clinic'] as List;
+  }
+
   @override
   Widget build(BuildContext context) {
+    getClinic();
     return Scaffold(
       backgroundColor: Colors.tealAccent,
       drawer: SideDrawer(),
@@ -15,45 +25,44 @@ class HomePage extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.all(10),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Card(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                margin: EdgeInsets.all(10),
-                elevation: 10,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClinicPage())),
-                      leading: Image.asset(
-                        'images/wallpaper.jpg',
-                        height: 240,
-                        fit: BoxFit.fill,
-                      ),
-                      title: Text('Phòng Khám Đa Khoa Cần Thơ'),
-                      subtitle: Text(
-                          '133A Trần Hưng Đạo, P. An Phú, Q. Ninh Kiều, Tp. Cần Thơ'),
-                      dense: true,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Booking()),
-                        );
-                      },
-                      child: Text('Book an appointment'),
-                    ),
-                  ],
-                ),
-                semanticContainer: true,
-              ),
+              Expanded(child: buildClinicCard(context)),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Card buildClinicCard(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      margin: EdgeInsets.all(10),
+      elevation: 10,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: clinicList.length,
+              itemBuilder: (context, index) {
+                return new ListTile(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ClinicPage())),
+                  title: Text('asd'),
+                );
+              }),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Booking()),
+              );
+            },
+            child: Text('Book an appointment'),
+          ),
+        ],
       ),
     );
   }
