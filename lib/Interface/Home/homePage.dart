@@ -7,62 +7,60 @@ import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'clinicView.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   var clinicList = [];
+
   void getClinic() async {
     var data = await rootBundle.loadString('assets/json/clinic.mock.json');
     clinicList = json.decode(data)['Clinic'] as List;
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getClinic();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.tealAccent,
       drawer: SideDrawer(),
       appBar: AppBar(title: Text('Find Clinic You Want')),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(child: buildClinicCard(context)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Card buildClinicCard(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      margin: EdgeInsets.all(10),
-      elevation: 10,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListView.builder(
-              scrollDirection: Axis.horizontal,
+          child: ListView.builder(
+              scrollDirection: Axis.vertical,
               itemCount: clinicList.length,
               itemBuilder: (context, index) {
-                return new ListTile(
-                  onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ClinicPage())),
-                  title: Text('asd'),
+                return new Card(
+                  child: Column(
+                    children: [
+                      ListTile(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ClinicPage())),
+                          title: clinicList[index]['name']),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Booking()),
+                          );
+                        },
+                        child: Text('Book an appointment'),
+                      ),
+                    ],
+                  ),
                 );
               }),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Booking()),
-              );
-            },
-            child: Text('Book an appointment'),
-          ),
-        ],
+        ),
       ),
     );
   }
