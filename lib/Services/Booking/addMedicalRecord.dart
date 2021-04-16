@@ -230,7 +230,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
         suffixIcon: Icon(
-          Icons.person_outline,
+          Icons.mail_outline,
           size: 30,
         ),
       ),
