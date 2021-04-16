@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import 'components/body.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class CompleteProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up'),
+        backgroundColor: kPrimaryColor,
       ),
       body: Body(),
     );

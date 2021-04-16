@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import 'components/body.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Forgot Password"),
+        backgroundColor: kPrimaryColor,
       ),
       body: Body(),
     );
