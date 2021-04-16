@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
@@ -29,40 +30,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.tealAccent,
-      drawer: SideDrawer(),
-      appBar: AppBar(title: Text('Find Clinic You Want')),
-      body: SafeArea(
-        child: Container(
+        backgroundColor: Colors.tealAccent,
+        drawer: SideDrawer(),
+        appBar: AppBar(title: Text('Find Clinic You Want')),
+        body: SafeArea(
           child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: clinicList.length,
-              itemBuilder: (context, index) {
-                return new Card(
-                  child: Column(
-                    children: [
-                      ListTile(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ClinicPage())),
-                          title: clinicList[index]['name']),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Booking()),
-                          );
-                        },
-                        child: Text('Book an appointment'),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        ),
-      ),
-    );
+            itemCount: clinicList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ClinicPage())),
+                child: Card(
+                    semanticContainer: false,
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AssetImage('images/0-1.png'),
+                          height: 100,
+                          width: 150,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(clinicList[index]['name']),
+                            ElevatedButton(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Booking())),
+                                child: Text('Book an appointment'))
+                          ],
+                        )
+                      ],
+                    )),
+              ),
+            ),
+          ),
+        ));
   }
 }
 

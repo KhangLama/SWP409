@@ -63,7 +63,7 @@ class _BookingState extends State<Booking> {
                               crossAxisCount: 5),
                       itemBuilder: (BuildContext context, int index) {
                         return new GestureDetector(
-                            onTap: () => print('as'),
+                            onTap: () => print('${hours[index]}'),
                             child: Center(
                                 child: new Text(
                               hours[index],
