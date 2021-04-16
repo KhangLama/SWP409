@@ -19,12 +19,12 @@ class _BodyState extends State<Body> {
     },
     {
       "text": "We help people connect with clinic",
-      "image": "images/0.jpg"
+      "image": "images/0-1.png"
     },
     {
       "text":
           "We show the easy way to book an appointment. \nJust stay at home with us",
-      "image": "images/1.jpg"
+      "image": "images/1-1.png"
     },
   ];
   @override

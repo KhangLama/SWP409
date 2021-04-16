@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import 'components/body.dart';
 
 class LoginSuccessScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class LoginSuccessScreen extends StatelessWidget {
       appBar: AppBar(
         leading: SizedBox(),
         title: Text("Login Success"),
+        backgroundColor: kPrimaryColor,
       ),
       body: Body(),
     );

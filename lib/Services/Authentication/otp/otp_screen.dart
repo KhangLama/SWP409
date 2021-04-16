@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'components/body.dart';
 
@@ -10,6 +11,7 @@ class OtpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("OTP Verification"),
+        backgroundColor: kPrimaryColor,
       ),
       body: Body(),
     );
