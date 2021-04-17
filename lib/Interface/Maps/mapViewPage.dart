@@ -25,6 +25,7 @@ class _MapViewPageState extends State<MapViewPage> {
   void initState() {
     super.initState();
     getClinic();
+    print('map' + '${clinicList.length}');
   }
 
   void locatePosition() async {

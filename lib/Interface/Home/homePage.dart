@@ -1,75 +1,28 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
+import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
-import 'package:swp409/Services/Booking/booking.dart';
-import 'clinicView.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  var clinicList = [];
-
-  void getClinic() async {
-    var data = await rootBundle.loadString('assets/json/clinic.mock.json');
-    clinicList = json.decode(data)['Clinic'] as List;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getClinic();
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.tealAccent,
         drawer: SideDrawer(),
-        appBar: AppBar(title: Text('Find Clinic You Want')),
+        appBar: AppBar(
+          title: Text('Welcome'),
+        ),
         body: SafeArea(
-          child: ListView.builder(
-            itemCount: clinicList.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) => Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ClinicPage())),
-                child: Card(
-                    semanticContainer: false,
-                    child: Row(
-                      children: [
-                        Image(
-                          image: AssetImage('images/0-1.png'),
-                          height: 100,
-                          width: 150,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(clinicList[index]['name']),
-                            ElevatedButton(
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Booking())),
-                                child: Text('Book an appointment'))
-                          ],
-                        )
-                      ],
-                    )),
-              ),
+            child: Container(
+          child: DefaultButton(
+            text: 'View Clinic',
+            press: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ClinicListView()),
             ),
           ),
-        ));
+        )));
   }
 }
 
@@ -118,8 +71,8 @@ class SideDrawer extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SplashScreen()))
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SignInScreen()))
             },
           ),
         ],
