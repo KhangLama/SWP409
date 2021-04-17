@@ -37,10 +37,10 @@ class Historybody extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
-                        minimumSize: Size(350,65),
+                        minimumSize: Size(350, 65),
                         shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.all(Radius.circular(20))
-                        ),
+                            borderRadius:
+                                new BorderRadius.all(Radius.circular(20))),
                       ),
                       onPressed: () => Navigator.push(
                           context,

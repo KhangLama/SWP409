@@ -17,8 +17,7 @@ class HomePage extends StatelessWidget {
             child: Container(
           child: DefaultButton(
             text: 'View Clinic',
-            press: () => Navigator.push(
-              context,
+            press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(builder: (context) => ClinicListView()),
             ),
           ),
