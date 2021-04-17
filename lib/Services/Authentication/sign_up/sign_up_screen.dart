@@ -9,7 +9,7 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Sign Up"),
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kPrimaryAppbar,
       ),
       body: Body(),
     );
