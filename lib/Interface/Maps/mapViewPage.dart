@@ -16,6 +16,7 @@ class _MapViewPageState extends State<MapViewPage> {
   final Set<Marker> _markers = {};
   var geoLocator = Geolocator();
   var clinicList = [];
+  
   void getClinic() async {
     var data = await rootBundle.loadString('assets/json/clinic.mock.json');
     clinicList = json.decode(data)['Clinic'] as List;
@@ -25,7 +26,6 @@ class _MapViewPageState extends State<MapViewPage> {
   void initState() {
     super.initState();
     getClinic();
-    print('map' + '${clinicList.length}');
   }
 
   void locatePosition() async {

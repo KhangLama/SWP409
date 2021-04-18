@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 
 class ClinicPage extends StatelessWidget {
@@ -8,7 +7,6 @@ class ClinicPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Back'),
-        
       ),
       body: SafeArea(
         child: SingleChildScrollView(
