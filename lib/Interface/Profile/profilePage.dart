@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-
+import 'components/body.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.greenAccent,
         appBar: AppBar(
           leading: BackButton(
             onPressed: () => Navigator.pop(context),
           ),
+          title: Text('Choose a medical record'),
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(8),
-          ),
-        ),
+        body: Body(),
       ),
     );
   }

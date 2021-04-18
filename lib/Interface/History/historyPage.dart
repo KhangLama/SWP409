@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swp409/Services/Booking/addMedicalRecord.dart';
 import 'package:swp409/constants.dart';
 
+import '../../size_config.dart';
+
 class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,11 @@ class Historybody extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
+<<<<<<< HEAD
                         minimumSize: Size(350, 65),
+=======
+                        minimumSize: Size(double.infinity,getProportionateScreenHeight(50)),
+>>>>>>> feature/trinhhq
                         shape: new RoundedRectangleBorder(
                             borderRadius:
                                 new BorderRadius.all(Radius.circular(20))),
