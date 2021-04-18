@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/constants.dart';
 
+import 'clinicdetailView.dart';
+
 class ClinicListView extends StatefulWidget {
   @override
   _ClinicListViewState createState() => _ClinicListViewState();
@@ -30,7 +32,6 @@ class _ClinicListViewState extends State<ClinicListView> {
       });
     });
     super.initState();
-    print(_clinics.length);
   }
 
   @override
@@ -44,31 +45,37 @@ class _ClinicListViewState extends State<ClinicListView> {
           ),
           backgroundColor: Colors.lightBlue,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _clinics.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                        child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 32, bottom: 32, left: 16, right: 16),
-                      child: Row(
-                        children: [
-                          Image(image: AssetImage('images/0-1.png')),
-                          Column(
-                            children: [
-                              Text(_clinics[index].id),
-                              Text(_clinics[index].name),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ));
-                  }),
-            ),
-          ],
-        ));
+        body: ListView.builder(
+            itemCount: _clinics.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ClinicPage())),
+                  child: Card(
+                      child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 32, bottom: 32, left: 0, right: 16),
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AssetImage('images/0-1.png'),
+                          width: 150,
+                          height: 100,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(_clinics[index].id),
+                            Text(_clinics[index].name),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )),
+                ),
+              );
+            }));
   }
 }
