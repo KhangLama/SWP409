@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -13,14 +14,8 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {
-      "text": "Welcome, Let’s booking clinic!",
-      "image": "images/2-1.png"
-    },
-    {
-      "text": "We help people connect with clinic",
-      "image": "images/0-1.png"
-    },
+    {"text": "Welcome, Let’s booking clinic!", "image": "images/2-1.png"},
+    {"text": "We help people connect with clinic", "image": "images/0-1.png"},
     {
       "text":
           "We show the easy way to book an appointment. \nJust stay at home with us",
@@ -71,7 +66,7 @@ class _BodyState extends State<Body> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignInScreen()));
+                                builder: (context) => MainScreen()));
                       },
                     ),
                     Spacer(),
