@@ -16,7 +16,8 @@ class _ClinicListViewState extends State<ClinicListView> {
   void initState() {
     fetchClinics().then((value) {
       setState(() {
-        _clinics.addAll(value);
+        _clinics = value;
+        _filteredclinic = _clinics;
       });
     });
     super.initState();
@@ -36,15 +37,31 @@ class _ClinicListViewState extends State<ClinicListView> {
         body: SafeArea(
           child: Column(
             children: <Widget>[
+              // search bar
+              TextField(
+                decoration: InputDecoration(
+                    focusColor: Colors.white,
+                    contentPadding: EdgeInsets.all(8),
+                    hintText: 'Enter clinic\'s name or address'),
+                onChanged: (text) {
+                  setState(() {
+                    _filteredclinic = _clinics
+                        .where((c) => (c.name.toLowerCase().contains(text) ||
+                            c.id.toLowerCase().contains(text)))
+                        .toList();
+                  });
+                },
+              ),
               Expanded(child: buildListView()),
             ],
           ),
         ));
   }
 
+// List view of clinic card
   ListView buildListView() {
     return ListView.builder(
-        itemCount: _clinics.length,
+        itemCount: _filteredclinic.length,
         itemBuilder: (context, index) {
           return Container(
             width: MediaQuery.of(context).size.width,
@@ -66,9 +83,9 @@ class _ClinicListViewState extends State<ClinicListView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(_clinics[index].id),
+                          Text(_filteredclinic[index].id),
                           Text(
-                            _clinics[index].name,
+                            _filteredclinic[index].name,
                           ),
                           ElevatedButton(
                               onPressed: () => Navigator.push(
@@ -89,7 +106,7 @@ class _ClinicListViewState extends State<ClinicListView> {
 }
 
 List<Clinic> _clinics = <Clinic>[];
-
+List<Clinic> _filteredclinic = <Clinic>[];
 Future<List<Clinic>> fetchClinics() async {
   var fetchdata = await rootBundle.loadString('assets/json/clinic.mock.json');
   var clinics = <Clinic>[];
