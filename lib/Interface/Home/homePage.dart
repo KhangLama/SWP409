@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
@@ -82,7 +83,7 @@ class SideDrawer extends StatelessWidget {
           DrawerHeader(
             child: Center(
               child: Text(
-                'Side menu  FlutterCorner',
+                'Hello, Simple',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
@@ -109,16 +110,15 @@ class SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person_rounded),
             title: Text('Profile'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()))
+            onTap: () {
+            Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(builder: (context) => new ProfilePage()));
             },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () {
-              //Navigator.push(context,MaterialPageRoute(builder: (context) => SplashScreen()));
               Navigator.of(context, rootNavigator: true).pushReplacement(
                   MaterialPageRoute(builder: (context) => new SplashScreen()));
             },
