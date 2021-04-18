@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
-import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 
 class HomePage extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
@@ -12,22 +12,30 @@ class ClinicListView extends StatefulWidget {
 }
 
 class _ClinicListViewState extends State<ClinicListView> {
-  Future<List<Clinic>> _getClinic() async {
-    var data = await DefaultAssetBundle.of(context)
-        .loadString('assets/json/clinic.mock.json');
-    var clinicList = json.decode(data)['Clinic'] as List;
-    List<Clinic> clinics = [];
-    for (var c in clinicList) {
-      Clinic clinic =
-          Clinic(id: c['id'], lat: c['lat'], lng: c['lng'], name: c['name']);
-      clinics.add(clinic);
+  Future fetchClinics() async {
+    var fetchdata = await rootBundle.loadString('assets/json/clinic.mock.json');
+    if (fetchdata.isEmpty) {
+      return null;
+    } else {
+      var clinics = json.decode(source)
     }
-    return clinics;
   }
+
+  // Future<List<Clinic>> _getClinic() async {
+  //   var data = await DefaultAssetBundle.of(context)
+  //       .loadString('assets/json/clinic.mock.json');
+  //   var clinicList = json.decode(data)['Clinic'] as List;
+  //   List<Clinic> clinics = [];
+  //   for (var c in clinicList) {
+  //     Clinic clinic =
+  //         Clinic(id: c['id'], lat: c['lat'], lng: c['lng'], name: c['name']);
+  //     clinics.add(clinic);
+  //   }
+  //   return clinics;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    _getClinic();
     return Scaffold(
       backgroundColor: Colors.tealAccent,
       appBar: AppBar(
@@ -35,9 +43,6 @@ class _ClinicListViewState extends State<ClinicListView> {
           'Find Clinic You Want',
           style: TextStyle(color: kPrimaryLightColor),
         ),
-        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {
-          showSearch(context: context, delegate: _getClinic())
-        })],
         backgroundColor: Colors.lightBlue,
       ),
       body: SafeArea(
