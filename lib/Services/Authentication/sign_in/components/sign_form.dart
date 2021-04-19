@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
@@ -30,6 +34,28 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
+  }
+
+  //.
+  List<User> _users = <User>[];
+  Future<List<User>> fetchClinics() async {
+    var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
+    var users = <User>[];
+    var userjson = json.decode(fetchdata)['User'] as List;
+    for (var user in userjson) {
+      users.add(User.fromJson(user));
+    }
+    return users;
+  }
+
+  @override
+  void initState() {
+    fetchClinics().then((value) {
+      setState(() {
+        _users.addAll(value);
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -77,10 +103,8 @@ class _SignFormState extends State<SignForm> {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
                 KeyboardUtil.hideKeyboard(context);
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainScreen()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()));
               }
             },
           ),
@@ -94,21 +118,29 @@ class _SignFormState extends State<SignForm> {
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].password) == 0) {
+              remember = true;
+              print("lamminhkhang");
+            }
+          }
+          if (remember == true) {
+            print("con di me may");
+            removeError(error: kShortPassError);
+          }
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-          return kPassNullError;
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return kShortPassError;
-        }
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].password) == 0) {
+              print('ok');
+              remember = true;
+            }
+          }
+          if (remember == false) {
+            addError(error: kShortPassError);
+            return kShortPassError;
+          }
         return null;
       },
       decoration: InputDecoration(

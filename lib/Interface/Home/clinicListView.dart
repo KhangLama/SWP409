@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
 
 import 'clinicdetailView.dart';
@@ -56,7 +57,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                   child: Card(
                       child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 32, bottom: 32, left: 0, right: 16),
+                        top: 5, bottom: 10, left: 0, right: 16),
                     child: Row(
                       children: [
                         Image(
@@ -64,12 +65,23 @@ class _ClinicListViewState extends State<ClinicListView> {
                           width: 150,
                           height: 100,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(_clinics[index].id),
-                            Text(_clinics[index].name),
-                          ],
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(_clinics[index].id,
+                                  style: TextStyle(fontSize: 20)),
+                              Text(_clinics[index].name,
+                                  style: TextStyle(fontSize: 20),
+                              ),
+                              ElevatedButton(
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Booking())),
+                                  child: Text('Book an appointment'))
+                            ],
+                          ),
                         ),
                       ],
                     ),
