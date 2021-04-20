@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
-import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
@@ -20,6 +16,7 @@ class _SignFormState extends State<SignForm> {
   String email;
   String password;
   bool remember = false;
+  int userID;
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -34,28 +31,6 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
-  }
-
-  //.
-  List<User> _users = <User>[];
-  Future<List<User>> fetchClinics() async {
-    var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
-    var users = <User>[];
-    var userjson = json.decode(fetchdata)['User'] as List;
-    for (var user in userjson) {
-      users.add(User.fromJson(user));
-    }
-    return users;
-  }
-
-  @override
-  void initState() {
-    fetchClinics().then((value) {
-      setState(() {
-        _users.addAll(value);
-      });
-    });
-    super.initState();
   }
 
   @override
@@ -118,29 +93,26 @@ class _SignFormState extends State<SignForm> {
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-          for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].password) == 0) {
-              remember = true;
-              print("lamminhkhang");
-            }
+        for (int i = 0; i < _users.length; i++) {
+          if (value.compareTo(_users[i].password) == 0) {
+            remember = true;
           }
-          if (remember == true) {
-            print("con di me may");
-            removeError(error: kShortPassError);
-          }
+        }
+        if (remember == true) {
+          removeError(error: kUsernameOrPassEror);
+        }
         return null;
       },
       validator: (value) {
-          for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].password) == 0) {
-              print('ok');
-              remember = true;
-            }
+        for (int i = 0; i < _users.length; i++) {
+          if (value.compareTo(_users[i].password) == 0) {
+            remember = true;
           }
-          if (remember == false) {
-            addError(error: kShortPassError);
-            return kShortPassError;
-          }
+        }
+        if (remember == false) {
+          addError(error: kUsernameOrPassEror);
+          return kUsernameOrPassEror;
+        }
         return null;
       },
       decoration: InputDecoration(
@@ -174,6 +146,16 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kEmailNullError);
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].email) == 0) {
+              remember = true;
+              userID = i;
+            }
+          }
+          if (remember == true) {
+            removeError(error: kUsernameOrPassEror);
+          }
         }
         return null;
       },
@@ -184,6 +166,16 @@ class _SignFormState extends State<SignForm> {
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].email) == 0) {
+              remember = true;
+            }
+          }
+          if (remember == false) {
+            addError(error: kUsernameOrPassEror);
+            return kUsernameOrPassEror;
+          }
         }
         return null;
       },
