@@ -34,44 +34,7 @@ class _ClinicListViewState extends State<ClinicListView> {
           ),
           backgroundColor: Colors.lightBlue,
         ),
-        body: ListView.builder(
-            itemCount: _clinics.length,
-            itemBuilder: (context, index) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                child: GestureDetector(
-                  onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ClinicPage())),
-                  child: Card(
-                      child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 5, bottom: 10, left: 0, right: 16),
-                    child: Row(
-                      children: [
-                        Image(
-                          image: AssetImage('images/0-1.png'),
-                          width: 150,
-                          height: 100,
-                        ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(_clinics[index].id,
-                                  style: TextStyle(fontSize: 20)),
-                              Text(_clinics[index].name,
-                                  style: TextStyle(fontSize: 20),
-                              ),
-                              ElevatedButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Booking())),
-                                  child: Text('Book an appointment'))
-                            ],
-                          ),
-                        ),
-                      ],
+
         body: SafeArea(
           child: Column(
             children: <Widget>[
