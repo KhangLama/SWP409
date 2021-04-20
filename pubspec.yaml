@@ -15,18 +15,18 @@ dependencies:
   flutter_icons: ^1.0.0+1
   google_maps_flutter:
   google_fonts:
-  http: ^0.12.0+4
+  http: ^0.13.1
   geolocator:
   analyzer:
-  json_annotation: ^3.0.1
+  json_annotation: ^4.0.1
   table_calendar: ^2.3.3
   flutter_svg: ^0.21.0+1
   provider: ^5.0.0
 dev_dependencies:
-  json_serializable: ^3.3.0
+  json_serializable: ^4.1.0
   pedantic:
   build_runner: ^1.0.0
-
+  flutter_config: ^2.0.0
   flutter_test:
     sdk: flutter
 
@@ -35,6 +35,7 @@ flutter:
   assets:
     - images/
     - assets/json/
+    - .env
   fonts:
     - family: Muli
       fonts:
