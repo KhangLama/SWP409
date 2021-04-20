@@ -34,6 +34,7 @@ class _ClinicListViewState extends State<ClinicListView> {
           ),
           backgroundColor: Colors.lightBlue,
         ),
+<<<<<<< HEAD
         body: ListView.builder(
             itemCount: _clinics.length,
             itemBuilder: (context, index) {
@@ -72,6 +73,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                           ),
                         ),
                       ],
+=======
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -133,6 +135,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                               child: Text('Book an appointment'))
                         ],
                       ),
+>>>>>>> main
                     ),
                   ],
                 ),
