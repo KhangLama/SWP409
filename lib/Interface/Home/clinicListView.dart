@@ -34,7 +34,6 @@ class _ClinicListViewState extends State<ClinicListView> {
           ),
           backgroundColor: Colors.lightBlue,
         ),
-
         body: SafeArea(
           child: Column(
             children: <Widget>[
