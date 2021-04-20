@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
@@ -19,6 +23,26 @@ class _SignFormState extends State<SignForm> {
   int userID;
   final List<String> errors = [];
 
+  List<User> _users = <User>[];
+  Future<List<User>> fetchClinics() async {
+    var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
+    var users = <User>[];
+    var userjson = json.decode(fetchdata)['User'] as List;
+    for (var user in userjson) {
+      users.add(User.fromJson(user));
+    }
+    return users;
+  }
+
+  @override
+  void initState() {
+    fetchClinics().then((value) {
+      setState(() {
+        _users.addAll(value);
+      });
+    });
+    super.initState();
+  }
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
