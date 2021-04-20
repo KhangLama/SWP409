@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
