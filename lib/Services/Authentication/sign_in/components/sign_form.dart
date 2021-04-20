@@ -16,6 +16,7 @@ class _SignFormState extends State<SignForm> {
   String email;
   String password;
   bool remember = false;
+  int userID;
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -94,6 +95,7 @@ class _SignFormState extends State<SignForm> {
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
+<<<<<<< Updated upstream
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
@@ -109,6 +111,28 @@ class _SignFormState extends State<SignForm> {
           addError(error: kShortPassError);
           return kShortPassError;
         }
+=======
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].password) == 0) {
+              remember = true;
+            }
+          }
+          if (remember == true) {
+            removeError(error: kUsernameOrPassEror);
+          }
+        return null;
+      },
+      validator: (value) {
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].password) == 0) {
+              remember = true;
+            }
+          }
+          if (remember == false) {
+            addError(error: kUsernameOrPassEror);
+            return kUsernameOrPassEror;
+          }
+>>>>>>> Stashed changes
         return null;
       },
       decoration: InputDecoration(
@@ -142,6 +166,16 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kEmailNullError);
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].email) == 0) {
+              remember = true;
+              userID = i;
+            }
+          }
+          if (remember == true) {
+            removeError(error: kUsernameOrPassEror);
+          }
         }
         return null;
       },
@@ -152,6 +186,16 @@ class _SignFormState extends State<SignForm> {
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (value.compareTo(_users[i].email) == 0) {
+              remember = true;
+            }
+          }
+          if (remember == false) {
+            addError(error: kUsernameOrPassEror);
+            return kUsernameOrPassEror;
+          }
         }
         return null;
       },
