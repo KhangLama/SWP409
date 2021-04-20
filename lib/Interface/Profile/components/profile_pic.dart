@@ -99,7 +99,7 @@ class _ProfilePicState extends State<ProfilePic> {
                     TakePhoto(ImageSource.gallery);
                   },
                   icon: Icon(Icons.image),
-                  label: Text('Camera')),
+                  label: Text('Gallery')),
             ],
           )
         ],
