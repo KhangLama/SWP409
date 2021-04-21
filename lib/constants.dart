@@ -43,7 +43,8 @@ const String kMatchPassError = "Passwords don't match";
 const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
-const String kUsernameOrPassEror = "Username or password is not correct";
+const String kUsernameValid = "Email doesn't not exist";
+const String kPasswordValid = "Password is not valid";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:
