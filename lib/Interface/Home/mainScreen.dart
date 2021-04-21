@@ -3,6 +3,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Interface/History/historyPage.dart';
 import 'package:swp409/Interface/Maps/mapViewPage.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
+import 'clinicListView.dart';
 import 'homePage.dart';
 
 class MainScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            HomePage(),
+            ClinicListView(),
             MapViewPage(),
             HistoryPage(),
           ],

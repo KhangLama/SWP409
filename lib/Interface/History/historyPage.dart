@@ -9,7 +9,7 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: kPrimaryAppbar,
           title: Text('Choose a medical record'),
         ),
         body: Historybody());

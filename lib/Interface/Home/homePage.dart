@@ -3,6 +3,7 @@ import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
+import 'package:swp409/constants.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
         drawer: SideDrawer(),
         appBar: AppBar(
           title: Text('Welcome'),
+          backgroundColor: kPrimaryAppbar,
         ),
         body: SafeArea(
             child: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Services/Booking/medical_record.dart';
+import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Booking extends StatefulWidget {
@@ -39,6 +40,7 @@ class _BookingState extends State<Booking> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pick a date'),
+        backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
         child: Container(

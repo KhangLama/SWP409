@@ -32,7 +32,7 @@ class _ClinicListViewState extends State<ClinicListView> {
             'Find Clinic You Want',
             style: TextStyle(color: kPrimaryLightColor),
           ),
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: kPrimaryAppbar,
         ),
         body: SafeArea(
           child: Column(

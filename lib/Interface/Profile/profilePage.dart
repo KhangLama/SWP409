@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swp409/constants.dart';
 import 'components/body.dart';
 class ProfilePage extends StatelessWidget {
   @override
@@ -10,6 +11,7 @@ class ProfilePage extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text('Choose a medical record'),
+          backgroundColor: kPrimaryAppbar,
         ),
         body: Body(),
       ),

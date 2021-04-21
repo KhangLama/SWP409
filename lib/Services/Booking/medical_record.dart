@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'addMedicalRecord.dart';
@@ -12,6 +13,7 @@ class MedicalRecords extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medical Records'),
+        backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
         child: Container(

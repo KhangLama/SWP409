@@ -16,7 +16,7 @@ class _AddMedicalRecordState extends State<AddMedicalRecord> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new medical record'),
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kPrimaryAppbar,
       ),
       body: Body(),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Services/Booking/booking.dart';
+import 'package:swp409/constants.dart';
 
 class ClinicPage extends StatelessWidget {
   @override
@@ -7,6 +8,7 @@ class ClinicPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Back'),
+        backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -58,9 +60,6 @@ class ClinicPage extends StatelessWidget {
                                 ElevatedButton(
                                     onPressed: () {},
                                     child: Text('View on map')),
-                                SizedBox(width: 15),
-                                ElevatedButton(
-                                    onPressed: () {}, child: Text('Chat')),
                               ],
                             ),
                           ],
