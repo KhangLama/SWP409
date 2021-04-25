@@ -20,11 +20,11 @@ class _SignFormState extends State<SignForm> {
   String email;
   String password;
   bool remember = false;
-  int userID;
+  int userID = 0;
   final List<String> errors = [];
 
   List<User> _users = <User>[];
-  Future<List<User>> fetchClinics() async {
+  Future<List<User>> fetchUsers() async {
     var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
     var users = <User>[];
     var userjson = json.decode(fetchdata)['User'] as List;
@@ -36,13 +36,14 @@ class _SignFormState extends State<SignForm> {
 
   @override
   void initState() {
-    fetchClinics().then((value) {
+    fetchUsers().then((value) {
       setState(() {
         _users.addAll(value);
       });
     });
     super.initState();
   }
+
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
@@ -112,84 +113,32 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        for (int i = 0; i < _users.length; i++) {
-          if (value.compareTo(_users[i].password) == 0) {
-            remember = true;
-          }
-        }
-        if (remember == true) {
-          removeError(error: kUsernameOrPassEror);
-        }
-        return null;
-      },
-      validator: (value) {
-        for (int i = 0; i < _users.length; i++) {
-          if (value.compareTo(_users[i].password) == 0) {
-            remember = true;
-          }
-        }
-        if (remember == false) {
-          addError(error: kUsernameOrPassEror);
-          return kUsernameOrPassEror;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Enter your password",
-        border: new OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-        ),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor),
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-        ),
-        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        suffixIcon: Icon(
-          Icons.lock,
-          size: 30,
-        ),
-      ),
-    );
-  }
-
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
+        remember = false;
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
         } else {
           for (int i = 0; i < _users.length; i++) {
             if (value.compareTo(_users[i].email) == 0) {
               remember = true;
-              userID = i;
             }
           }
           if (remember == true) {
-            removeError(error: kUsernameOrPassEror);
+            removeError(error: kUsernameValid);
           }
         }
+        email = value;
         return null;
       },
       validator: (value) {
+        remember = false;
         if (value.isEmpty) {
           addError(error: kEmailNullError);
           return kEmailNullError;
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return kInvalidEmailError;
         } else {
           for (int i = 0; i < _users.length; i++) {
             if (value.compareTo(_users[i].email) == 0) {
@@ -197,8 +146,8 @@ class _SignFormState extends State<SignForm> {
             }
           }
           if (remember == false) {
-            addError(error: kUsernameOrPassEror);
-            return kUsernameOrPassEror;
+            addError(error: kUsernameValid);
+            return kUsernameValid;
           }
         }
         return null;
@@ -219,6 +168,68 @@ class _SignFormState extends State<SignForm> {
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
         suffixIcon: Icon(
           Icons.mail_outline,
+          size: 30,
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildPasswordFormField() {
+    return TextFormField(
+      obscureText: true,
+      onSaved: (newValue) => password = newValue,
+      onChanged: (value) {
+        remember = false;
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (email.compareTo(_users[i].email) == 0) {
+              if (value.compareTo(_users[i].password) == 0)
+                remember = true;
+            }
+          }
+        }
+        if (remember == true) {
+          removeError(error: kPasswordValid);
+        }
+        return null;
+      },
+      validator: (value) {
+        remember = false;
+        if (value.isEmpty) {
+          addError(error: kPassNullError);
+          return kPassNullError;
+        } else {
+          for (int i = 0; i < _users.length; i++) {
+            if (email.compareTo(_users[i].email) == 0) {
+              if (value.compareTo(_users[i].password) == 0)
+              remember = true;
+            }
+          }
+          if (remember == false) {
+            addError(error: kPasswordValid);
+            return kPasswordValid;
+          }
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Password",
+        hintText: "Enter your password",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: Icon(
+          Icons.lock,
           size: 30,
         ),
       ),

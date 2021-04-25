@@ -31,24 +31,27 @@ class Historybody extends StatelessWidget {
             Expanded(
               child: Align(
                   alignment: FractionalOffset.bottomCenter,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: kPrimaryColor,
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 1, right: 1, bottom: 5),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: kPrimaryColor,
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          minimumSize: Size(double.infinity,getProportionateScreenHeight(50)),
+                          shape: new RoundedRectangleBorder(
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(15))),
                         ),
-                        minimumSize: Size(double.infinity,getProportionateScreenHeight(50)),
-                        shape: new RoundedRectangleBorder(
-                            borderRadius:
-                                new BorderRadius.all(Radius.circular(20))),
-                      ),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddMedicalRecord())),
-                      child: Text('Create new medical record'))),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddMedicalRecord())),
+                        child: Text('Create new medical record')),
+                  )),
             )
           ],
         ),

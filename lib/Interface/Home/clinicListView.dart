@@ -28,7 +28,7 @@ class _ClinicListViewState extends State<ClinicListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.tealAccent,
+        backgroundColor: Color(0xFFAED2E8),
         drawer: SideDrawer(),
         appBar: AppBar(
           title: Text(
@@ -41,19 +41,31 @@ class _ClinicListViewState extends State<ClinicListView> {
           child: Column(
             children: <Widget>[
               // search bar
-              TextField(
-                decoration: InputDecoration(
-                    focusColor: Colors.white,
+              Container(
+                margin: const EdgeInsets.only(left: 1, right: 1),
+                child: TextField(
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
                     contentPadding: EdgeInsets.all(8),
-                    hintText: 'Enter clinic\'s name or address'),
-                onChanged: (text) {
-                  setState(() {
-                    _filteredclinic = _clinics
-                        .where((c) => (c.name.toLowerCase().contains(text) ||
-                            c.id.toLowerCase().contains(text)))
-                        .toList();
-                  });
-                },
+                    hintText: 'Search clinic\'s name or address',
+                    suffixIcon: Icon(Icons.search_outlined),
+                    border: new OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    // focusedBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(color: kPrimaryColor),
+                    // ),
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      _filteredclinic = _clinics
+                          .where((c) => (c.name.toLowerCase().contains(text) ||
+                              c.id.toLowerCase().contains(text)))
+                          .toList();
+                    });
+                  },
+                ),
               ),
               Expanded(child: buildListView()),
             ],
@@ -72,36 +84,38 @@ class _ClinicListViewState extends State<ClinicListView> {
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ClinicPage())),
               child: Card(
+                  margin: const EdgeInsets.only(
+                      top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
                   child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 32, bottom: 32, left: 0, right: 16),
-                child: Row(
-                  children: [
-                    Image(
-                      image: AssetImage('images/0-1.png'),
-                      width: 150,
-                      height: 100,
-                    ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(_filteredclinic[index].id),
-                          Text(
-                            _filteredclinic[index].name,
+                    padding: const EdgeInsets.only(
+                        top: 32, bottom: 32, left: 0, right: 16),
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AssetImage('images/0-1.png'),
+                          width: 150,
+                          height: 100,
+                        ),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(_filteredclinic[index].id),
+                              Text(
+                                _filteredclinic[index].name,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Booking())),
+                                  child: Text('Book an appointment'))
+                            ],
                           ),
-                          ElevatedButton(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Booking())),
-                              child: Text('Book an appointment'))
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
+                  )),
             ),
           );
         });
