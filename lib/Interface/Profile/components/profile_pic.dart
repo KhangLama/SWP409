@@ -31,7 +31,7 @@ class _ProfilePicState extends State<ProfilePic> {
           ),
           Positioned(
             right: 25,
-            bottom: -8,
+            bottom: 0,
             child: SizedBox(
               height: 45,
               width: 45,
