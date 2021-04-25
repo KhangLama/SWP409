@@ -112,12 +112,18 @@ class _BookingState extends State<Booking> {
           });
         },
         child: Center(
-            child: Card(
-          elevation: 5.0,
-          color: checked ? Colors.orange : Colors.white,
-          child: new Text(
-            hours[index],
-            style: TextStyle(fontSize: 18),
+            child: SizedBox(
+          height: 40,
+          width: 120,
+          child: Card(
+            elevation: 5.0,
+            color: checked ? Colors.orange : Colors.white,
+            child: Center(
+              child: new Text(
+                hours[index],
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
           ),
         )));
   }

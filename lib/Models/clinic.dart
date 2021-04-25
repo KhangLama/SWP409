@@ -8,8 +8,8 @@ class Clinic {
   String lat;
   String lng;
   String name;
-
-  Clinic({this.id, this.lat, this.lng, this.name});
+  String address;
+  Clinic({this.id, this.lat, this.lng, this.name, this.address});
 
   factory Clinic.fromJson(Map<String, dynamic> json) => _$ClinicFromJson(json);
 
