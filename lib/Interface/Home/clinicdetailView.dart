@@ -21,7 +21,7 @@ class ClinicPage extends StatelessWidget {
                     Center(
                       child: Image(
                           image: NetworkImage(
-                              'https://m.phongkhamcantho.vn/modules/baotri-tkm/img/tt_3.png',
+                              'https://lh5.googleusercontent.com/p/AF1QipNfMT9alf72auaXkafqbtfY51b-5Z0qzHBWEPsv=w408-h306-k-no',
                               scale: 0.9)),
                     ),
                     SizedBox(height: 10),
@@ -36,23 +36,23 @@ class ClinicPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Center(
-                              child: Text('Phòng Khám Đa Khoa Cần Thơ',
+                              child: Text('Phòng khám bác sĩ Tiêu Phương Lâm',
                                   style: TextStyle(fontSize: 20)),
                             ),
                             SizedBox(height: 10),
                             Center(
                               child: Text(
-                                  '133A Trần Hưng Đạo, P. An Phú, Q. Ninh Kiều, Tp. Cần Thơ',
+                                  '85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ',
                                   style: TextStyle(
                                     fontSize: 20,
                                   )),
                             ),
                             SizedBox(height: 10),
-                            Text('Doctor: Khang Lmao',
+                            Text('Doctor: Tiêu Phương Lâm',
                                 style: TextStyle(fontSize: 20)),
                             SizedBox(height: 10),
                             Text(
-                              'Contact: 0948397339\nEmail: lamminhkhang123a@gmail.com \nWebsite: phongkham.com',
+                              'Contact: 02923740999',
                               style: TextStyle(fontSize: 20),
                             ),
                             Row(

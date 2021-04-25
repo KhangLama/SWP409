@@ -1,27 +1,27 @@
 {
   "Clinic":[{
     "id": "1",
-    "lat": "50.2861",
-    "lng": "170.4156",
-    "name": "Sipes, Barton and Harvey"
+    "lat": "10.013034853423138",
+    "lng": "105.7330799461219",
+    "name": "Phòng khám Medlatec Cần Thơ"
   },
   {
     "id": "2",
-    "lat": "59.4668",
-    "lng": "70.5716",
-    "name": "McDermott, Reilly and Corkery"
+    "lat": "10.015670866311359",
+    "lng": "105.73693289576242",
+    "name": "Phòng khám sản phụ khoa"
   },
   {
     "id": "3",
-    "lat": "-72.4388",
-    "lng": "-73.4540",
-    "name": "Goldner LLC"
+    "lat": "10.021863158236247",
+    "lng": "105.74328865728721",
+    "name": "Phòng khám BS Đoàn Anh Vũ-Khám Bệnh Trĩ Tiêu Hoá Gan Mật"
   },
   {
     "id": "4",
-    "lat": "-63.9471",
-    "lng": "112.2136",
-    "name": "Keeling, DuBuque and Spinka"
+    "lat": "10.022285414117624",
+    "lng": "105.74381574163733",
+    "name": "Phòng khám bác sĩ Tiêu Phương Lâm"
   },
   {
     "id": "5",

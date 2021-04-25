@@ -8,7 +8,7 @@ import 'package:swp409/size_config.dart';
 // const kWarninngColor = Color(0xFFF3BB1C);
 // const kErrorColor = Color(0xFFF03738);
 //
- const kDefaultPadding = 20.0;
+const kDefaultPadding = 20.0;
 
 const kPrimaryColor = Color(0xFF006CBE);
 const kPrimaryLightColor = Color(0xFFFFFFFF);
@@ -20,7 +20,6 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
-
 const kAnimationDuration = Duration(milliseconds: 200);
 
 final headingStyle = TextStyle(
@@ -34,7 +33,7 @@ const defaultDuration = Duration(milliseconds: 250);
 
 // Form Error
 final RegExp emailValidatorRegExp =
-RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 const String kEmailNullError = "Please Enter your email";
 const String kInvalidEmailError = "Please Enter Valid Email";
 const String kPassNullError = "Please Enter your password";
@@ -47,7 +46,7 @@ const String kUsernameOrPassEror = "Username or password is not correct";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:
-  EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
+      EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
   border: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),

@@ -26,6 +26,7 @@ List hours = [
   '16:30',
   '17:00',
 ];
+int checkedIndex = 0;
 
 class _BookingState extends State<Booking> {
   CalendarController _calendarController;
@@ -64,13 +65,7 @@ class _BookingState extends State<Booking> {
                           new SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5),
                       itemBuilder: (BuildContext context, int index) {
-                        return new GestureDetector(
-                            onTap: () => print('${hours[index]}'),
-                            child: Center(
-                                child: new Text(
-                              hours[index],
-                              style: TextStyle(fontSize: 18),
-                            )));
+                        return _buildGridItem(index);
                       }),
                 ),
               ),
@@ -98,5 +93,26 @@ class _BookingState extends State<Booking> {
         ),
       ),
     );
+  }
+
+  Widget _buildGridItem(int index) {
+    bool checked = index == checkedIndex;
+    return new GestureDetector(
+        onTap: () {
+          setState(() {
+            checkedIndex = index;
+          });
+          print('${hours[index]}');
+          print(checked);
+        },
+        child: Center(
+            child: Card(
+          elevation: 5.0,
+          color: checked ? Colors.orange : Colors.white,
+          child: new Text(
+            hours[index],
+            style: TextStyle(fontSize: 18),
+          ),
+        )));
   }
 }

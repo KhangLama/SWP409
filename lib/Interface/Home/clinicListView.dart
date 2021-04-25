@@ -119,6 +119,7 @@ Future<List<Clinic>> fetchClinics() async {
   }
   return clinics;
 }
+
 class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -156,8 +157,8 @@ class SideDrawer extends StatelessWidget {
             leading: Icon(Icons.person_rounded),
             title: Text('Profile'),
             onTap: () {
-            Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(builder: (context) => new ProfilePage()));
+              Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (context) => new ProfilePage()));
             },
           ),
           ListTile(
