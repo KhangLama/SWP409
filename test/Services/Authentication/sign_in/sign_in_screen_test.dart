@@ -7,9 +7,9 @@ void main() {
     final user = User(
         name: 'khang',
         phone: '0948397339',
-        email: 'lamminhkhang123a@gmail.com',
+        username: 'lamminhkhang123a@gmail.com',
         password: 'King0fGod.');
-    expect(user.email, user.email.isNotEmpty);
+    expect(user.username, user.username.isNotEmpty);
     
   });
 }

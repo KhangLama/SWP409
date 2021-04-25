@@ -5,11 +5,11 @@ part 'user.g.dart';
 class User {
   String name;
   String phone;
-  String email;
+  String username;
   String password;
 
   // ignore: sort_constructors_first
-  User({this.name, this.phone, this.email, this.password});
+  User({this.name, this.phone, this.username, this.password});
 
   // ignore: sort_constructors_first
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

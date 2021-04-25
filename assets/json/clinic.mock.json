@@ -1,5 +1,6 @@
 {
-  "Clinic":[{
+  "Clinic":[
+    {
     "id": "1",
     "lat": "10.013034853423138",
     "lng": "105.7330799461219",
@@ -25,375 +26,40 @@
   },
   {
     "id": "5",
-    "lat": "73.8752",
-    "lng": "95.8582",
-    "name": "Eichmann - Renner"
+    "lat": "10.044010182222962",
+    "lng": "105.76579319992199",
+    "name": "Phòng Khám Tư Nhân - Bs Lương Văn Thái"
   },
   {
     "id": "6",
-    "lat": "55.6606",
-    "lng": "119.5422",
-    "name": "MacGyver Group"
+    "lat": "10.034339000000006",
+    "lng": "105.77498066886952",
+    "name": "Phòng Khám - Bs Thái Thanh Lâm"
   },
   {
     "id": "7",
-    "lat": "-6.7862",
-    "lng": "-134.5355",
-    "name": "Ratke, Hansen and Boehm"
+    "lat": "10.029298940456137",
+    "lng": "105.75367299992969",
+    "name": "Phòng Khám Đa Khoa HOÀN HẢO"
   },
   {
     "id": "8",
-    "lat": "-27.4595",
-    "lng": "87.7714",
-    "name": "Champlin Group"
+    "lat": "10.051505641634156",
+    "lng": "105.77347401580711",
+    "name": "Phòng Khám Tư Nhân - Bs Trịnh Thị Báu"
   },
   {
     "id": "9",
-    "lat": "-47.6644",
-    "lng": "98.6399",
-    "name": "Hermiston - Kiehn"
+    "lat": "10.051357743336679",
+    "lng": "105.77398899992971",
+    "name":
+      "Phòng Khám Chuyên Khoa Nhi - Tiến Sĩ Bác Sĩ Lê Hoàng Sơn – Khám nhi uy tín tại Cần Thơ"
   },
   {
     "id": "10",
-    "lat": "-59.0612",
-    "lng": "-60.6083",
-    "name": "Kreiger and Sons"
-  },
-  {
-    "id": "11",
-    "lat": "83.6479",
-    "lng": "-132.9266",
-    "name": "Lynch Group"
-  },
-  {
-    "id": "12",
-    "lat": "-59.8905",
-    "lng": "40.7787",
-    "name": "Tromp, Graham and Bashirian"
-  },
-  {
-    "id": "13",
-    "lat": "51.4524",
-    "lng": "-61.8944",
-    "name": "Heller, Bradtke and Bruen"
-  },
-  {
-    "id": "14",
-    "lat": "-21.5021",
-    "lng": "-149.3446",
-    "name": "Koepp, Roob and Dietrich"
-  },
-  {
-    "id": "15",
-    "lat": "12.3238",
-    "lng": "166.6353",
-    "name": "Lehner and Sons"
-  },
-  {
-    "id": "16",
-    "lat": "-20.1267",
-    "lng": "2.0026",
-    "name": "Witting - Mertz"
-  },
-  {
-    "id": "17",
-    "lat": "44.1000",
-    "lng": "70.9622",
-    "name": "Rowe - Stokes"
-  },
-  {
-    "id": "18",
-    "lat": "60.5865",
-    "lng": "93.5727",
-    "name": "Stiedemann - Brown"
-  },
-  {
-    "id": "19",
-    "lat": "-23.7944",
-    "lng": "-94.5025",
-    "name": "Torp, Sporer and Jacobs"
-  },
-  {
-    "id": "20",
-    "lat": "5.1613",
-    "lng": "-83.2547",
-    "name": "Olson Group"
-  },
-  {
-    "id": "21",
-    "lat": "-67.7940",
-    "lng": "-51.4359",
-    "name": "Romaguera, Langworth and Rogahn"
-  },
-  {
-    "id": "22",
-    "lat": "-75.7034",
-    "lng": "47.9753",
-    "name": "Mueller, Abbott and O'Hara"
-  },
-  {
-    "id": "23",
-    "lat": "-35.1622",
-    "lng": "16.5904",
-    "name": "Kozey, Nicolas and Cruickshank"
-  },
-  {
-    "id": "24",
-    "lat": "39.4354",
-    "lng": "16.5824",
-    "name": "Kuhlman LLC"
-  },
-  {
-    "id": "25",
-    "lat": "-67.4090",
-    "lng": "-80.5961",
-    "name": "Torphy, Crist and Muller"
-  },
-  {
-    "id": "26",
-    "lat": "0.9140",
-    "lng": "-136.2969",
-    "name": "Bednar LLC"
-  },
-  {
-    "id": "27",
-    "lat": "-58.7351",
-    "lng": "111.8917",
-    "name": "Rau, Carter and Morar"
-  },
-  {
-    "id": "28",
-    "lat": "6.4411",
-    "lng": "103.8256",
-    "name": "Ebert - Bechtelar"
-  },
-  {
-    "id": "29",
-    "lat": "-49.0848",
-    "lng": "9.6949",
-    "name": "Koss, Lind and Dietrich"
-  },
-  {
-    "id": "30",
-    "lat": "51.3695",
-    "lng": "17.3691",
-    "name": "Tremblay - Cassin"
-  },
-  {
-    "id": "31",
-    "lat": "-88.7784",
-    "lng": "77.1323",
-    "name": "Mohr, Ankunding and Jacobi"
-  },
-  {
-    "id": "32",
-    "lat": "56.3931",
-    "lng": "-83.7768",
-    "name": "Pacocha - Bartoletti"
-  },
-  {
-    "id": "33",
-    "lat": "-87.0630",
-    "lng": "-72.0073",
-    "name": "Krajcik - Sporer"
-  },
-  {
-    "id": "34",
-    "lat": "74.8768",
-    "lng": "71.2634",
-    "name": "O'Connell LLC"
-  },
-  {
-    "id": "35",
-    "lat": "-75.4322",
-    "lng": "87.3158",
-    "name": "McCullough Group"
-  },
-  {
-    "id": "36",
-    "lat": "-25.7745",
-    "lng": "-37.6457",
-    "name": "Bailey - Weber"
-  },
-  {
-    "id": "37",
-    "lat": "11.2876",
-    "lng": "131.2955",
-    "name": "Mills and Sons"
-  },
-  {
-    "id": "38",
-    "lat": "-71.0527",
-    "lng": "-72.6225",
-    "name": "Gerlach, Koelpin and McKenzie"
-  },
-  {
-    "id": "39",
-    "lat": "-43.1379",
-    "lng": "-59.3488",
-    "name": "Bartoletti - Lang"
-  },
-  {
-    "id": "40",
-    "lat": "63.8946",
-    "lng": "-91.6734",
-    "name": "Olson, Green and Rempel"
-  },
-  {
-    "id": "41",
-    "lat": "36.5426",
-    "lng": "-117.1053",
-    "name": "Will, Armstrong and Kshlerin"
-  },
-  {
-    "id": "42",
-    "lat": "-23.7993",
-    "lng": "22.7004",
-    "name": "Lind - Sanford"
-  },
-  {
-    "id": "43",
-    "lat": "-65.7232",
-    "lng": "-146.9645",
-    "name": "Herman Group"
-  },
-  {
-    "id": "44",
-    "lat": "-40.2431",
-    "lng": "-80.0697",
-    "name": "Smitham - Haley"
-  },
-  {
-    "id": "45",
-    "lat": "13.7210",
-    "lng": "-4.4245",
-    "name": "Franecki and Sons"
-  },
-  {
-    "id": "46",
-    "lat": "5.6534",
-    "lng": "121.1621",
-    "name": "Hammes - Parisian"
-  },
-  {
-    "id": "47",
-    "lat": "34.4838",
-    "lng": "34.6764",
-    "name": "Hettinger - Brakus"
-  },
-  {
-    "id": "48",
-    "lat": "64.2875",
-    "lng": "-115.7487",
-    "name": "Halvorson and Sons"
-  },
-  {
-    "id": "49",
-    "lat": "18.3210",
-    "lng": "28.4394",
-    "name": "O'Keefe and Sons"
-  },
-  {
-    "id": "50",
-    "lat": "60.3751",
-    "lng": "-119.4499",
-    "name": "Greenfelder LLC"
-  },
-  {
-    "id": "51",
-    "lat": "-41.0198",
-    "lng": "-39.3489",
-    "name": "Miller - MacGyver"
-  },
-  {
-    "id": "52",
-    "lat": "-76.0261",
-    "lng": "41.7970",
-    "name": "Jacobson - Tillman"
-  },
-  {
-    "id": "53",
-    "lat": "-9.7054",
-    "lng": "-121.3331",
-    "name": "Kuhlman Inc"
-  },
-  {
-    "id": "54",
-    "lat": "78.6984",
-    "lng": "-158.0082",
-    "name": "Mitchell, Schmeler and Lockman"
-  },
-  {
-    "id": "55",
-    "lat": "-57.5916",
-    "lng": "-151.8785",
-    "name": "Jerde - MacGyver"
-  },
-  {
-    "id": "56",
-    "lat": "60.9902",
-    "lng": "-103.1515",
-    "name": "Goyette, Goodwin and Hartmann"
-  },
-  {
-    "id": "57",
-    "lat": "-25.5359",
-    "lng": "-99.9510",
-    "name": "Bogan - Donnelly"
-  },
-  {
-    "id": "58",
-    "lat": "-85.6567",
-    "lng": "141.7737",
-    "name": "Paucek, Nader and Gerhold"
-  },
-  {
-    "id": "59",
-    "lat": "-7.2800",
-    "lng": "-150.4510",
-    "name": "Barton, Littel and Jakubowski"
-  },
-  {
-    "id": "60",
-    "lat": "50.8680",
-    "lng": "150.7864",
-    "name": "Cronin, Mertz and Klocko"
-  },
-  {
-    "id": "61",
-    "lat": "-53.6484",
-    "lng": "92.6467",
-    "name": "Schulist Inc"
-  },
-  {
-    "id": "62",
-    "lat": "-57.0257",
-    "lng": "-89.4761",
-    "name": "Quitzon, Vandervort and Hamill"
-  },
-  {
-    "id": "63",
-    "lat": "-10.9921",
-    "lng": "124.1248",
-    "name": "Reichel, Mosciski and Streich"
-  },
-  {
-    "id": "64",
-    "lat": "-54.9606",
-    "lng": "-108.1819",
-    "name": "Lockman and Sons"
-  },
-  {
-    "id": "65",
-    "lat": "-58.8201",
-    "lng": "-171.2775",
-    "name": "Stehr - Zieme"
-  },
-  {
-    "id": "66",
-    "lat": "-89.6858",
-    "lng": "114.7797",
-    "name": "Smith - Howell"
+    "lat": "10.030083521472369",
+    "lng": "105.75208909454818",
+    "name": "Phòng Khám Tâm Phúc"
   }
   ]
 }

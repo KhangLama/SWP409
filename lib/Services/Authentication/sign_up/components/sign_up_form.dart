@@ -12,7 +12,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  String email;
+  String username;
   String password;
   // ignore: non_constant_identifier_names
   String conform_password;
@@ -39,7 +39,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildEmailFormField(),
+          buildUsernameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -153,10 +153,10 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildUsernameFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      onSaved: (newValue) => username = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
@@ -176,8 +176,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "User",
+        hintText: "Enter your username",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),

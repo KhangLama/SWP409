@@ -30,6 +30,8 @@ int checkedIndex = 0;
 
 class _BookingState extends State<Booking> {
   CalendarController _calendarController;
+
+  var gridviewcontroller;
   @override
   void initState() {
     super.initState();
@@ -47,13 +49,16 @@ class _BookingState extends State<Booking> {
         child: Container(
           child: Column(
             children: <Widget>[
-              TableCalendar(
-                initialCalendarFormat: CalendarFormat.month,
-                calendarController: _calendarController,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                calendarStyle: CalendarStyle(
-                  highlightSelected: true,
-                  highlightToday: true,
+              Expanded(
+                flex: 2,
+                child: TableCalendar(
+                  initialCalendarFormat: CalendarFormat.month,
+                  calendarController: _calendarController,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  calendarStyle: CalendarStyle(
+                    highlightSelected: true,
+                    highlightToday: true,
+                  ),
                 ),
               ),
               Expanded(
@@ -61,6 +66,7 @@ class _BookingState extends State<Booking> {
                 child: Card(
                   child: GridView.builder(
                       itemCount: hours.length,
+                      controller: gridviewcontroller,
                       gridDelegate:
                           new SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5),
@@ -80,11 +86,13 @@ class _BookingState extends State<Booking> {
                             MaterialStateProperty.all<Color>(Colors.blue)),
                     child:
                         Text('Continue', style: TextStyle(color: Colors.white)),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MedicalRecords(
-                                calendarController: _calendarController))),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MedicalRecords(
+                                  calendarController: _calendarController)));
+                    },
                   ),
                 ),
               ),
@@ -102,8 +110,6 @@ class _BookingState extends State<Booking> {
           setState(() {
             checkedIndex = index;
           });
-          print('${hours[index]}');
-          print(checked);
         },
         child: Center(
             child: Card(

@@ -17,7 +17,7 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  String email;
+  String username;
   String password;
   bool remember = false;
   int userID = 0;
@@ -64,7 +64,7 @@ class _SignFormState extends State<SignForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildEmailFormField(),
+          buildUsernameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -113,17 +113,17 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildUsernameFormField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => username = newValue,
       onChanged: (value) {
         remember = false;
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].email) == 0) {
+            if (value.compareTo(_users[i].username) == 0) {
               remember = true;
             }
           }
@@ -131,7 +131,7 @@ class _SignFormState extends State<SignForm> {
             removeError(error: kUsernameValid);
           }
         }
-        email = value;
+        username = value;
         return null;
       },
       validator: (value) {
@@ -141,7 +141,7 @@ class _SignFormState extends State<SignForm> {
           return kEmailNullError;
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].email) == 0) {
+            if (value.compareTo(_users[i].username) == 0) {
               remember = true;
             }
           }
@@ -153,8 +153,8 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Username",
+        hintText: "Enter your username",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -184,9 +184,8 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kPassNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].email) == 0) {
-              if (value.compareTo(_users[i].password) == 0)
-                remember = true;
+            if (username.compareTo(_users[i].username) == 0) {
+              if (value.compareTo(_users[i].password) == 0) remember = true;
             }
           }
         }
@@ -202,9 +201,8 @@ class _SignFormState extends State<SignForm> {
           return kPassNullError;
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].email) == 0) {
-              if (value.compareTo(_users[i].password) == 0)
-              remember = true;
+            if (username.compareTo(_users[i].username) == 0) {
+              if (value.compareTo(_users[i].password) == 0) remember = true;
             }
           }
           if (remember == false) {
