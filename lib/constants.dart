@@ -34,16 +34,18 @@ const defaultDuration = Duration(milliseconds: 250);
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-const String kEmailNullError = "Please Enter your email";
-const String kInvalidEmailError = "Please Enter Valid Email";
-const String kPassNullError = "Please Enter your password";
-const String kShortPassError = "Password is too short";
-const String kMatchPassError = "Passwords don't match";
-const String kNamelNullError = "Please Enter your name";
-const String kPhoneNumberNullError = "Please Enter your phone number";
-const String kAddressNullError = "Please Enter your address";
-const String kUsernameValid = "Email doesn't not exist";
-const String kPasswordValid = "Password is not valid";
+const String kEmailNullError = "Please enter email";
+const String kInvalidEmailError = "Email is invalid";
+const String kPassNullError = "Please enter password";
+const String kShortPassError = "Password must be at least 8 character";
+const String kMatchPassError = "Password doesn't match";
+const String kNamelNullError = "Please enter name";
+const String kPhoneNumberNullError = "Please enter phone number";
+const String kAddressNullError = "Please enter address";
+const String kUsernameNullError = "Please enter username";
+const String kUsernameValid = "Username doesn't exist";
+const String kUsernameExist = "Username exist";
+const String kPasswordValid = "Username or password aren't valid";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

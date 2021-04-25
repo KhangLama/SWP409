@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
@@ -93,7 +94,7 @@ class _SignFormState extends State<SignForm> {
               )
             ],
           ),
-          //FormError(errors: errors),
+          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
@@ -116,11 +117,11 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildUsernameFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => username = newValue,
+      onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         remember = false;
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
+          removeError(error: kUsernameNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
             if (value.compareTo(_users[i].username) == 0) {
@@ -128,7 +129,7 @@ class _SignFormState extends State<SignForm> {
             }
           }
           if (remember == true) {
-            removeError(error: kUsernameValid);
+            //removeError(error: kUsernameValid);
           }
         }
         username = value;
@@ -137,8 +138,8 @@ class _SignFormState extends State<SignForm> {
       validator: (value) {
         remember = false;
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return kEmailNullError;
+          addError(error: kUsernameNullError);
+          return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
             if (value.compareTo(_users[i].username) == 0) {
@@ -146,8 +147,8 @@ class _SignFormState extends State<SignForm> {
             }
           }
           if (remember == false) {
-            addError(error: kUsernameValid);
-            return kUsernameValid;
+            ////addError(error: kUsernameValid);
+            return '';
           }
         }
         return null;
@@ -184,8 +185,9 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kPassNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (username.compareTo(_users[i].username) == 0) {
-              if (value.compareTo(_users[i].password) == 0) remember = true;
+            if (email.compareTo(_users[i].username) == 0) {
+              if (value.compareTo(_users[i].password) == 0)
+                remember = true;
             }
           }
         }
@@ -198,16 +200,15 @@ class _SignFormState extends State<SignForm> {
         remember = false;
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return kPassNullError;
+          return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
             if (username.compareTo(_users[i].username) == 0) {
               if (value.compareTo(_users[i].password) == 0) remember = true;
-            }
+            if (email.compareTo(_users[i].username) == 0) {
           }
           if (remember == false) {
             addError(error: kPasswordValid);
-            return kPasswordValid;
           }
         }
         return null;

@@ -159,24 +159,24 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => username = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          removeError(error: kUsernameNullError);
+        } else if (value.compareTo("_users[i].username") != 0) {
+          removeError(error: kUsernameExist);
         }
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return kEmailNullError;
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return kInvalidEmailError;
+          addError(error: kUsernameNullError);
+          return kUsernameNullError;
+        } else if (value.compareTo("_users[i].username") == 0) {
+          addError(error: kUsernameExist);
+          return kUsernameExist;
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: "User",
+        labelText: "Username",
         hintText: "Enter your username",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
