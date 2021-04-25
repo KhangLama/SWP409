@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
@@ -93,7 +94,7 @@ class _SignFormState extends State<SignForm> {
               )
             ],
           ),
-          //FormError(errors: errors),
+          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
@@ -115,20 +116,20 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         remember = false;
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
+          removeError(error: kUsernameNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].email) == 0) {
+            if (value.compareTo(_users[i].username) == 0) {
               remember = true;
             }
           }
           if (remember == true) {
-            removeError(error: kUsernameValid);
+            //removeError(error: kUsernameValid);
           }
         }
         email = value;
@@ -137,24 +138,24 @@ class _SignFormState extends State<SignForm> {
       validator: (value) {
         remember = false;
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return kEmailNullError;
+          addError(error: kUsernameNullError);
+          return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].email) == 0) {
+            if (value.compareTo(_users[i].username) == 0) {
               remember = true;
             }
           }
           if (remember == false) {
-            addError(error: kUsernameValid);
-            return kUsernameValid;
+            ////addError(error: kUsernameValid);
+            return '';
           }
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Username",
+        hintText: "Enter your username",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -184,7 +185,7 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kPassNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].email) == 0) {
+            if (email.compareTo(_users[i].username) == 0) {
               if (value.compareTo(_users[i].password) == 0)
                 remember = true;
             }
@@ -199,17 +200,17 @@ class _SignFormState extends State<SignForm> {
         remember = false;
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return kPassNullError;
+          return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].email) == 0) {
+            if (email.compareTo(_users[i].username) == 0) {
               if (value.compareTo(_users[i].password) == 0)
               remember = true;
             }
           }
           if (remember == false) {
             addError(error: kPasswordValid);
-            return kPasswordValid;
+            return '';
           }
         }
         return null;
