@@ -18,7 +18,7 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  String username;
+  String email;
   String password;
   bool remember = false;
   int userID = 0;
@@ -65,7 +65,7 @@ class _SignFormState extends State<SignForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildUsernameFormField(),
+          buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -114,7 +114,7 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildUsernameFormField() {
+  TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
@@ -132,7 +132,7 @@ class _SignFormState extends State<SignForm> {
             //removeError(error: kUsernameValid);
           }
         }
-        username = value;
+        email = value;
         return null;
       },
       validator: (value) {
@@ -203,12 +203,14 @@ class _SignFormState extends State<SignForm> {
           return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (username.compareTo(_users[i].username) == 0) {
-              if (value.compareTo(_users[i].password) == 0) remember = true;
             if (email.compareTo(_users[i].username) == 0) {
+              if (value.compareTo(_users[i].password) == 0)
+                remember = true;
+            }
           }
           if (remember == false) {
             addError(error: kPasswordValid);
+            return '';
           }
         }
         return null;
