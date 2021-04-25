@@ -4,62 +4,71 @@
     "id": "1",
     "lat": "10.013034853423138",
     "lng": "105.7330799461219",
-    "name": "Phòng khám Medlatec Cần Thơ"
+    "name": "Phòng khám Medlatec Cần Thơ",
+    "address": "349 AA Nguyễn Văn Cừ nối dài, An Bình, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "2",
     "lat": "10.015670866311359",
     "lng": "105.73693289576242",
-    "name": "Phòng khám sản phụ khoa"
+    "name": "Phòng khám sản phụ khoa",
+    "address": "400 Nguyễn Văn Cừ nối dài, An Bình, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "3",
     "lat": "10.021863158236247",
     "lng": "105.74328865728721",
-    "name": "Phòng khám BS Đoàn Anh Vũ-Khám Bệnh Trĩ Tiêu Hoá Gan Mật"
+    "name": "Phòng khám BS Đoàn Anh Vũ-Khám Bệnh Trĩ Tiêu Hoá Gan Mật",
+    "address": "351AA đường Nguyễn Văn Cừ nối dài, An Bình, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "4",
     "lat": "10.022285414117624",
     "lng": "105.74381574163733",
-    "name": "Phòng khám bác sĩ Tiêu Phương Lâm"
+    "name": "Phòng khám bác sĩ Tiêu Phương Lâm",
+    "address": "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "5",
     "lat": "10.044010182222962",
     "lng": "105.76579319992199",
-    "name": "Phòng Khám Tư Nhân - Bs Lương Văn Thái"
+    "name": "Phòng Khám Tư Nhân - Bs Lương Văn Thái",
+    "address": "387 Nguyễn Văn Cừ, An Hoà, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "6",
     "lat": "10.034339000000006",
     "lng": "105.77498066886952",
-    "name": "Phòng Khám - Bs Thái Thanh Lâm"
+    "name": "Phòng Khám - Bs Thái Thanh Lâm",
+    "address": "228G Trần Hưng Đạo, An Phú, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "7",
     "lat": "10.029298940456137",
     "lng": "105.75367299992969",
-    "name": "Phòng Khám Đa Khoa HOÀN HẢO"
+    "name": "Phòng Khám Đa Khoa HOÀN HẢO",
+    "address": "307C Nguyễn Văn Linh, An Khánh, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "8",
     "lat": "10.051505641634156",
     "lng": "105.77347401580711",
-    "name": "Phòng Khám Tư Nhân - Bs Trịnh Thị Báu"
+    "name": "Phòng Khám Tư Nhân - Bs Trịnh Thị Báu",
+    "address": "1 Nguyễn Văn Cừ, An Hoà, Ninh Kiều, Cần Thơ"
   },
   {
     "id": "9",
     "lat": "10.051357743336679",
     "lng": "105.77398899992971",
-    "name":
-      "Phòng Khám Chuyên Khoa Nhi - Tiến Sĩ Bác Sĩ Lê Hoàng Sơn – Khám nhi uy tín tại Cần Thơ"
+    "name": "Phòng Khám Chuyên Khoa Nhi - Tiến Sĩ Bác Sĩ Lê Hoàng Sơn",
+    "address": "139 Đường Cách Mạng Tháng 8, Cái Khế, Ninh Kiều, Cần Thơ, Việt Nam"
   },
   {
     "id": "10",
     "lat": "10.030083521472369",
     "lng": "105.75208909454818",
-    "name": "Phòng Khám Tâm Phúc"
+    "name": "Phòng Khám Tâm Phúc",
+    "address": "306B4 Đường Nguyễn Văn Linh, Phường An Khánh, Ninh Kiều"
   }
   ]
 }

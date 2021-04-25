@@ -100,9 +100,12 @@ class _ClinicListViewState extends State<ClinicListView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(_filteredclinic[index].id),
                               Text(
                                 _filteredclinic[index].name,
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                _filteredclinic[index].address,
                               ),
                               ElevatedButton(
                                   onPressed: () => Navigator.push(
