@@ -61,7 +61,7 @@ class _ProfilePicState extends State<ProfilePic> {
     );
   }
 
-  void TakePhoto(ImageSource source) async {
+  void takePhoto(ImageSource source) async {
     final pickedFile = await _picker.getImage(source: source);
     setState(() {
       _imageFile = pickedFile;
@@ -89,14 +89,14 @@ class _ProfilePicState extends State<ProfilePic> {
               // ignore: deprecated_member_use
               FlatButton.icon(
                   onPressed: () {
-                    TakePhoto(ImageSource.camera);
+                    takePhoto(ImageSource.camera);
                   },
                   icon: Icon(Icons.camera),
                   label: Text('Camera')),
               // ignore: deprecated_member_use
               FlatButton.icon(
                   onPressed: () {
-                    TakePhoto(ImageSource.gallery);
+                    takePhoto(ImageSource.gallery);
                   },
                   icon: Icon(Icons.image),
                   label: Text('Gallery')),

@@ -48,7 +48,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                     fillColor: Colors.white,
                     filled: true,
                     contentPadding: EdgeInsets.all(8),
-                    hintText: 'Search clinic\'s name or address',
+                    hintText: 'Search clinic\'s name',
                     suffixIcon: Icon(Icons.search_outlined),
                     border: new OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),

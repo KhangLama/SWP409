@@ -4,7 +4,6 @@ import 'package:swp409/Interface/History/historyPage.dart';
 import 'package:swp409/Interface/Maps/mapViewPage.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
 import 'clinicListView.dart';
-import 'homePage.dart';
 
 class MainScreen extends StatefulWidget {
   @override
