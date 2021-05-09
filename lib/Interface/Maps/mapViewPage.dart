@@ -93,7 +93,6 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Widget row(Clinic clinic) {
-    var flag = -2;
     return ListTile(
       title: Text(clinic.name, style: TextStyle(fontSize: 16)),
       subtitle: Text(clinic.address, style: TextStyle(fontSize: 14)),
@@ -110,16 +109,14 @@ class _MapViewPageState extends State<MapViewPage> {
                 width: 4,
                 points: polylineCoordinates,
                 geodesic: true,
+                jointType: JointType.bevel,
                 zIndex: 1);
             polylines[id] = polyline;
             setState(() {});
           }
 
-          flag = await _buildWayPoint(
-              flag, element, clinic, _currentPosition, _addPolyLine);
+          await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
         });
-
-        print(flag);
 
         setState(() {
           searchTextField.textField.controller.text = clinic.name;
@@ -129,8 +126,9 @@ class _MapViewPageState extends State<MapViewPage> {
     );
   }
 
-  Future<int> _buildWayPoint(int flag, Marker element, Clinic clinic,
+  Future _buildWayPoint(Marker element, Clinic clinic,
       Position _currentPosition, _addPolyLine()) async {
+    var flag;
     for (var i = 0; i < _clinics.length; i++) {
       flag = element.infoWindow.title
           .toLowerCase()
@@ -155,10 +153,8 @@ class _MapViewPageState extends State<MapViewPage> {
           });
         }
         _addPolyLine();
-        print(result);
       }
     }
-    return flag;
   }
 
   @override
@@ -172,7 +168,9 @@ class _MapViewPageState extends State<MapViewPage> {
                 ? CircularProgressIndicator()
                 : searchTextField = AutoCompleteTextField<Clinic>(
                     suggestionsAmount: 5,
-                    onFocusChanged: (hasFocus) {},
+                    onFocusChanged: (hasFocus) {
+                      searchTextField.clear();
+                    },
                     clearOnSubmit: true,
                     key: key,
                     suggestions: _clinics,
@@ -208,7 +206,6 @@ class _MapViewPageState extends State<MapViewPage> {
                 myLocationButtonEnabled: true,
                 myLocationEnabled: true,
                 mapToolbarEnabled: true,
-                indoorViewEnabled: true,
                 zoomGesturesEnabled: true,
                 buildingsEnabled: true,
                 polylines: Set<Polyline>.of(polylines.values),

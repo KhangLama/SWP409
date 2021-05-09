@@ -49,30 +49,37 @@ class _BookingState extends State<Booking> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Expanded(
-                flex: 2,
+              Padding(
+                padding: const EdgeInsets.all(14.0),
                 child: TableCalendar(
                   initialCalendarFormat: CalendarFormat.month,
                   calendarController: _calendarController,
+                  startDay: DateTime.now(),
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   calendarStyle: CalendarStyle(
-                    highlightSelected: true,
-                    highlightToday: true,
-                  ),
+                      highlightSelected: true,
+                      highlightToday: true,
+                      todayColor: Colors.orangeAccent[100],
+                      todayStyle: TextStyle(color: Colors.black),
+                      selectedColor: Colors.orangeAccent[400],
+                      selectedStyle: TextStyle(color: Colors.black)),
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: Card(
-                  child: GridView.builder(
-                      itemCount: hours.length,
-                      controller: gridviewcontroller,
-                      gridDelegate:
-                          new SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5),
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildGridItem(index);
-                      }),
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Card(
+                    child: GridView.builder(
+                        itemCount: hours.length,
+                        controller: gridviewcontroller,
+                        gridDelegate:
+                            new SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 5),
+                        itemBuilder: (BuildContext context, int index) {
+                          return _buildGridItem(index);
+                        }),
+                  ),
                 ),
               ),
               Expanded(

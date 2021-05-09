@@ -17,36 +17,26 @@ class MedicalRecords extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          child: EmptyRecords(),
-        ),
-      ),
-    );
-  }
-}
-
-class EmptyRecords extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'It seem like you do not have any medical records',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text('Please create one'),
-            Expanded(
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: ElevatedButton(
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddMedicalRecord())),
-                      child: Text('Create new medical record'))),
-            )
-          ],
+          child: Column(
+            children: [
+              Text(
+                'It seem like you do not have any medical records',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text('Please create one'),
+              Text('${calendarController.selectedDay.toString()}'),
+              Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: ElevatedButton(
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddMedicalRecord())),
+                        child: Text('Create new medical record'))),
+              )
+            ],
+          ),
         ),
       ),
     );
