@@ -42,6 +42,9 @@ class _BookingState extends State<Booking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text('Pick a date'),
         backgroundColor: kPrimaryAppbar,
       ),

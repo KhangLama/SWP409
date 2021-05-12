@@ -12,8 +12,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  String username;
-  String password;
+  var username, password, repassword, email;
   // ignore: non_constant_identifier_names
   String conform_password;
   bool remember = false;
