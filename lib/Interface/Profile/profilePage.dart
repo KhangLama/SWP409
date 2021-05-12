@@ -10,7 +10,7 @@ class ProfilePage extends StatelessWidget {
           leading: BackButton(
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text('Choose a medical record'),
+          title: Text('Profile'),
           backgroundColor: kPrimaryAppbar,
         ),
         body: Body(),
