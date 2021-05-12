@@ -108,10 +108,12 @@ class _ClinicListViewState extends State<ClinicListView> {
                                 _filteredclinic[index].address,
                               ),
                               ElevatedButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Booking())),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                new Booking()));
+                                  },
                                   child: Text('Book an appointment'))
                             ],
                           ),

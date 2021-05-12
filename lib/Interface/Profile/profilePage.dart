@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/constants.dart';
 import 'components/body.dart';
+
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,8 @@ class ProfilePage extends StatelessWidget {
           leading: BackButton(
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text('Choose a medical record'),
+          title: Text('Profile'),
+          centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
         body: Body(),

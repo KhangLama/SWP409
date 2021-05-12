@@ -10,7 +10,7 @@ import 'package:swp409/Services/Authentication/forgot_password/forgot_password_s
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
-
+import 'package:dio/dio.dart';
 class SignForm extends StatefulWidget {
   @override
   _SignFormState createState() => _SignFormState();
@@ -100,6 +100,7 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Continue",
             press: () {
+
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
@@ -113,7 +114,6 @@ class _SignFormState extends State<SignForm> {
       ),
     );
   }
-
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,

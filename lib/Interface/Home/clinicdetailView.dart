@@ -7,7 +7,7 @@ class ClinicPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back'),
+        title: Text('Clinic\'s information'),
         backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
