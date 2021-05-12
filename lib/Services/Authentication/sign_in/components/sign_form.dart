@@ -124,7 +124,7 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kUsernameNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].username) == 0) {
+            if (value.compareTo(_users[i].email) == 0) {
               remember = true;
             }
           }
@@ -142,7 +142,7 @@ class _SignFormState extends State<SignForm> {
           return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (value.compareTo(_users[i].username) == 0) {
+            if (value.compareTo(_users[i].email) == 0) {
               remember = true;
             }
           }
@@ -154,8 +154,8 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Username",
-        hintText: "Enter your username",
+        labelText: "Email",
+        hintText: "Enter your email",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -185,7 +185,7 @@ class _SignFormState extends State<SignForm> {
           removeError(error: kPassNullError);
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].username) == 0) {
+            if (email.compareTo(_users[i].email) == 0) {
               if (value.compareTo(_users[i].password) == 0)
                 remember = true;
             }
@@ -203,7 +203,7 @@ class _SignFormState extends State<SignForm> {
           return '';
         } else {
           for (int i = 0; i < _users.length; i++) {
-            if (email.compareTo(_users[i].username) == 0) {
+            if (email.compareTo(_users[i].email) == 0) {
               if (value.compareTo(_users[i].password) == 0)
                 remember = true;
             }
