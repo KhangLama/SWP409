@@ -28,6 +28,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0+4
   dio: ^4.0.0
   fluttertoast: ^8.0.6
+  multi_image_picker: ^4.8.0
 dev_dependencies:
   json_serializable: ^4.1.0
   pedantic:
