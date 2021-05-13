@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_ip/flutter_ip.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/AuthService/auth_service.dart';
-import 'package:swp409/Services/Authentication/complete_profile/complete_profile_screen.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -16,6 +16,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   // ignore: non_constant_identifier_names
   var name, phoneNumber, address, email, password, confirm_password, token;
+  String internalIp;
   bool remember = false;
   final List<String> errors = [];
 
@@ -36,6 +37,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     AuthService authService = new AuthService();
+
     return Form(
       key: _formKey,
       child: Column(
@@ -56,20 +58,16 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
+              String url = 'http://192.168.1.32:8000/api/v1/users/signup';
               if (_formKey.currentState.validate()) {
-                authService
-                    .signup("KhangLam", "lamminhkhang@gmail.com", 'King0fGod',
-                        'King0fGod')
-                    .then((val) {
-                  if (val.data['status'] == 'success') {
-                    token = val.data['token'];
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));
-                  } else {
-                    print('loi');
-                  }
-                });
+                authService.signup(
+                    url, name, email, password, confirm_password);
+                print(url);
+                print(name);
+                print(email);
+                print(password);
+                print(confirm_password);
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
 
@@ -179,6 +177,7 @@ class _SignUpFormState extends State<SignUpForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
+        email = value;
         return null;
       },
       validator: (value) {
@@ -192,8 +191,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Username",
-        hintText: "Enter your username",
+        labelText: "Email",
+        hintText: "Enter your email",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -220,6 +219,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kAddressNullError);
         }
+        address = value;
         return null;
       },
       validator: (value) {
@@ -260,6 +260,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
         }
+        phoneNumber = value;
         return null;
       },
       validator: (value) {
@@ -298,6 +299,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
         }
+        name = value;
         return null;
       },
       validator: (value) {

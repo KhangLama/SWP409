@@ -1,34 +1,36 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 
 class AuthService {
   Dio dio = new Dio();
-  var url =
-      Uri.parse('https://clinicbackend1.herokuapp.com/api/v1/users/signup');
-  var response;
-  signup(name, email, password, repassword) async {
+
+  Response response;
+  Future<String> getIPAdress() async {
+    
     try {
-      return response = await http.post(
+      final url = 'https://api.ipify.org';
+      final res = await dio.get(url);
+      return res.statusCode == 200 ? res.data : null;
+    } on DioError catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<Response> signup(url, name, email, password, repassword) async {
+    try {
+      response = await dio.post(
         url,
-        body: {
+        data: {
           "name": name,
           "email": email,
           "password": password,
           "passwordConfirm": repassword
         },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
       );
-
-      // data: {
-      //   "name": name,
-      //   "email": email,
-      //   "password": password,
-      //   "passwordConfirm": repassword
-      // },
-      // options: Options(contentType: Headers.formUrlEncodedContentType));
-    } catch (e) {
+    } on DioError catch (e) {
       print(e.error);
     }
+    return response;
   }
 }
