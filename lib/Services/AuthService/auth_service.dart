@@ -1,28 +1,34 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class AuthService {
   Dio dio = new Dio();
-  login(name, email, password, repassword) async {
+  var url =
+      Uri.parse('https://clinicbackend1.herokuapp.com/api/v1/users/signup');
+  var response;
+  signup(name, email, password, repassword) async {
     try {
-      return await dio.post('http://localhost:3000/api/v1/users/signup',
-          data: {
-            "name": name,
-            "email": email,
-            "password": password,
-            "repassword": repassword
-          },
-          options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {
-      Fluttertoast.showToast(
-          msg: e.response.data['msg'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          timeInSecForIosWeb: 1,
-          textColor: Colors.white,
-          fontSize: 16);
+      return response = await http.post(
+        url,
+        body: {
+          "name": name,
+          "email": email,
+          "password": password,
+          "passwordConfirm": repassword
+        },
+      );
+
+      // data: {
+      //   "name": name,
+      //   "email": email,
+      //   "password": password,
+      //   "passwordConfirm": repassword
+      // },
+      // options: Options(contentType: Headers.formUrlEncodedContentType));
+    } catch (e) {
+      print(e.error);
     }
   }
 }

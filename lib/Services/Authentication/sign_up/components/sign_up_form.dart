@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Services/AuthService/auth_service.dart';
 import 'package:swp409/Services/Authentication/complete_profile/complete_profile_screen.dart';
 
 import '../../../../constants.dart';
@@ -13,12 +14,8 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  var password, repassword, email;
-  String name;
-  String phoneNumber;
-  String address;
   // ignore: non_constant_identifier_names
-  String conform_password;
+  var name, phoneNumber, address, email, password, confirm_password, token;
   bool remember = false;
   final List<String> errors = [];
 
@@ -38,6 +35,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = new AuthService();
     return Form(
       key: _formKey,
       child: Column(
@@ -46,7 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildConformPassFormField(),
+          buildConfirmPassFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildFirstNameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -60,12 +58,21 @@ class _SignUpFormState extends State<SignUpForm> {
             text: "Continue",
             press: () {
               if (_formKey.currentState.validate()) {
+                authService
+                    .signup("KhangLam", "lamminhkhang@gmail.com", 'King0fGod',
+                        'King0fGod')
+                    .then((val) {
+                  if (val.data['status'] == 'success') {
+                    token = val.data['token'];
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainScreen()));
+                  } else {
+                    print('loi');
+                  }
+                });
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainScreen()));
+
               }
             },
           ),
@@ -74,17 +81,17 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildConformPassFormField() {
+  TextFormField buildConfirmPassFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
+      onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
+        } else if (value.isNotEmpty && password == confirm_password) {
           removeError(error: kMatchPassError);
         }
-        conform_password = value;
+        confirm_password = value;
       },
       validator: (value) {
         if (value.isEmpty) {
