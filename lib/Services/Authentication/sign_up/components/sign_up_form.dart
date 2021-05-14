@@ -12,6 +12,9 @@ class SignUpForm extends StatefulWidget {
   _SignUpFormState createState() => _SignUpFormState();
 }
 
+String errorMsg;
+bool checkMailDup = true;
+
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   // ignore: non_constant_identifier_names
@@ -59,10 +62,19 @@ class _SignUpFormState extends State<SignUpForm> {
           DefaultButton(
             text: "Continue",
             press: () async {
-              String url = 'http://192.168.1.32:8000/api/v1/users/signup';
+              String url = 'http://192.168.1.39:8000/api/v1/users/signup';
               if (_formKey.currentState.validate()) {
-                authService.signup(
-                    url, name, email, password, confirm_password);
+                authService.signup(url, name, email, password, confirm_password).then((val){
+                  List list = val.data['errors'] as List;
+                      for (int i =0; i< list.length; i++){
+                        if (list[i]['field'] ==  'email'){
+                          errorMsg= list[i]['message'];
+                          checkMailDup = true;
+                        } else {
+                          checkMailDup = false;
+                        }
+                      }
+                });
                 print(url);
                 print(name);
                 print(email);
@@ -70,7 +82,6 @@ class _SignUpFormState extends State<SignUpForm> {
                 print(confirm_password);
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
-
               }
             },
           ),
@@ -187,6 +198,8 @@ class _SignUpFormState extends State<SignUpForm> {
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
+        } else if (checkMailDup){
+          return errorMsg;
         }
         return null;
       },
@@ -310,8 +323,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "First Name",
-        hintText: "Enter your first name",
+        labelText: "Full Name",
+        hintText: "Enter your full name",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),

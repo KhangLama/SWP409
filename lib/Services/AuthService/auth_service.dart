@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-
 class AuthService {
   Dio dio = new Dio();
 
@@ -30,7 +29,26 @@ class AuthService {
       );
     } on DioError catch (e) {
       print(e.error);
+      response = e.response;
     }
     return response;
   }
+
+  Future<Response> login(url, email, password) async {
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          "email": email,
+          "password": password,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+    } on DioError catch (e) {
+      response = e.response;
+      print(e.response.data);
+    }
+    return response;
+  }
+
 }
