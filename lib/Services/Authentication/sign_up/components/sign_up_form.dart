@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ip/flutter_ip.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Services/AuthService/auth_service.dart';
-
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
+import 'package:swp409/constants.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
-
-String errorMsg;
-bool checkMailDup = true;
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
@@ -22,6 +19,11 @@ class _SignUpFormState extends State<SignUpForm> {
   String internalIp;
   bool remember = false;
   final List<String> errors = [];
+  String errorMsg;
+  bool checkMailDup;
+  var emailController;
+  final myController = TextEditingController();
+  final storage = new FlutterSecureStorage();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -60,31 +62,32 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(40)),
           SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
-            text: "Continue",
-            press: () async {
-              String url = 'http://192.168.1.39:8000/api/v1/users/signup';
-              if (_formKey.currentState.validate()) {
-                authService.signup(url, name, email, password, confirm_password).then((val){
-                  List list = val.data['errors'] as List;
-                      for (int i =0; i< list.length; i++){
-                        if (list[i]['field'] ==  'email'){
-                          errorMsg= list[i]['message'];
-                          checkMailDup = true;
-                        } else {
-                          checkMailDup = false;
+              text: "Continue",
+              press: () async {
+                String url = '$ServerIP/api/v1/users/signup';
+                if (_formKey.currentState.validate()) {
+                  authService
+                      .signup(url, name, email, password, confirm_password)
+                      .then((val) {
+                    if (val.data['status'] == 'success')
+                      storage.write(key: 'jwt', value: val.data);
+                    if (val.statusCode == 400) {
+                      List list = val.data['errors'] as List;
+                      for (int i = 0; i < list.length; i++) {
+                        if (list[i]['field'] == 'email') {
+                          setState(() {
+                            errorMsg = list[i]['message'];
+                            checkMailDup = true;
+                          });
                         }
                       }
-                });
-                print(url);
-                print(name);
-                print(email);
-                print(password);
-                print(confirm_password);
-                _formKey.currentState.save();
-                // if all are valid then go to success screen
-              }
-            },
-          ),
+                    }
+                  });
+                  print(storage.read(key: 'jwt'));
+                  _formKey.currentState.save();
+                  // if all are valid then go to success screen
+                }
+              }),
         ],
       ),
     );
@@ -182,11 +185,20 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
+      controller: myController,
       onChanged: (value) {
+        setState(() {
+          checkMailDup = false;
+        });
+
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
+        }
+        if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
+        }
+        if (!checkMailDup) {
+          removeError(error: errorMsg);
         }
         email = value;
         return null;
@@ -195,10 +207,12 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
           return kEmailNullError;
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
+        }
+        if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
-        } else if (checkMailDup){
+        }
+        if (checkMailDup) {
           return errorMsg;
         }
         return null;

@@ -29,8 +29,7 @@ dependencies:
   dio: ^4.0.0
   fluttertoast: ^8.0.6
   multi_image_picker: ^4.8.0
-  flutter_ip: ^0.1.4
-  get_ip: ^0.4.0
+  flutter_secure_storage: ^4.2.0
 dev_dependencies:
   json_serializable: ^4.1.0
   pedantic:
