@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/no_account_text.dart';
+import 'package:swp409/Interface/ClinicRegistration/Info/clinic_info.dart';
+import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'sign_form.dart';
 
@@ -50,6 +52,28 @@ class Body extends StatelessWidget {
                 // ),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
+                SizedBox(height: getProportionateScreenHeight(10)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "You want register a clinic? ",
+                      style: TextStyle(fontSize: getProportionateScreenWidth(16)),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClinicInfoScreen())),
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(16),
+                            color: kPrimaryColor),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -58,3 +82,4 @@ class Body extends StatelessWidget {
     );
   }
 }
+

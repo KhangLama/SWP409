@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swp409/Interface/DoctorRegistration/registration.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
@@ -180,14 +179,15 @@ class SideDrawer extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(builder: (context) => new ProfilePage()));
             },
-          ),ListTile(
-            leading: Icon(Icons.app_registration),
-            title: Text('Register as a doctor'),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (context) => new Registration()));
-            },
           ),
+          // ListTile(
+          //   leading: Icon(Icons.app_registration),
+          //   title: Text('Register as a doctor'),
+          //   onTap: () {
+          //     Navigator.of(context, rootNavigator: true).push(
+          //         MaterialPageRoute(builder: (context) => new Registration()));
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
