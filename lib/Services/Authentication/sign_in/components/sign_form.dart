@@ -1,17 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
-import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/AuthService/auth_service.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
-import 'package:dio/dio.dart';
+import 'package:swp409/constants.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -24,7 +22,7 @@ class _SignFormState extends State<SignForm> {
   bool remember = false;
   //int userID = 0;
   final List<String> errors = [];
-
+  final storage = new FlutterSecureStorage();
   // List<User> _users = <User>[];
   // Future<List<User>> fetchUsers() async {
   //   var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
@@ -36,7 +34,7 @@ class _SignFormState extends State<SignForm> {
   //   return users;
   // }
 
-  @override
+  //@override
   // void initState() {
   //   fetchUsers().then((value) {
   //     setState(() {
@@ -102,18 +100,20 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Continue",
             press: () async {
-              String url = 'http://192.168.1.39:8000/api/v1/users/login';
+              String url = '$ServerIP/api/v1/users/login';
               if (_formKey.currentState.validate()) {
                 authService.login(url, email, password).then((val) {
-                 if (val.data["status"] == "success") {
+                  if (val.data["status"] == "success") {
+                    storage.write(key: 'jwt', value: val.data.toString());
                     KeyboardUtil.hideKeyboard(context);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => MainScreen()));
-                  } else if (val.data["status"] == "error"){
-                   addError(error: "Incorrect email or password");
-                 }
+                  } else if (val.data["status"] == "error") {
+                    addError(error: "Incorrect email or password");
+                  }
                 });
               }
+              print(await storage.read(key: 'jwt'));
             },
           ),
         ],
