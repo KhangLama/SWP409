@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -145,6 +146,7 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your password",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -160,6 +162,7 @@ class _SignFormState extends State<SignForm> {
         suffixIcon: Icon(
           Icons.lock,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );
@@ -191,6 +194,7 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
+        labelStyle: TextStyle(color: kPrimaryColor),
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -205,6 +209,7 @@ class _SignFormState extends State<SignForm> {
         suffixIcon: Icon(
           Icons.mail_outline,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );

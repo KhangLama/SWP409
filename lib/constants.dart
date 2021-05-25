@@ -10,9 +10,10 @@ import 'package:swp409/size_config.dart';
 //
 const kDefaultPadding = 20.0;
 
-const kPrimaryColor = Color(0xFF006CBE);
+const kPrimaryColor = Color(0xFFEB2F64);
 const kPrimaryLightColor = Color(0xFFFFFFFF);
-const kPrimaryAppbar = Color(0xFF2296F3);
+const kPrimaryAppbar = Color(0xFFEB2F64);
+const kPrimaryBackground = Color(0xFFFDD2DB);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
