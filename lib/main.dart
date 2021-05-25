@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Clinic booking',
       theme: theme(),
-      home: MainScreen(),
+      home: SplashScreen(),
     );
   }
 }
