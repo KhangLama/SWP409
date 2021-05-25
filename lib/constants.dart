@@ -14,6 +14,7 @@ const kPrimaryColor = Color(0xFFEB2F64);
 const kPrimaryLightColor = Color(0xFFFFFFFF);
 const kPrimaryAppbar = Color(0xFFEB2F64);
 const kPrimaryBackground = Color(0xFFFDD2DB);
+const kPrimaryColorLight = Color(0xFFFC628B);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
