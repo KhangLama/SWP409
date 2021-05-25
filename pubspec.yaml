@@ -18,7 +18,7 @@ dependencies:
   http: ^0.13.1
   geolocator:
   analyzer:
-  json_annotation: ^4.0.1
+  json_annotation: ^3.1.1
   table_calendar: ^2.3.3
   flutter_svg: ^0.21.0+1
   provider: ^5.0.0
@@ -30,8 +30,9 @@ dependencies:
   fluttertoast: ^8.0.6
   multi_image_picker: ^4.8.0
   flutter_secure_storage: ^4.2.0
+  flutter_dotenv: ^3.1.0
 dev_dependencies:
-  json_serializable: ^4.1.0
+  json_serializable: ^3.5.1
   pedantic:
   build_runner: ^1.0.0
   flutter_config: ^2.0.0

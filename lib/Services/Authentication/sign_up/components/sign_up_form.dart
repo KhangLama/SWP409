@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Services/AuthService/auth_service.dart';
+import 'package:swp409/Services/ApiService/auth_service.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'package:swp409/constants.dart';

@@ -4,12 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
-import 'package:swp409/Services/AuthService/auth_service.dart';
+import 'package:swp409/Services/ApiService/auth_service.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'package:swp409/constants.dart';
+import 'package:swp409/Models/user.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   var email, password, token;
   bool remember = false;
+  User _user = new User();
   //int userID = 0;
   final List<String> errors = [];
   final storage = new FlutterSecureStorage();
@@ -103,17 +105,23 @@ class _SignFormState extends State<SignForm> {
               String url = '$ServerIP/api/v1/users/login';
               if (_formKey.currentState.validate()) {
                 authService.login(url, email, password).then((val) {
+                  print(val.data);
                   if (val.data["status"] == "success") {
-                    storage.write(key: 'jwt', value: val.data.toString());
+                    var _id = val.data['data']['user']['_id'];
+                    print("ad" + '\n' + _id);
+                    storage.write(key: 'userid', value: _id);
                     KeyboardUtil.hideKeyboard(context);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainScreen(storage)));
                   } else if (val.data["status"] == "error") {
                     addError(error: "Incorrect email or password");
                   }
                 });
               }
-              print(await storage.read(key: 'jwt'));
+              print('login: id');
+              print(await storage.read(key: 'userid'));
             },
           ),
         ],

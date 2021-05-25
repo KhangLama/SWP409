@@ -4,18 +4,26 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
+  String role;
+  String sId;
   String name;
-  String phone;
   String email;
-  String username;
-  String password;
 
-  // ignore: sort_constructors_first
+  User({this.role, this.sId, this.name, this.email});
 
-  User({this.name, this.phone, this.email, this.username, this.password});
+  User.fromJson(Map<String, dynamic> json) {
+    role = json['role'];
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+  }
 
-  // ignore: sort_constructors_first
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['role'] = this.role;
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    return data;
+  }
 }
