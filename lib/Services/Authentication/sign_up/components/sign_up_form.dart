@@ -60,7 +60,7 @@ class _SignUpFormState extends State<SignUpForm> {
           buildAddressFormField(),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
-          SizedBox(height: SizeConfig.screenHeight * 0.08),
+          //SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
               text: "Continue",
               press: () async {
@@ -117,6 +117,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Confirm Password",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Re-enter your password",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -132,6 +133,8 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.lock,
           size: 30,
+          color: kPrimaryColor,
+
         ),
       ),
     );
@@ -161,6 +164,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your password",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -176,6 +180,8 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.lock,
           size: 30,
+          color: kPrimaryColor,
+
         ),
       ),
     );
@@ -219,6 +225,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your email",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -234,6 +241,8 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.mail_outline,
           size: 30,
+          color: kPrimaryColor,
+
         ),
       ),
     );
@@ -258,6 +267,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Address",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your address",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -274,6 +284,8 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.location_on_outlined,
           size: 30,
+          color: kPrimaryColor,
+
         ),
       ),
     );
@@ -299,6 +311,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Phone Number",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your phone number",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -314,6 +327,7 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.phone,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );
@@ -338,6 +352,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Full Name",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your full name",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -353,6 +368,7 @@ class _SignUpFormState extends State<SignUpForm> {
         suffixIcon: Icon(
           Icons.person_outline,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );

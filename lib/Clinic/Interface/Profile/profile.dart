@@ -13,7 +13,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
   String email = "trinhha@gmail.com";
   String phone = "0123456789";
   String name = "Healthy clinic";
-  String description = "Healthy clinic- The best chosen for you!";
+  String description = "Healthy clinic- The best chosen for you! Healthy clinic- The best chosen for you! Healthy clinic- The best chosen for you!";
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                 child: Text(
                   name,
                   style: TextStyle(color: Colors.black, fontSize: 18),
@@ -111,7 +111,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                 child: Text(
                   email,
                   style: TextStyle(color: Colors.black, fontSize: 18),
@@ -130,7 +130,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                 child: Text(
                   phone,
                   style: TextStyle(
@@ -151,11 +151,11 @@ class _ClinicProfileState extends State<ClinicProfile> {
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
           child: Container(
-            height: 60,
+            height: 100,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                 child: Text(
                   description,
                   style: TextStyle(
@@ -177,7 +177,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             textStyle: TextStyle(fontSize: 20),
           ),
-          child: Text('Setting profile'),
+          child: Text('Setting account'),
           onPressed: () {
             print('Button clicked!');
           },

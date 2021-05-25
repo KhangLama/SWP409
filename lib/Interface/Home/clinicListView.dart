@@ -60,7 +60,7 @@ class _ClinicListViewState extends State<ClinicListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFAED2E8),
+        backgroundColor: kPrimaryBackground,
         drawer: buildDrawer(context),
         appBar: AppBar(
           title: Text(
@@ -81,8 +81,16 @@ class _ClinicListViewState extends State<ClinicListView> {
                     filled: true,
                     contentPadding: EdgeInsets.all(8),
                     hintText: 'Search clinic\'s name',
-                    suffixIcon: Icon(Icons.search_outlined),
-                    border: new OutlineInputBorder(
+                    suffixIcon: Icon(
+                      Icons.search_outlined,
+                      color: kPrimaryColor,
+                    ),
+                    enabledBorder: new OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: kPrimaryColor, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kPrimaryColor, width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     // focusedBorder: OutlineInputBorder(
@@ -202,6 +210,10 @@ class _ClinicListViewState extends State<ClinicListView> {
                                 _filteredclinic[index].address,
                               ),
                               ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor, // background
+                                    onPrimary: kPrimaryLightColor, // foreground
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(
