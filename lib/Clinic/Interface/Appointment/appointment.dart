@@ -16,7 +16,7 @@ class _AppointmentState extends State<Appointment> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFFAED2E8),
+        backgroundColor: kPrimaryBackground,
         appBar: AppBar(
           title: Text(
             'Appointment',
@@ -39,11 +39,6 @@ class _AppointmentState extends State<Appointment> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildList(),
-                buildList(),
-                buildList(),
-                buildList(),
-                buildList(),
                 buildList(),
               ],
             ),
@@ -103,7 +98,8 @@ class _AppointmentState extends State<Appointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.navigation, color: Colors.black, size: 17),
+                            Icon(Feather.navigation,
+                                color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
@@ -127,10 +123,10 @@ class _AppointmentState extends State<Appointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                              Text(
-                                "Status: ",
-                                style: TextStyle(fontSize: 17),
-                              ),
+                            Text(
+                              "Status: ",
+                              style: TextStyle(fontSize: 17),
+                            ),
                             SizedBox(width: 10),
                             Text(
                               status,
@@ -150,7 +146,6 @@ class _AppointmentState extends State<Appointment> {
       ),
     );
   }
-
 
   Color getStatusColor(String statusColor) {
     if (statusColor.compareTo("approve") == 0) {

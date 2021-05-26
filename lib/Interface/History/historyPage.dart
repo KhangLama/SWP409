@@ -1,58 +1,147 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/constants.dart';
+import 'package:flutter/cupertino.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kPrimaryAppbar,
-          title: Text('Histories Booking'),
-        ),
-        body: Historybody());
-  }
+  _HistoryPageState createState() => _HistoryPageState();
 }
 
-class Historybody extends StatelessWidget {
+class _HistoryPageState extends State<HistoryPage> {
   @override
+  String status = "approve";
+  Colors colorStatus;
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            Text(
-              'It seem like you does not have any appoinment yet',
-              style: TextStyle(fontSize: 18),
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: kPrimaryBackground,
+        appBar: AppBar(
+          title: Text(
+            'Appointment',
+            style: TextStyle(color: kPrimaryLightColor),
+          ),
+          backgroundColor: kPrimaryAppbar,
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildList(),
+              ],
             ),
-            Text('Please create one'),
-            Expanded(
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 1, right: 1, bottom: 5),
-                    // child: ElevatedButton(
-                    //     style: ElevatedButton.styleFrom(
-                    //       primary: kPrimaryColor,
-                    //       textStyle: TextStyle(
-                    //         fontSize: 20,
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //       minimumSize: Size(double.infinity,getProportionateScreenHeight(50)),
-                    //       shape: new RoundedRectangleBorder(
-                    //           borderRadius:
-                    //               new BorderRadius.all(Radius.circular(15))),
-                    //     ),
-                    //     onPressed: () => Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => AddMedicalRecord())),
-                    //     child: Text('Create new medical record')),
-                  )),
-            )
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget buildList() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: GestureDetector(
+        child: Card(
+            margin: const EdgeInsets.only(
+                top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 15, bottom: 10, left: 0, right: 16),
+              child: Row(
+                children: [
+                  Image(
+                    image: AssetImage('images/0.jpg'),
+                    width: 150,
+                    height: 100,
+                  ),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Benh Vien Da Khoa Can Tho",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(Feather.clock, color: Colors.black, size: 17),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "31 May 2021, 10.00 AM",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(Feather.navigation, color: Colors.black, size: 17),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "389 duong Nguyen Van Cu, quan Ninh Kieu, thanh pho Can Tho",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(Feather.phone, color: Colors.black, size: 17),
+                            SizedBox(width: 10),
+                            Text(
+                              "0123456789",
+                              style: TextStyle(fontSize: 17),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text(
+                              "Status: ",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              status,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: getStatusColor(status),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+
+
+  Color getStatusColor(String statusColor) {
+    if (statusColor.compareTo("approve") == 0) {
+      return Colors.green;
+    } else if (statusColor.compareTo("pending") == 0) {
+      return Colors.lightBlue;
+    } else {
+      return Colors.red;
+    }
   }
 }
