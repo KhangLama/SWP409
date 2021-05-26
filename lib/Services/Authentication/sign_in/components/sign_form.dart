@@ -23,7 +23,6 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   var email, password, token;
   bool remember = false;
-  User _user = new User();
   //int userID = 0;
   final List<String> errors = [];
   final storage = new FlutterSecureStorage();
@@ -112,16 +111,22 @@ class _SignFormState extends State<SignForm> {
                     var _id = val.data['data']['user']['_id'];
                     var _name = val.data['data']['user']['name'];
                     var _role = val.data['data']['user']['role'];
+                    var _phone = val.data['data']['user']['phone'];
                     var _email = val.data['data']['user']['email'];
+                    var _avatar = val.data['data']['user']['avatar'];
                     User _user = new User(
-                        sId: _id, name: _name, email: _email, role: _role);
+                        sId: _id,
+                        name: _name,
+                        email: _email,
+                        role: _role,
+                        phone: _phone,
+                        avatar: _avatar);
 
                     KeyboardUtil.hideKeyboard(context);
                     if (_role == 'patient') {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainScreen.user(_user)));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              MainScreen.user(user: _user)));
                     }
                     if (_role == 'doctor') {
                       Navigator.pushReplacement(

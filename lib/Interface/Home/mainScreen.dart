@@ -12,7 +12,7 @@ class MainScreen extends StatefulWidget {
   FlutterSecureStorage storage;
   User user;
   MainScreen.storage(this.storage);
-  MainScreen.user(this.user);
+  MainScreen.user({Key key, this.user}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }

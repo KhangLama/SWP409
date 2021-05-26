@@ -10,7 +10,8 @@ class User {
   String email;
   String phone;
   String address;
-  User({this.role, this.sId, this.name, this.email, this.phone, this.address});
+  dynamic avatar;
+  User({this.role, this.sId, this.name, this.email, this.phone, this.address, this.avatar});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

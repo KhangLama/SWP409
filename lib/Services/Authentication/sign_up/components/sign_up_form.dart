@@ -71,22 +71,29 @@ class _SignUpFormState extends State<SignUpForm> {
                 String url = '$ServerIP/api/v1/users/signup';
                 if (_formKey.currentState.validate()) {
                   authService
-                      .signup(url, name, email, password, confirm_password)
+                      .signup(url, name, email, phoneNumber, password,
+                          confirm_password)
                       .then((val) {
                     if (val.data['status'] == 'success') {
                       var _id = val.data['data']['user']['_id'];
                       var _name = val.data['data']['user']['name'];
                       var _role = val.data['data']['user']['role'];
                       var _email = val.data['data']['user']['email'];
+                      var _phone = val.data['data']['user']['phone'];
                       User _user = new User(
-                          sId: _id, name: _name, email: _email, role: _role);
+                          sId: _id,
+                          name: _name,
+                          email: _email,
+                          role: _role,
+                          phone: _phone);
 
                       KeyboardUtil.hideKeyboard(context);
                       if (_role == 'patient') {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MainScreen.user(_user)));
+                                builder: (context) =>
+                                    MainScreen.user(user: _user)));
                       }
                       if (_role == 'doctor') {
                         Navigator.pushReplacement(

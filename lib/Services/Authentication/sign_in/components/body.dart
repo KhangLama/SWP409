@@ -58,13 +58,12 @@ class Body extends StatelessWidget {
                   children: [
                     Text(
                       "You want register a clinic? ",
-                      style: TextStyle(fontSize: getProportionateScreenWidth(16)),
+                      style:
+                          TextStyle(fontSize: getProportionateScreenWidth(16)),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClinicInfoScreen())),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ClinicInfoScreen())),
                       child: Text(
                         "Register",
                         style: TextStyle(
@@ -82,4 +81,3 @@ class Body extends StatelessWidget {
     );
   }
 }
-

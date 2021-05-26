@@ -46,6 +46,7 @@ class _ClinicListViewState extends State<ClinicListView> {
         backgroundColor: kPrimaryBackground,
         drawer: buildDrawer(context),
         appBar: AppBar(
+          
           title: Text(
             'Find Clinic You Want',
             style: TextStyle(color: kPrimaryLightColor),

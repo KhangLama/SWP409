@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';

@@ -87,42 +87,7 @@ class ClinicPage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red, // background
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    minimumSize: Size(200,50),
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                        new BorderRadius.all(Radius.circular(15))),// foreground
-                                  ),
-                                  onPressed: () { },
-                                  child: Text('View on map'),
-                                ),
-                                SizedBox(width: 10),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Booking()),
-                                      );
-                                    },
-                                    child: Text('Book an appointment')),
-                              ],
-                            ),
+                            
                           ],
                         ),
                       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Services/Authentication/otp/otp_screen.dart';
 
-import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class CompleteProfileForm extends StatefulWidget {

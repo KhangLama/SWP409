@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/theme.dart';
 
-import 'Clinic/Interface/home.dart';
 
 void main() {
   runApp(MyApp());

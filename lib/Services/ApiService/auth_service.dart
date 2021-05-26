@@ -3,16 +3,18 @@ import 'package:dio/dio.dart';
 class AuthService {
   Dio dio = new Dio();
   Response response;
-  Future<Response> signup(url, name, email, password, repassword) async {
+  Future<Response> signup(url, name, email, phone, password, repassword) async {
     try {
+      var data2 = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "passwordConfirm": repassword,
+        "phone": phone
+      };
       response = await dio.post(
         url,
-        data: {
-          "name": name,
-          "email": email,
-          "password": password,
-          "passwordConfirm": repassword
-        },
+        data: data2,
         options: Options(headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json'
