@@ -3,14 +3,16 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Interface/History/historyPage.dart';
 import 'package:swp409/Interface/Maps/mapViewPage.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
 import 'clinicListView.dart';
 
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
   FlutterSecureStorage storage;
-  MainScreen(this.storage);
-
+  User user;
+  MainScreen.storage(this.storage);
+  MainScreen.user(this.user);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -69,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ClinicListView(widget.storage),
+            ClinicListView.user(widget.user),
             MapViewPage(),
             HistoryPage(),
           ],

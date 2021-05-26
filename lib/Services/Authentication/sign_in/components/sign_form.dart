@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Clinic/Interface/home.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
@@ -105,24 +106,39 @@ class _SignFormState extends State<SignForm> {
             press: () async {
               String url = '$ServerIP/api/v1/users/login';
               if (_formKey.currentState.validate()) {
-                authService.login(url, email, password).then((val) {
+                authService.login(url, email, password).then((val) async {
                   print(val.data);
                   if (val.data["status"] == "success") {
                     var _id = val.data['data']['user']['_id'];
+                    var _name = val.data['data']['user']['name'];
+                    var _role = val.data['data']['user']['role'];
+                    var _email = val.data['data']['user']['email'];
                     print("ad" + '\n' + _id);
-                    storage.write(key: 'userid', value: _id);
+                    await storage.write(key: 'userID', value: _id);
+                    await storage.write(key: 'userName', value: _name);
+                    await storage.write(key: 'userRole', value: _role);
+                    await storage.write(key: 'userEmail', value: _email);
+                    User _user = new User(
+                        sId: _id, name: _name, email: _email, role: _role);
+
                     KeyboardUtil.hideKeyboard(context);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainScreen(storage)));
+                    if (_role == 'patient') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen.user(_user)));
+                    }
+                    if (_role == 'doctor') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreenDoctor(storage)));
+                    }
                   } else if (val.data["status"] == "error") {
                     addError(error: "Incorrect email or password");
                   }
                 });
               }
-              print('login: id');
-              print(await storage.read(key: 'userid'));
             },
           ),
         ],
