@@ -57,9 +57,67 @@ class ClinicPage extends StatelessWidget {
                             ),
                             Row(
                               children: [
+<<<<<<< Updated upstream
                                 ElevatedButton(
                                     onPressed: () {},
                                     child: Text('View on map')),
+=======
+                                Icon(Icons.description_outlined, color: Colors.black),
+                                SizedBox(width: 5),
+                                Expanded(
+                                  child: Text(
+                                      'Description: Phòng khám xịn xò nhất đất nước Việt Nam',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor, // background
+                                    onPrimary: Colors.white,
+                                    textStyle: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    minimumSize: Size(180,50),
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                        new BorderRadius.all(Radius.circular(15))),// foreground
+                                  ),
+                                  onPressed: () { },
+                                  child: Text('View on map'),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: kPrimaryColor, // background
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      minimumSize: Size(180,50),
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius:
+                                          new BorderRadius.all(Radius.circular(15))),// foreground
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Booking()),
+                                      );
+                                    },
+                                    child: Text('Book now')),
+>>>>>>> Stashed changes
                               ],
                             ),
                           ],

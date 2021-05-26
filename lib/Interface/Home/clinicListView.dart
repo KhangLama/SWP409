@@ -88,7 +88,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                       top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 32, bottom: 32, left: 0, right: 16),
+                        top: 20, bottom: 15, left: 0, right: 16),
                     child: Row(
                       children: [
                         Image(
@@ -102,12 +102,41 @@ class _ClinicListViewState extends State<ClinicListView> {
                             children: [
                               Text(
                                 _filteredclinic[index].name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                _filteredclinic[index].address,
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on_outlined, color: Colors.black),
+                                  SizedBox(width: 5),
+                                  Expanded(
+                                    child: Text(
+                                      _filteredclinic[index].address,
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              SizedBox(height: 10),
                               ElevatedButton(
+<<<<<<< Updated upstream
+=======
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor, // background
+                                    onPrimary: Colors.white,
+                                    textStyle: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                    ),
+                                    minimumSize: Size(180,40),
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                        new BorderRadius.all(Radius.circular(15))),// foreground
+                                  ),
+>>>>>>> Stashed changes
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(

@@ -11,8 +11,13 @@ class Appointment extends StatefulWidget {
 
 class _AppointmentState extends State<Appointment> {
   @override
+<<<<<<< Updated upstream
   String status = "complete";
   String status1 = "pending";
+=======
+  String status = "approve";
+  Colors colorStatus;
+>>>>>>> Stashed changes
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -40,11 +45,14 @@ class _AppointmentState extends State<Appointment> {
             child: Column(
               children: [
                 buildList(),
+<<<<<<< Updated upstream
                 buildList1(),
                 buildList(),
                 buildList1(),
                 buildList(),
                 buildList(),
+=======
+>>>>>>> Stashed changes
               ],
             ),
           ),
@@ -101,6 +109,7 @@ class _AppointmentState extends State<Appointment> {
                             Icon(Feather.mail, color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
+<<<<<<< Updated upstream
                               "trinhhq@gmail.com",
                               style: TextStyle(fontSize: 17),
                             )
@@ -220,6 +229,13 @@ class _AppointmentState extends State<Appointment> {
                               status1,
                               style: TextStyle(fontSize: 17,
                                   color: status1 == "complete" ? Colors.green : Colors.lightBlue),
+=======
+                              status,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: getStatusColor(status),
+                              ),
+>>>>>>> Stashed changes
                             ),
                           ],
                         ),
@@ -232,4 +248,18 @@ class _AppointmentState extends State<Appointment> {
       ),
     );
   }
+<<<<<<< Updated upstream
+=======
+
+
+  Color getStatusColor(String statusColor) {
+    if (statusColor.compareTo("approve") == 0) {
+      return Colors.green;
+    } else if (statusColor.compareTo("pending") == 0) {
+      return Colors.lightBlue;
+    } else {
+      return Colors.red;
+    }
+  }
+>>>>>>> Stashed changes
 }
