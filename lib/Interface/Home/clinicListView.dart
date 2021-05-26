@@ -15,31 +15,15 @@ import 'package:dio/dio.dart';
 // ignore: must_be_immutable
 class ClinicListView extends StatefulWidget {
   FlutterSecureStorage storage;
+  User user;
   ClinicListView(this.storage);
-
+  ClinicListView.user(this.user);
   @override
   _ClinicListViewState createState() => _ClinicListViewState();
 }
 
 class _ClinicListViewState extends State<ClinicListView> {
-  Dio dio = new Dio();
-  Response _response;
-  String url = '$ServerIP/api/v1/users/';
   User _user = new User();
-
-  Future<User> getUserData(FlutterSecureStorage storage) async {
-    var _id = await storage.read(key: 'userid');
-    User u = new User();
-    _response = await dio.get('$url$_id');
-    print(_response.data);
-    u.role = _response.data['data']['data']['role'];
-    u.sId = _response.data['data']['data']['_id'];
-    u.email = _response.data['data']['data']['email'];
-    u.name = _response.data['data']['data']['name'];
-    print(u.name);
-    print(u.email);
-    return u;
-  }
 
   @override
   void initState() {
@@ -47,13 +31,12 @@ class _ClinicListViewState extends State<ClinicListView> {
       setState(() {
         _clinics = value;
         _filteredclinic = _clinics;
+        _user = widget.user;
+        print('listview');
+        print(_user.toJson());
       });
     });
-    getUserData(widget.storage).then((value) {
-      _user = value;
-    });
-
-    print(_user.name);
+    //getUserData(widget.storage).then((value) => _user = value);
     super.initState();
   }
 
@@ -120,13 +103,13 @@ class _ClinicListViewState extends State<ClinicListView> {
           DrawerHeader(
             child: Center(
               child: Text(
-                'Hello, ${_user.name}',
+                'Hello, ${widget.user.name}',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: kPrimaryColor,
             ),
           ),
           ListTile(
@@ -149,23 +132,13 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Profile'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => new ProfilePage(widget.storage)));
+                  builder: (context) => ProfilePage.user(user: _user)));
             },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.app_registration),
-          //   title: Text('Register as a doctor'),
-          //   onTap: () {
-          //     Navigator.of(context, rootNavigator: true).push(
-          //         MaterialPageRoute(builder: (context) => new Registration()));
-          //   },
-          // ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () {
-              print(widget.storage.read(key: 'jwt').toString());
-              widget.storage.deleteAll();
               Navigator.of(context, rootNavigator: true).pushReplacement(
                   MaterialPageRoute(builder: (context) => new SplashScreen()));
             },
@@ -175,7 +148,7 @@ class _ClinicListViewState extends State<ClinicListView> {
     );
   }
 
-// List view of clinic card
+  // List view of clinic card
   ListView buildListView() {
     return ListView.builder(
         itemCount: _filteredclinic.length,
@@ -230,6 +203,15 @@ class _ClinicListViewState extends State<ClinicListView> {
             ),
           );
         });
+  }
+
+  Future<User> getUserData(FlutterSecureStorage storage) async {
+    var email = await widget.storage.read(key: 'userEmail');
+    var sId = await widget.storage.read(key: 'userID');
+    var name = await widget.storage.read(key: 'userName');
+    var role = await widget.storage.read(key: 'userRole');
+    User u = new User(sId: sId, email: email, name: name, role: role);
+    return u;
   }
 }
 

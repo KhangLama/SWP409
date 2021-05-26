@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,8 +9,8 @@ import '../../../size_config.dart';
 
 // ignore: must_be_immutable
 class CompleteProfileForm extends StatefulWidget {
-  FlutterSecureStorage storage;
-  CompleteProfileForm(this.storage);
+  User user;
+  CompleteProfileForm.user(this.user);
 
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
@@ -20,40 +19,23 @@ class CompleteProfileForm extends StatefulWidget {
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
-  final storage = new FlutterSecureStorage();
   String name;
   String mail;
   String phoneNumber;
   String address;
-  Dio dio = new Dio();
-  Response _response;
-  String url = '$ServerIP/api/v1/users/';
   User _user = new User();
 
-  Future<User> getUserData(FlutterSecureStorage storage) async {
-    var _id = await storage.read(key: 'userid');
-    User u = new User();
-    _response = await dio.get('$url$_id');
-    print(_response.data);
-    u.role = _response.data['data']['data']['role'];
-    u.sId = _response.data['data']['data']['_id'];
-    u.email = _response.data['data']['data']['email'];
-    u.name = _response.data['data']['data']['name'];
-    print(u.email);
-    print(u.name);
-    return u;
-  }
+  TextEditingController fieldNameController = new TextEditingController();
 
   @override
   void initState() {
-    super.initState();
-    getUserData(widget.storage).then((value) {
-      _user = value;
-      print("1" + _user.name);
+    setState(() {
+      _user = widget.user;
+      print(widget.user.toJson());
     });
-    print('cehck');
-    print(_user.name);
-    print(_user.email);
+    //print(_user.toJson());
+    fieldNameController.text = _user.name;
+    super.initState();
   }
 
   void addError({String error}) {
@@ -76,13 +58,13 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildFirstNameFormField(context),
+          buildNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildEmailFormField(context),
+          buildEmailField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPhoneNumberFormField(context),
+          buildPhoneField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildAddressFormField(context),
+          buildAdressField(),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
@@ -93,7 +75,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MainScreen(storage)));
+                        builder: (context) => MainScreen.user(widget.user)));
                 // Navigator.pushReplacement(
                 //     context,
                 //     MaterialPageRoute(
@@ -106,7 +88,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildAddressFormField(BuildContext context) {
+  TextFormField buildAdressField() {
     return TextFormField(
       initialValue: "79 Nguyen Van Cu noi dai, Ninh Kieu, Can Tho",
       onSaved: (newValue) => address = newValue,
@@ -146,7 +128,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildPhoneNumberFormField(BuildContext context) {
+  TextFormField buildPhoneField() {
     return TextFormField(
       initialValue: "0987654321",
       keyboardType: TextInputType.phone,
@@ -186,9 +168,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildEmailFormField(BuildContext context) {
+  TextFormField buildEmailField() {
     return TextFormField(
-      initialValue: "${_user.email}",
+      initialValue: '${_user.email}',
       onSaved: (newValue) => mail = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -230,9 +212,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildFirstNameFormField(BuildContext context) {
+  TextFormField buildNameField() {
     return TextFormField(
-      initialValue: "${_user.name}",
+      controller: fieldNameController,
+      //initialValue: '${widget.user.name}',
       onSaved: (newValue) => name = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
