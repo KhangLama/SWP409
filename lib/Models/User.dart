@@ -8,22 +8,11 @@ class User {
   String sId;
   String name;
   String email;
+  String phone;
+  String address;
+  User({this.role, this.sId, this.name, this.email, this.phone, this.address});
 
-  User({this.role, this.sId, this.name, this.email});
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  User.fromJson(Map<String, dynamic> json) {
-    role = json['role'];
-    sId = json['_id'];
-    name = json['name'];
-    email = json['email'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['role'] = this.role;
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

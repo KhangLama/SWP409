@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swp409/Clinic/Interface/home.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/auth_service.dart';
+import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'package:swp409/constants.dart';
@@ -69,8 +73,29 @@ class _SignUpFormState extends State<SignUpForm> {
                   authService
                       .signup(url, name, email, password, confirm_password)
                       .then((val) {
-                    if (val.data['status'] == 'success')
-                      storage.write(key: 'jwt', value: val.data);
+                    if (val.data['status'] == 'success') {
+                      var _id = val.data['data']['user']['_id'];
+                      var _name = val.data['data']['user']['name'];
+                      var _role = val.data['data']['user']['role'];
+                      var _email = val.data['data']['user']['email'];
+                      User _user = new User(
+                          sId: _id, name: _name, email: _email, role: _role);
+
+                      KeyboardUtil.hideKeyboard(context);
+                      if (_role == 'patient') {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainScreen.user(_user)));
+                      }
+                      if (_role == 'doctor') {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    HomeScreenDoctor.user(user: _user)));
+                      }
+                    }
                     if (val.statusCode == 400) {
                       List list = val.data['errors'] as List;
                       for (int i = 0; i < list.length; i++) {
@@ -83,8 +108,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       }
                     }
                   });
-                  print(storage.read(key: 'jwt'));
-                  _formKey.currentState.save();
                   // if all are valid then go to success screen
                 }
               }),
@@ -134,7 +157,6 @@ class _SignUpFormState extends State<SignUpForm> {
           Icons.lock,
           size: 30,
           color: kPrimaryColor,
-
         ),
       ),
     );
@@ -181,7 +203,6 @@ class _SignUpFormState extends State<SignUpForm> {
           Icons.lock,
           size: 30,
           color: kPrimaryColor,
-
         ),
       ),
     );
@@ -242,7 +263,6 @@ class _SignUpFormState extends State<SignUpForm> {
           Icons.mail_outline,
           size: 30,
           color: kPrimaryColor,
-
         ),
       ),
     );
@@ -285,7 +305,6 @@ class _SignUpFormState extends State<SignUpForm> {
           Icons.location_on_outlined,
           size: 30,
           color: kPrimaryColor,
-
         ),
       ),
     );
