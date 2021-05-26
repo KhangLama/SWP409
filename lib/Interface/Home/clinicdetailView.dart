@@ -1,16 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
-
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'dart:io';
 import '../../size_config.dart';
+class ClinicPage extends StatefulWidget {
+  @override
+  _ClinicPageState createState() => _ClinicPageState();
+}
 
-class ClinicPage extends StatelessWidget {
+class _ClinicPageState extends State<ClinicPage> {
+  double rating = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Clinic\'s information', style: TextStyle(color: kPrimaryLightColor),),
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context),
+          color: Colors.white,
+        ),
+        title: Text(
+          'Clinic\'s information',
+          style: TextStyle(color: kPrimaryLightColor),
+        ),
         backgroundColor: kPrimaryAppbar,
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+        child: Row(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: kPrimaryColor,
+                // background
+                onPrimary: Colors.white,
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                minimumSize: Size(200, 50),
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.all(
+                        Radius.circular(10))), // foreground
+              ),
+              onPressed: () {},
+              child: Text('View on map'),
+            ),
+            Spacer(),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: kPrimaryColor,
+                  // background
+                  onPrimary: Colors.white,
+                  textStyle: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  minimumSize: Size(200, 50),
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.all(
+                          Radius.circular(10))), // foreground
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Booking()),
+                  );
+                },
+                child: Text('Book now')),
+          ],
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -28,6 +92,7 @@ class ClinicPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Card(
+                      elevation: 10,
                       shadowColor: Colors.black,
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -38,22 +103,25 @@ class ClinicPage extends StatelessWidget {
                             Center(
                               child: Text(
                                 'Phòng khám bác sĩ Tiêu Phương Lâm',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                Icon(Icons.location_on_outlined, color: Colors.black),
+                                Icon(Icons.location_on_outlined,
+                                    color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                      'Address: 85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ',
+                                      '85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ',
                                       style: TextStyle(
                                         fontSize: 20,
+                                        color: Colors.black,
                                       )),
                                 ),
                               ],
@@ -61,13 +129,14 @@ class ClinicPage extends StatelessWidget {
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                Icon(Icons.local_phone_outlined, color: Colors.black),
+                                Icon(Icons.local_phone_outlined,
+                                    color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
-                                  child: Text(
-                                      'Phone: 0123456789',
+                                  child: Text('0123456789',
                                       style: TextStyle(
                                         fontSize: 20,
+                                        color: Colors.black,
                                       )),
                                 ),
                               ],
@@ -75,109 +144,362 @@ class ClinicPage extends StatelessWidget {
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text('View on map')),
-                                Icon(Icons.description_outlined, color: Colors.black),
+                                Icon(Icons.description_outlined,
+                                    color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                      'Description: Phòng khám xịn xò nhất đất nước Việt Nam',
+                                      'Phòng khám xịn xò nhất đất nước Việt Nam',
                                       style: TextStyle(
                                         fontSize: 20,
+                                        color: Colors.black,
                                       )),
                                 ),
                               ],
                             ),
                             SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: kPrimaryColor, // background
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    minimumSize: Size(180,50),
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                        new BorderRadius.all(Radius.circular(15))),// foreground
-                                  ),
-                                  onPressed: () { },
-                                  child: Text('View on map'),
-                                ),
-                                SizedBox(width: 10),
-                                Icon(Icons.description_outlined, color: Colors.black),
-                                SizedBox(width: 5),
-                                Expanded(
-                                  child: Text(
-                                      'Description: Phòng khám xịn xò nhất đất nước Việt Nam',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: kPrimaryColor, // background
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    minimumSize: Size(200,50),
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                        new BorderRadius.all(Radius.circular(15))),// foreground
-                                  ),
-                                  onPressed: () { },
-                                  child: Text('View on map'),
-                                ),
-                                SizedBox(width: 10),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: kPrimaryColor, // background
-                                      onPrimary: Colors.white,
-                                      textStyle: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      minimumSize: Size(200,50),
-                                      shape: new RoundedRectangleBorder(
-                                          borderRadius:
-                                          new BorderRadius.all(Radius.circular(15))),// foreground
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Booking()),
-                                      );
-                                    },
-                                    child: Text('Book now')),
-                              ],
-                            ),
                           ],
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Card(
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 10, left: 10, right: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                'Open hours',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Monday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Tuesday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Wednesday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Thursday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Friday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Saturday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 130,
+                                      child: Text(
+                                        'Sunday',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                        '08:00 AM - 05:00 PM',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Card(
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 10, left: 10, right: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                'Rating this clinic',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                'Let other know what you think',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SmoothStarRating(
+                                  starCount: 5,
+                                  size: 40.0,
+                                  color: Colors.orange,
+                                  borderColor: Colors.orange,
+                                  spacing: 3.0,
+                                  isReadOnly: false,
+                                  allowHalfRating: true,
+                                  rating: rating,
+                                  onRated: (value) {
+                                    rating = value;
+                                    print("Rating is: $rating");
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            buildList(),
+                            buildList(),
+                            buildList(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 60),
                   ],
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+  double ratingCmt= 4.5;
+  Widget buildList() {
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      child: GestureDetector(
+        child: Card(
+          elevation: 5,
+            shadowColor: Colors.black,
+            margin: const EdgeInsets.only(
+                top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 5, bottom: 5, left: 5, right: 5),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      uploadClinicImg(),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Text("Trinh Ha", style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20
+                        ),),
+                      ),
+                      Spacer(),
+                      SmoothStarRating(
+                        starCount: 5,
+                        size: 20.0,
+                        color: Colors.orange,
+                        borderColor: Colors.orange,
+                        spacing: 0.0,
+                        isReadOnly: true,
+                        allowHalfRating: true,
+                        rating: ratingCmt,
+                      ),
+                    ],
+                  ),
+                  Row(
+                      children: [
+                        Expanded(
+                          child: Text("App nay chay lag vai ca loz", style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18
+                          ),),
+                        ),
+                      ]
+                  )
+                ],
+              ),
+            ),
+
+        ),
+      ),
+    );
+  }
+
+  PickedFile _imageFile;
+  Widget uploadClinicImg() {
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.expand,
+        children: [
+          CircleAvatar(
+            backgroundImage: _imageFile == null
+                ? AssetImage('images/userprofile.jpg')
+                : FileImage(File(_imageFile.path)),
+          ),
+        ],
       ),
     );
   }

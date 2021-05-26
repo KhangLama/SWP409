@@ -156,8 +156,9 @@ class _ClinicListViewState extends State<ClinicListView> {
           return Container(
             width: MediaQuery.of(context).size.width,
             child: GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ClinicPage())),
+              onTap: () => Navigator.of(context, rootNavigator: true)
+                  .push(MaterialPageRoute(
+                  builder: (context) => ClinicPage())),
               child: Card(
                   margin: const EdgeInsets.only(
                       top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
@@ -213,8 +214,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                new Booking()));
+                                            builder: (context) => Booking()));
                                   },
                                   child: Text('Book an appointment'))
                             ],

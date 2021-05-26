@@ -22,17 +22,6 @@ class _HistoryPageState extends State<HistoryPage> {
             style: TextStyle(color: kPrimaryLightColor),
           ),
           backgroundColor: kPrimaryAppbar,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                // do something
-              },
-            )
-          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(
