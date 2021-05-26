@@ -260,7 +260,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
           Container(
             child: Image(
               image: _imageFile == null
-                  ? Image.asset('images/0.jpg')
+                  ? AssetImage('images/0.jpg')
                   : FileImage(File(_imageFile.path)),
             ),
           ),

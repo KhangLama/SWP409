@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
-  smooth_star_rating: 1.1.1
+  smooth_star_rating: ^1.1.1
   flutter_icons: ^1.0.0+1
   google_maps_flutter:
   google_fonts:
@@ -32,6 +32,7 @@ dependencies:
   multi_image_picker: ^4.8.0
   flutter_secure_storage: ^4.2.0
   flutter_dotenv: ^3.1.0
+
 dev_dependencies:
   json_serializable: ^3.5.1
   pedantic:

@@ -43,7 +43,7 @@ class _ClinicPageState extends State<ClinicPage> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -267,7 +267,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                 Column(
                                   children: [
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -278,7 +278,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -289,7 +289,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -300,7 +300,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -311,7 +311,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -322,7 +322,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -333,7 +333,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Container(
-                                      width: 250,
+                                      width: 230,
                                       child: Text(
                                         '08:00 AM - 05:00 PM',
                                         style: TextStyle(
@@ -461,20 +461,24 @@ class _ClinicPageState extends State<ClinicPage> {
                     SizedBox(width: 20),
                     Expanded(
                       child: Text(
-                        "Trinh Ha",
+                        "Trinh Ha d m m",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
-                    Spacer(),
-                    SmoothStarRating(
-                      starCount: 5,
-                      size: 20.0,
-                      color: Colors.orange,
-                      borderColor: Colors.orange,
-                      spacing: 0.0,
-                      isReadOnly: true,
-                      allowHalfRating: true,
-                      rating: ratingCmt,
+                    SizedBox(width: 30),
+                    Expanded(
+                      child: SmoothStarRating(
+                        starCount: 5,
+                        size: 20.0,
+                        color: Colors.orange,
+                        borderColor: Colors.orange,
+                        spacing: 0.0,
+                        isReadOnly: true,
+                        allowHalfRating: true,
+                        rating: ratingCmt,
+                      ),
                     ),
                   ],
                 ),
@@ -516,6 +520,8 @@ class _ClinicPageState extends State<ClinicPage> {
   final cmtController = TextEditingController();
   TextField buildCmtField() {
     return TextField(
+      maxLines: 3,
+      maxLength: 150,
       controller: cmtController,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
