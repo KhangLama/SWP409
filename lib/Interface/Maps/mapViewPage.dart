@@ -9,6 +9,7 @@ import 'package:swp409/Interface/Home/clinicdetailView.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:swp409/helper/keyboard.dart';
 
 class MapViewPage extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _MapViewPageState extends State<MapViewPage> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   bool loading = true;
+
   Future<List<Clinic>> fetchClinics() async {
     var fetchdata = await rootBundle.loadString('assets/json/clinic.mock.json');
     var clinics = <Clinic>[];
@@ -97,6 +99,7 @@ class _MapViewPageState extends State<MapViewPage> {
       title: Text(clinic.name, style: TextStyle(fontSize: 16)),
       subtitle: Text(clinic.address, style: TextStyle(fontSize: 14)),
       onTap: () async {
+        KeyboardUtil.hideKeyboard(context);
         _markers.forEach((element) async {
           var _currentPosition = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.bestForNavigation);
@@ -112,7 +115,6 @@ class _MapViewPageState extends State<MapViewPage> {
                 jointType: JointType.bevel,
                 zIndex: 1);
             polylines[id] = polyline;
-            setState(() {});
           }
 
           await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
@@ -120,7 +122,6 @@ class _MapViewPageState extends State<MapViewPage> {
 
         setState(() {
           searchTextField.textField.controller.text = clinic.name;
-          searchTextField.clear();
         });
       },
     );

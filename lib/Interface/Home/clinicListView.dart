@@ -1,35 +1,50 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
 import 'clinicdetailView.dart';
+import '../../constants.dart';
+import 'package:dio/dio.dart';
 
+// ignore: must_be_immutable
 class ClinicListView extends StatefulWidget {
+  FlutterSecureStorage storage;
+  User user;
+  ClinicListView(this.storage);
+  ClinicListView.user(this.user);
   @override
   _ClinicListViewState createState() => _ClinicListViewState();
 }
 
 class _ClinicListViewState extends State<ClinicListView> {
+  User _user = new User();
+
   @override
   void initState() {
     fetchClinics().then((value) {
       setState(() {
         _clinics = value;
         _filteredclinic = _clinics;
+        _user = widget.user;
+        print('listview');
+        print(_user.toJson());
       });
     });
+    //getUserData(widget.storage).then((value) => _user = value);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFAED2E8),
-        drawer: SideDrawer(),
+        backgroundColor: kPrimaryBackground,
+        drawer: buildDrawer(context),
         appBar: AppBar(
           title: Text(
             'Find Clinic You Want',
@@ -49,8 +64,16 @@ class _ClinicListViewState extends State<ClinicListView> {
                     filled: true,
                     contentPadding: EdgeInsets.all(8),
                     hintText: 'Search clinic\'s name',
-                    suffixIcon: Icon(Icons.search_outlined),
-                    border: new OutlineInputBorder(
+                    suffixIcon: Icon(
+                      Icons.search_outlined,
+                      color: kPrimaryColor,
+                    ),
+                    enabledBorder: new OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: kPrimaryColor, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kPrimaryColor, width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     // focusedBorder: OutlineInputBorder(
@@ -73,7 +96,59 @@ class _ClinicListViewState extends State<ClinicListView> {
         ));
   }
 
-// List view of clinic card
+  Drawer buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          DrawerHeader(
+            child: Center(
+              child: Text(
+                'Hello, ${widget.user.name}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text('Cart'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.border_color),
+            title: Text('Feedback'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.person_rounded),
+            title: Text('Profile'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ProfilePage.user(user: _user)));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pushReplacement(
+                  MaterialPageRoute(builder: (context) => new SplashScreen()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // List view of clinic card
   ListView buildListView() {
     return ListView.builder(
         itemCount: _filteredclinic.length,
@@ -110,7 +185,8 @@ class _ClinicListViewState extends State<ClinicListView> {
                               SizedBox(height: 10),
                               Row(
                                 children: [
-                                  Icon(Icons.location_on_outlined, color: Colors.black),
+                                  Icon(Icons.location_on_outlined,
+                                      color: Colors.black),
                                   SizedBox(width: 5),
                                   Expanded(
                                     child: Text(
@@ -122,8 +198,6 @@ class _ClinicListViewState extends State<ClinicListView> {
                               ),
                               SizedBox(height: 10),
                               ElevatedButton(
-<<<<<<< Updated upstream
-=======
                                   style: ElevatedButton.styleFrom(
                                     primary: kPrimaryColor, // background
                                     onPrimary: Colors.white,
@@ -131,12 +205,15 @@ class _ClinicListViewState extends State<ClinicListView> {
                                       fontSize: 17,
                                       color: Colors.white,
                                     ),
-                                    minimumSize: Size(180,40),
+                                    minimumSize: Size(180, 40),
                                     shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                        new BorderRadius.all(Radius.circular(15))),// foreground
+                                        borderRadius: new BorderRadius.all(
+                                            Radius.circular(15))), // foreground
                                   ),
->>>>>>> Stashed changes
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor, // background
+                                    onPrimary: kPrimaryLightColor, // foreground
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(
@@ -154,6 +231,15 @@ class _ClinicListViewState extends State<ClinicListView> {
           );
         });
   }
+
+  Future<User> getUserData(FlutterSecureStorage storage) async {
+    var email = await widget.storage.read(key: 'userEmail');
+    var sId = await widget.storage.read(key: 'userID');
+    var name = await widget.storage.read(key: 'userName');
+    var role = await widget.storage.read(key: 'userRole');
+    User u = new User(sId: sId, email: email, name: name, role: role);
+    return u;
+  }
 }
 
 List<Clinic> _clinics = <Clinic>[];
@@ -166,67 +252,4 @@ Future<List<Clinic>> fetchClinics() async {
     clinics.add(Clinic.fromJson(clinic));
   }
   return clinics;
-}
-
-class SideDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          DrawerHeader(
-            child: Center(
-              child: Text(
-                'Hello, Simple',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
-            ),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.person_rounded),
-            title: Text('Profile'),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (context) => new ProfilePage()));
-            },
-          ),
-          // ListTile(
-          //   leading: Icon(Icons.app_registration),
-          //   title: Text('Register as a doctor'),
-          //   onTap: () {
-          //     Navigator.of(context, rootNavigator: true).push(
-          //         MaterialPageRoute(builder: (context) => new Registration()));
-          //   },
-          // ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).pushReplacement(
-                  MaterialPageRoute(builder: (context) => new SplashScreen()));
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }

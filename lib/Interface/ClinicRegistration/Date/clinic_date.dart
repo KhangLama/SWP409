@@ -63,7 +63,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                     sundayBuild(),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     DefaultButton(
-                      text: "Continue",
+                      text: "Submit",
                       press: () {
                         print("MON open: ${openMon.format(context)} close: ${closeMon.format(context)}");
                         print("TUE open: ${openTue.format(context)} close: ${closeTue.format(context)}");
@@ -98,7 +98,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           margin: const EdgeInsets.only(left: 5.0),
           child: Text(
             'DAY',
-            style: TextStyle(fontSize: 22.0),
+            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
           ),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.25),
@@ -107,7 +107,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           margin: const EdgeInsets.only(left: 5.0),
           child: Text(
             'OPEN',
-            style: TextStyle(fontSize: 22.0),
+            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
           ),
         ),
         SizedBox(width: 100),
@@ -116,7 +116,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           margin: const EdgeInsets.only(left: 5.0),
           child: Text(
             'CLOSE',
-            style: TextStyle(fontSize: 22.0),
+            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -136,12 +136,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.21),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenMon,
           child: Text(openMon.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseMon,
           child: Text(closeMon.format(context)),
         ),
@@ -162,12 +169,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.205),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenTue,
           child: Text(openTue.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseTue,
           child: Text(closeTue.format(context)),
         ),
@@ -188,12 +202,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.15),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenWed,
           child: Text(openWed.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseWed,
           child: Text(closeWed.format(context)),
         ),
@@ -214,12 +235,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.188),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenThu,
           child: Text(openThu.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseThu,
           child: Text(closeThu.format(context)),
         ),
@@ -240,12 +268,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.242),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenFri,
           child: Text(openFri.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseFri,
           child: Text(closeFri.format(context)),
         ),
@@ -266,12 +301,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.196),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenSat,
           child: Text(openSat.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseSat,
           child: Text(closeSat.format(context)),
         ),
@@ -292,12 +334,19 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.222),
         ElevatedButton(
-
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectOpenSun,
           child: Text(openSun.format(context)),
         ),
         SizedBox(width: SizeConfig.screenWidth * 0.14),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kPrimaryColorLight, // background
+            onPrimary: kPrimaryLightColor, // foreground
+          ),
           onPressed: _selectCloseSun,
           child: Text(closeSun.format(context)),
         ),

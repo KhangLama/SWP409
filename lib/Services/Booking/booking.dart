@@ -44,8 +44,10 @@ class _BookingState extends State<Booking> {
       appBar: AppBar(
         leading: BackButton(
           onPressed: () => Navigator.pop(context),
+          color: kPrimaryLightColor,
         ),
-        title: Text('Pick a date'),
+        title: Text('Pick a date',
+          style: TextStyle(color: kPrimaryLightColor) ,),
         backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
@@ -93,9 +95,9 @@ class _BookingState extends State<Booking> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue)),
+                            MaterialStateProperty.all<Color>(kPrimaryColor)),
                     child:
-                        Text('Continue', style: TextStyle(color: Colors.white)),
+                        Text('Continue', style: TextStyle(color: kPrimaryLightColor)),
                     onPressed: () {
                       Navigator.push(
                           context,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/theme.dart';
+
+import 'Clinic/Interface/home.dart';
+import 'Interface/Home/clinicdetailView.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Clinic booking',
       theme: theme(),
-      home: SplashScreen(),
+      home: HomeScreenDoctor(),
     );
   }
 }

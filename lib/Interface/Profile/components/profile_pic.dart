@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:swp409/Models/user.dart';
 
 class ProfilePic extends StatefulWidget {
-  const ProfilePic({
-    Key key,
-  }) : super(key: key);
+  User user;
+  ProfilePic({Key key, this.user}) : super(key: key);
 
   @override
   _ProfilePicState createState() => _ProfilePicState();

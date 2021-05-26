@@ -1,15 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Clinic/Interface/home.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/form_error.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
-import 'package:swp409/Services/AuthService/auth_service.dart';
+import 'package:swp409/Services/ApiService/auth_service.dart';
 import 'package:swp409/Services/Authentication/forgot_password/forgot_password_screen.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import 'package:swp409/constants.dart';
+import 'package:swp409/Models/user.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   var email, password, token;
   bool remember = false;
+  User _user = new User();
   //int userID = 0;
   final List<String> errors = [];
   final storage = new FlutterSecureStorage();
@@ -102,18 +106,35 @@ class _SignFormState extends State<SignForm> {
             press: () async {
               String url = '$ServerIP/api/v1/users/login';
               if (_formKey.currentState.validate()) {
-                authService.login(url, email, password).then((val) {
+                authService.login(url, email, password).then((val) async {
+                  print(val.data);
                   if (val.data["status"] == "success") {
-                    storage.write(key: 'jwt', value: val.data.toString());
+                    var _id = val.data['data']['user']['_id'];
+                    var _name = val.data['data']['user']['name'];
+                    var _role = val.data['data']['user']['role'];
+                    var _email = val.data['data']['user']['email'];
+                    User _user = new User(
+                        sId: _id, name: _name, email: _email, role: _role);
+
                     KeyboardUtil.hideKeyboard(context);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));
+                    if (_role == 'patient') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen.user(_user)));
+                    }
+                    if (_role == 'doctor') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomeScreenDoctor.user(user: _user)));
+                    }
                   } else if (val.data["status"] == "error") {
                     addError(error: "Incorrect email or password");
                   }
                 });
               }
-              print(await storage.read(key: 'jwt'));
             },
           ),
         ],
@@ -145,6 +166,7 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your password",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -160,6 +182,7 @@ class _SignFormState extends State<SignForm> {
         suffixIcon: Icon(
           Icons.lock,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );
@@ -191,6 +214,7 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
+        labelStyle: TextStyle(color: kPrimaryColor),
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
@@ -205,6 +229,7 @@ class _SignFormState extends State<SignForm> {
         suffixIcon: Icon(
           Icons.mail_outline,
           size: 30,
+          color: kPrimaryColor,
         ),
       ),
     );

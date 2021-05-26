@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
-
+import 'package:swp409/Models/user.dart';
+import 'package:swp409/Services/ApiService/user_service.dart';
+import 'package:swp409/helper/keyboard.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
+// ignore: must_be_immutable
 class CompleteProfileForm extends StatefulWidget {
+  User user;
+  CompleteProfileForm.user(this.user);
+
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
@@ -18,6 +25,20 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String mail;
   String phoneNumber;
   String address;
+  User _user = new User();
+  UserService _userService = new UserService();
+  TextEditingController fieldNameController = new TextEditingController();
+
+  @override
+  void initState() {
+    setState(() {
+      _user = widget.user;
+      print(widget.user.toJson());
+    });
+    //print(_user.toJson());
+    fieldNameController.text = _user.name;
+    super.initState();
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -39,26 +60,35 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildFirstNameFormField(),
+          buildNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildLastNameFormField(),
+          buildEmailField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPhoneNumberFormField(),
+          buildPhoneField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildAddressFormField(),
+          buildAddressField(),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "Save change",
             press: () {
+              String url = '$ServerIP/api/v1/users/${_user.sId}';
               if (_formKey.currentState.validate()) {
-                //Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MainScreen()));
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) => ProfilePage()));
+                _userService
+                    .updateInfo(url, name, phoneNumber, address)
+                    .then((res) {
+                  print(res.data);
+                  KeyboardUtil.hideKeyboard(context);
+                  if (res.data['status'] == "success") {
+                    _user.name = name;
+                    _user.phone = phoneNumber;
+                    _user.address = address;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainScreen.user(_user)));
+                  }
+                });
               }
             },
           ),
@@ -67,7 +97,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildAddressFormField() {
+  TextFormField buildAddressField() {
     return TextFormField(
       initialValue: "79 Nguyen Van Cu noi dai, Ninh Kieu, Can Tho",
       onSaved: (newValue) => address = newValue,
@@ -75,6 +105,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         if (value.isNotEmpty) {
           removeError(error: kAddressNullError);
         }
+        address = value;
         return null;
       },
       validator: (value) {
@@ -82,10 +113,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           addError(error: kAddressNullError);
           return kAddressNullError;
         }
+        address = value;
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Address",
+        labelText: _user.address ?? "",
         hintText: "Enter your address",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -107,15 +139,16 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildPhoneNumberFormField() {
+  TextFormField buildPhoneField() {
     return TextFormField(
-      initialValue: "0987654321",
+      initialValue: _user.phone ?? "",
       keyboardType: TextInputType.phone,
       onSaved: (newValue) => phoneNumber = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
         }
+        phoneNumber = value;
         return null;
       },
       validator: (value) {
@@ -123,6 +156,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           addError(error: kPhoneNumberNullError);
           return kPhoneNumberNullError;
         }
+        phoneNumber = value;
         return null;
       },
       decoration: InputDecoration(
@@ -147,9 +181,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildLastNameFormField() {
+  TextFormField buildEmailField() {
     return TextFormField(
-      initialValue: "email@gmail.com",
+      initialValue: _user.email ?? "",
       onSaved: (newValue) => mail = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -157,6 +191,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
+
         return null;
       },
       validator: (value) {
@@ -191,14 +226,15 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildFirstNameFormField() {
+  TextFormField buildNameField() {
     return TextFormField(
-      initialValue: "Rufi Ha",
+      initialValue: _user.name ?? "",
       onSaved: (newValue) => name = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
         }
+        name = value;
         return null;
       },
       validator: (value) {
@@ -206,6 +242,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           addError(error: kNamelNullError);
           return kNamelNullError;
         }
+        name = value;
         return null;
       },
       decoration: InputDecoration(

@@ -10,9 +10,11 @@ import 'package:swp409/size_config.dart';
 //
 const kDefaultPadding = 20.0;
 
-const kPrimaryColor = Color(0xFF006CBE);
+const kPrimaryColor = Color(0xFFEB2F64);
 const kPrimaryLightColor = Color(0xFFFFFFFF);
-const kPrimaryAppbar = Color(0xFF2296F3);
+const kPrimaryAppbar = Color(0xFFEB2F64);
+const kPrimaryBackground = Color(0xFFFDD2DB);
+const kPrimaryColorLight = Color(0xFFFC628B);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
@@ -46,7 +48,7 @@ const String kUsernameNullError = "Please enter username";
 const String kUsernameValid = "Username doesn't exist";
 const String kUsernameExist = "Username exist";
 const String kPasswordValid = "Email or password aren't valid";
-const String ServerIP = "http://192.168.1.21:8000";
+const String ServerIP = "http://192.168.1.3:8000";
 final otpInputDecoration = InputDecoration(
   contentPadding:
       EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),

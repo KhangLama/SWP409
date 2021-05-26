@@ -98,7 +98,11 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ClinicLocationScreen()));
+                                builder: (context) => ClinicLocationScreen(
+                                    emailController.text,
+                                    nameController.text,
+                                    phoneController.text,
+                                    descriptionController.text)));
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),

@@ -5,7 +5,8 @@ import '../../../constants.dart';
 
 class UserAppointDetailScreen extends StatefulWidget {
   @override
-  _UserAppointDetailScreenState createState() => _UserAppointDetailScreenState();
+  _UserAppointDetailScreenState createState() =>
+      _UserAppointDetailScreenState();
 }
 
 class _UserAppointDetailScreenState extends State<UserAppointDetailScreen> {

@@ -13,9 +13,10 @@ class AuthService {
           "password": password,
           "passwordConfirm": repassword
         },
-        options: Options(
-            contentType: Headers.formUrlEncodedContentType,
-            headers: {'token': 'token'}),
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        }),
       );
     } on DioError catch (e) {
       return response = e.response;
@@ -31,13 +32,15 @@ class AuthService {
           "email": email,
           "password": password,
         },
-        options: Options(
-          contentType: Headers.formUrlEncodedContentType,
-        ),
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        }),
       );
     } on DioError catch (e) {
+      print(e);
       return response = e.response;
-    } 
+    }
     return response;
   }
 }
