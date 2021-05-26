@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
 
 import 'Appointment/appointment.dart';
@@ -9,9 +10,8 @@ import 'ListCustomerAppointment/list_customer_appointment.dart';
 import 'Profile/profile.dart';
 
 class HomeScreenDoctor extends StatefulWidget {
-  FlutterSecureStorage storage;
-  HomeScreenDoctor(this.storage);
-
+  User user;
+  HomeScreenDoctor.user({Key key, this.user}) : super(key: key);
   @override
   _HomeScreenDoctorState createState() => _HomeScreenDoctorState();
 }

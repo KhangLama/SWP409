@@ -113,11 +113,6 @@ class _SignFormState extends State<SignForm> {
                     var _name = val.data['data']['user']['name'];
                     var _role = val.data['data']['user']['role'];
                     var _email = val.data['data']['user']['email'];
-                    print("ad" + '\n' + _id);
-                    await storage.write(key: 'userID', value: _id);
-                    await storage.write(key: 'userName', value: _name);
-                    await storage.write(key: 'userRole', value: _role);
-                    await storage.write(key: 'userEmail', value: _email);
                     User _user = new User(
                         sId: _id, name: _name, email: _email, role: _role);
 
@@ -132,7 +127,8 @@ class _SignFormState extends State<SignForm> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => HomeScreenDoctor(storage)));
+                              builder: (context) =>
+                                  HomeScreenDoctor.user(user: _user)));
                     }
                   } else if (val.data["status"] == "error") {
                     addError(error: "Incorrect email or password");
