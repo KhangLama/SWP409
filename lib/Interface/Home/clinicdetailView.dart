@@ -111,7 +111,6 @@ class ClinicPage extends StatelessWidget {
                                   child: Text('View on map'),
                                 ),
                                 SizedBox(width: 10),
-                                ElevatedButton(
                                 Icon(Icons.description_outlined, color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
@@ -167,7 +166,6 @@ class ClinicPage extends StatelessWidget {
                                       );
                                     },
                                     child: Text('Book now')),
-                                    child: Text('Book an appointment')),
                               ],
                             ),
                           ],

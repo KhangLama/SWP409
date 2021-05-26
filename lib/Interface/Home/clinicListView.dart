@@ -210,10 +210,6 @@ class _ClinicListViewState extends State<ClinicListView> {
                                         borderRadius: new BorderRadius.all(
                                             Radius.circular(15))), // foreground
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: kPrimaryColor, // background
-                                    onPrimary: kPrimaryLightColor, // foreground
-                                  ),
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(
