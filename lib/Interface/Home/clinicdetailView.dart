@@ -9,7 +9,7 @@ class ClinicPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Clinic\'s information'),
+        title: Text('Clinic\'s information', style: TextStyle(color: kPrimaryLightColor),),
         backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
@@ -92,10 +92,10 @@ class ClinicPage extends StatelessWidget {
                               children: [
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.red, // background
+                                    primary: kPrimaryColor, // background
                                     onPrimary: Colors.white,
                                     textStyle: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -110,8 +110,17 @@ class ClinicPage extends StatelessWidget {
                                 SizedBox(width: 10),
                                 ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
+                                      primary: kPrimaryColor, // background
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      minimumSize: Size(200,50),
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius:
+                                          new BorderRadius.all(Radius.circular(15))),// foreground
                                     ),
                                     onPressed: () {
                                       Navigator.push(

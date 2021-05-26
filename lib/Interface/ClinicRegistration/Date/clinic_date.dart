@@ -63,7 +63,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                     sundayBuild(),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     DefaultButton(
-                      text: "Continue",
+                      text: "Submit",
                       press: () {
                         print("MON open: ${openMon.format(context)} close: ${closeMon.format(context)}");
                         print("TUE open: ${openTue.format(context)} close: ${closeTue.format(context)}");
