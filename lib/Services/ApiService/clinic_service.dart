@@ -18,12 +18,8 @@ class ClinicService {
         print(_filepath);
         print(_filename);
         FormData formData = new FormData.fromMap({
-          "coverImage":
-              await MultipartFile.fromFile(_filepath, filename: _filename),
-          "email": email,
-          "name": name,
-          "phone": phone,
-          "description": description,
+          "coverImage": _filepath
+          //await MultipartFile.fromFile(_filepath, filename: _filename),
         });
         print(formData);
         response = await dio.post(url,

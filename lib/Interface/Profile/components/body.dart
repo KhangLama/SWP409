@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
-import 'package:swp409/constants.dart';
 import 'package:swp409/helper/keyboard.dart';
+import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class Body extends StatefulWidget {
@@ -24,19 +25,19 @@ class _BodyState extends State<Body> {
   String mail;
   String phoneNumber;
   String address;
+  PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
   User _user = new User();
   UserService _userService = new UserService();
   TextEditingController fieldNameController = new TextEditingController();
-  PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     setState(() {
       _user = widget.user;
-      _user.avatar = widget.user.avatar;
-      print(widget.user.avatar);
+      print(widget.user.toJson());
     });
+    //print(_user.toJson());
     super.initState();
   }
 
@@ -52,115 +53,6 @@ class _BodyState extends State<Body> {
       setState(() {
         errors.remove(error);
       });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.02),
-                SizedBox(
-                  height: 220,
-                  width: 220,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: _imageFile == null
-                            ? AssetImage('images/userprofile.jpg')
-                            : FileImage(File(_imageFile.path)),
-                      ),
-                      Positioned(
-                        right: 25,
-                        bottom: 0,
-                        child: SizedBox(
-                          height: 45,
-                          width: 45,
-                          // ignore: deprecated_member_use
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Color(0xFFDFDFE3)),
-                            ),
-                            padding: EdgeInsets.all(10.0),
-                            child: Column(
-                              // Replace with a Row for horizontal icon + text
-                              children: <Widget>[
-                                Icon(Icons.camera_alt),
-                              ],
-                            ),
-                            color: Color(0xFFDFDFE3),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: ((builder) => bottomSheet()));
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: SizeConfig.screenHeight * 0.03),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      buildNameField(),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                      buildEmailField(),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                      buildPhoneField(),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                      buildAddressField(),
-                      //FormError(errors: errors),
-                      SizedBox(height: getProportionateScreenHeight(40)),
-                      DefaultButton(
-                        text: "Save change",
-                        press: () {
-                          String url = '$ServerIP/api/v1/users/${_user.sId}';
-                          if (_formKey.currentState.validate()) {
-                            _userService
-                                .updateInfo(url, name, phoneNumber, address,
-                                    _user.avatar)
-                                .then((res) {
-                              print(res.data);
-                              KeyboardUtil.hideKeyboard(context);
-                              if (res.data['status'] == "success") {
-                                _user.name = name;
-                                _user.phone = phoneNumber;
-                                _user.address = address;
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            MainScreen.user(user: _user)));
-                              } else {
-                                print(res.data);
-                              }
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: getProportionateScreenHeight(30)),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   TextFormField buildAddressField() {
@@ -249,7 +141,6 @@ class _BodyState extends State<Body> {
 
   TextFormField buildEmailField() {
     return TextFormField(
-      readOnly: true,
       initialValue: _user.email ?? "",
       onSaved: (newValue) => mail = newValue,
       onChanged: (value) {
@@ -258,6 +149,7 @@ class _BodyState extends State<Body> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
+
         return null;
       },
       validator: (value) {
@@ -333,11 +225,115 @@ class _BodyState extends State<Body> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                SizedBox(
+                  height: 220,
+                  width: 220,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: _imageFile == null
+                            ? AssetImage('images/userprofile.jpg')
+                            : FileImage(File(_imageFile.path)),
+                      ),
+                      Positioned(
+                        right: 25,
+                        bottom: 0,
+                        child: SizedBox(
+                          height: 45,
+                          width: 45,
+                          // ignore: deprecated_member_use
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(color: Color(0xFFDFDFE3)),
+                            ),
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(
+                              // Replace with a Row for horizontal icon + text
+                              children: <Widget>[
+                                Icon(Icons.camera_alt),
+                              ],
+                            ),
+                            color: Color(0xFFDFDFE3),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: ((builder) => bottomSheet()));
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.03),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildNameField(),
+                      SizedBox(height: getProportionateScreenHeight(30)),
+                      buildEmailField(),
+                      SizedBox(height: getProportionateScreenHeight(30)),
+                      buildPhoneField(),
+                      SizedBox(height: getProportionateScreenHeight(30)),
+                      buildAddressField(),
+                      //FormError(errors: errors),
+                      SizedBox(height: getProportionateScreenHeight(40)),
+                      DefaultButton(
+                        text: "Save change",
+                        press: () {
+                          String url = '$ServerIP/api/v1/users/${_user.sId}';
+                          if (_formKey.currentState.validate()) {
+                            _userService
+                                .updateInfo(url, name, phoneNumber, address)
+                                .then((res) {
+                              print(res.data);
+                              KeyboardUtil.hideKeyboard(context);
+                              if (res.data['status'] == "success") {
+                                _user.name = name;
+                                _user.phone = phoneNumber;
+                                _user.address = address;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MainScreen.user(_user)));
+                              }
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenHeight(30)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void takePhoto(ImageSource source) async {
     final pickedFile = await _picker.getImage(source: source);
     setState(() {
       _imageFile = pickedFile;
-      widget.user.avatar = _imageFile;
     });
   }
 

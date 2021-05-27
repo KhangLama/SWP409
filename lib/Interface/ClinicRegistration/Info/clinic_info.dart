@@ -93,27 +93,23 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (context) => MainScreen()));
-                        var email = emailController.text;
-                        var name = nameController.text;
-                        var phone = phoneController.text;
-                        var description = descriptionController.text;
-                        var file = _imageFile;
-                        // _clinicService
-                        //     .register(
-                        //         url, email, name, phone, description, file)
-                        //     .then((value) {
-                        //   print(value.data);
-                        //   if (value.data['status'] == 'success') {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClinicLocationScreen(
-                                    emailController.text,
-                                    nameController.text,
-                                    phoneController.text,
-                                    descriptionController.text)));
-                        // }
-                        // });
+                        String url = "$ServerIP/api/v1/clinics";
+                        print("email: ${emailController.text}");
+                        print("name: ${nameController.text}");
+                        print("phone: ${phoneController.text}");
+                        print("description: ${descriptionController.text}");
+                        _clinicService.register(_imageFile, url).then((value) {
+                          if (value.data['status'] == 'success') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClinicLocationScreen(
+                                        emailController.text,
+                                        nameController.text,
+                                        phoneController.text,
+                                        descriptionController.text)));
+                          }
+                        });
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -258,12 +254,11 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            child: Image(
-              image: _imageFile == null
-                  ? AssetImage('images/0.jpg')
-                  : FileImage(File(_imageFile.path)),
-            ),
-          ),
+              child: Image(
+            image: _imageFile == null
+                ? AssetImage('images/0.jpg')
+                : FileImage(File(_imageFile.path)),
+          )),
         ],
       ),
     );

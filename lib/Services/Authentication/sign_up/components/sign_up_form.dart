@@ -71,21 +71,22 @@ class _SignUpFormState extends State<SignUpForm> {
                 String url = '$ServerIP/api/v1/users/signup';
                 if (_formKey.currentState.validate()) {
                   authService
-                      .signup(url, name, email, phoneNumber, password,
+                      .signup(url, name, phoneNumber, email, password,
                           confirm_password)
                       .then((val) {
                     if (val.data['status'] == 'success') {
                       var _id = val.data['data']['user']['_id'];
                       var _name = val.data['data']['user']['name'];
+                      var _phone = val.data['data']['user']['phone'];
                       var _role = val.data['data']['user']['role'];
                       var _email = val.data['data']['user']['email'];
                       var _phone = val.data['data']['user']['phone'];
                       User _user = new User(
                           sId: _id,
                           name: _name,
+                          phone: _phone,
                           email: _email,
-                          role: _role,
-                          phone: _phone);
+                          role: _role);
 
                       KeyboardUtil.hideKeyboard(context);
                       if (_role == 'patient') {
