@@ -34,7 +34,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                   children: [
                     SizedBox(height: SizeConfig.screenHeight * 0.02),
                     Text(
-                      "Clinic Working day",
+                      "Clinic Open Time",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: getProportionateScreenWidth(28),
@@ -42,36 +42,28 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                       ),
                     ),
                     Text(
-                      "Fill in your clinic working date",
-                      textAlign: TextAlign.left,
+                      "Fill in your clinic working time",
                     ),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
-                    titleHeaderBuild(),
-                    SizedBox(height: getProportionateScreenHeight(30)),
-                    mondayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    tuesdayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    wednesdayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    thursdayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    fridayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    saturdayBuild(),
-                    SizedBox(height: getProportionateScreenHeight(25)),
-                    sundayBuild(),
+                    buildForm(),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     DefaultButton(
                       text: "Submit",
                       press: () {
-                        print("MON open: ${openMon.format(context)} close: ${closeMon.format(context)}");
-                        print("TUE open: ${openTue.format(context)} close: ${closeTue.format(context)}");
-                        print("WED open: ${openWed.format(context)} close: ${closeWed.format(context)}");
-                        print("THU open: ${openThu.format(context)} close: ${closeThu.format(context)}");
-                        print("FRI open: ${openFri.format(context)} close: ${closeFri.format(context)}");
-                        print("SAT open: ${openSat.format(context)} close: ${closeSat.format(context)}");
-                        print("SUN open: ${openSun.format(context)} close: ${closeSun.format(context)}");
+                        print(
+                            "MON open: ${openMon.format(context)} close: ${closeMon.format(context)}");
+                        print(
+                            "TUE open: ${openTue.format(context)} close: ${closeTue.format(context)}");
+                        print(
+                            "WED open: ${openWed.format(context)} close: ${closeWed.format(context)}");
+                        print(
+                            "THU open: ${openThu.format(context)} close: ${closeThu.format(context)}");
+                        print(
+                            "FRI open: ${openFri.format(context)} close: ${closeFri.format(context)}");
+                        print(
+                            "SAT open: ${openSat.format(context)} close: ${closeSat.format(context)}");
+                        print(
+                            "SUN open: ${openSun.format(context)} close: ${closeSun.format(context)}");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -88,7 +80,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
       ),
     );
   }
-
 
   Widget titleHeaderBuild() {
     return Row(
@@ -123,236 +114,334 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
     );
   }
 
-  Widget mondayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Monday',
-            style: TextStyle(fontSize: 18.0),
+  Widget buildForm(){
+    return Container(
+      alignment: Alignment.center,
+      child: Table(
+        children: [
+          TableRow(
+            children:[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
+                child: Text(
+                  'DAY',
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
+                child: Text(
+                  'OPEN',
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
+                child: Text(
+                  'CLOSE',
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ]
           ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.21),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
+          //Monday
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
           ),
-          onPressed: _selectOpenMon,
-          child: Text(openMon.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
+          TableRow(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                child: Text(
+                  'Monday',
+                  style: TextStyle(fontSize: 20.0),
+
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColorLight, // background
+                    onPrimary: kPrimaryLightColor, // foreground
+                  ),
+                  onPressed: _selectOpenMon,
+                  child: Text(openMon.format(context)),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColorLight, // background
+                    onPrimary: kPrimaryLightColor, // foreground
+                  ),
+                  onPressed: _selectCloseMon,
+                  child: Text(closeMon.format(context)),
+                ),
+              ),
+            ]
           ),
-          onPressed: _selectCloseMon,
-          child: Text(closeMon.format(context)),
-        ),
-      ],
+          TableRow(
+            children: [
+              Text(""),
+              Text(""),
+              Text(""),
+            ]
+          ),
+          //Tuesday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Tuesday',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenTue,
+                    child: Text(openTue.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseTue,
+                    child: Text(closeTue.format(context)),
+                  ),
+                ),
+              ]
+          ),
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
+          ),
+          //Wednesday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Wednesday',
+                    style: TextStyle(fontSize: 20.0),
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenWed,
+                    child: Text(openWed.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseWed,
+                    child: Text(closeWed.format(context)),
+                  ),
+                ),
+              ]
+          ),
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
+          ),
+          //Thursday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Thursday',
+                    style: TextStyle(fontSize: 20.0),
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenThu,
+                    child: Text(openThu.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseThu,
+                    child: Text(closeThu.format(context)),
+                  ),
+                ),
+              ]
+          ),
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
+          ),
+          //Friday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Friday',
+                    style: TextStyle(fontSize: 20.0),
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenFri,
+                    child: Text(openFri.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseFri,
+                    child: Text(closeFri.format(context)),
+                  ),
+                ),
+              ]
+          ),
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
+          ),
+          //Saturday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Saturday',
+                    style: TextStyle(fontSize: 20.0),
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenSat,
+                    child: Text(openSat.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseSat,
+                    child: Text(closeSat.format(context)),
+                  ),
+                ),
+              ]
+          ),
+          TableRow(
+              children: [
+                Text(""),
+                Text(""),
+                Text(""),
+              ]
+          ),
+          //Sunday
+          TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  child: Text(
+                    'Sunday',
+                    style: TextStyle(fontSize: 20.0),
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectOpenSun,
+                    child: Text(openSun.format(context)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColorLight, // background
+                      onPrimary: kPrimaryLightColor, // foreground
+                    ),
+                    onPressed: _selectCloseSun,
+                    child: Text(closeSun.format(context)),
+                  ),
+                ),
+              ]
+          ),
+        ],
+      ),
     );
   }
 
-  Widget tuesdayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Tuesday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.205),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenTue,
-          child: Text(openTue.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseTue,
-          child: Text(closeTue.format(context)),
-        ),
-      ],
-    );
-  }
-
-  Widget wednesdayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Wednesday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.15),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenWed,
-          child: Text(openWed.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseWed,
-          child: Text(closeWed.format(context)),
-        ),
-      ],
-    );
-  }
-
-  Widget thursdayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Thursday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.188),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenThu,
-          child: Text(openThu.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseThu,
-          child: Text(closeThu.format(context)),
-        ),
-      ],
-    );
-  }
-
-  Widget fridayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Friday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.242),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenFri,
-          child: Text(openFri.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseFri,
-          child: Text(closeFri.format(context)),
-        ),
-      ],
-    );
-  }
-
-  Widget saturdayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Saturday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.196),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenSat,
-          child: Text(openSat.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseSat,
-          child: Text(closeSat.format(context)),
-        ),
-      ],
-    );
-  }
-
-  Widget sundayBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'Sunday',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.222),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectOpenSun,
-          child: Text(openSun.format(context)),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.14),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: kPrimaryColorLight, // background
-            onPrimary: kPrimaryLightColor, // foreground
-          ),
-          onPressed: _selectCloseSun,
-          child: Text(closeSun.format(context)),
-        ),
-      ],
-    );
-  }
 
   TimeOfDay openMon = TimeOfDay(hour: 7, minute: 00);
   TimeOfDay openTue = TimeOfDay(hour: 7, minute: 00);
@@ -451,7 +540,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   void _selectOpenThu() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: openThu  ,
+      initialTime: openThu,
       initialEntryMode: TimePickerEntryMode.input,
     );
     if (newTime != null) {
@@ -477,7 +566,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   void _selectOpenFri() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: openFri  ,
+      initialTime: openFri,
       initialEntryMode: TimePickerEntryMode.input,
     );
     if (newTime != null) {
@@ -503,7 +592,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   void _selectOpenSat() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: openSat  ,
+      initialTime: openSat,
       initialEntryMode: TimePickerEntryMode.input,
     );
     if (newTime != null) {
@@ -529,7 +618,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   void _selectOpenSun() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: openSun  ,
+      initialTime: openSun,
       initialEntryMode: TimePickerEntryMode.input,
     );
     if (newTime != null) {
