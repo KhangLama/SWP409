@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Interface/ClinicRegistration/Date/clinic_date.dart';
 import 'package:swp409/Interface/ClinicRegistration/Location/clinic_location.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 
