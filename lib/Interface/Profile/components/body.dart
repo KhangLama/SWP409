@@ -300,7 +300,8 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.sId}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(url, name, phoneNumber, address)
+                                .updateInfo(
+                                    url, name, phoneNumber, address, _imageFile)
                                 .then((res) {
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);
@@ -308,11 +309,12 @@ class _BodyState extends State<Body> {
                                 _user.name = name;
                                 _user.phone = phoneNumber;
                                 _user.address = address;
+                                _user.avatar = _imageFile;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            MainScreen.user(_user)));
+                                            MainScreen.user(user: _user)));
                               }
                             });
                           }
