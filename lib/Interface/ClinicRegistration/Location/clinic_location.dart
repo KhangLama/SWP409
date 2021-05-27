@@ -123,7 +123,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  SizedBox(height: SizeConfig.screenHeight * 0.04),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
                   Container(
                     margin: const EdgeInsets.only(left: 1, right: 1),
                     child: TextField(
@@ -134,8 +134,16 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                         filled: true,
                         contentPadding: EdgeInsets.all(8),
                         hintText: 'Enter clinic\'s address',
-                        suffixIcon: Icon(Icons.search_outlined),
-                        border: new OutlineInputBorder(
+                        suffixIcon: Icon(
+                          Icons.search_outlined,
+                          color: kPrimaryColor,
+                        ),
+                        enabledBorder: new OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          //borderSide: BorderSide(color: kPrimaryColor, width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: kPrimaryColor, width: 2),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                       ),
