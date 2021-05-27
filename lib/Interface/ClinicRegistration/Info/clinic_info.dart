@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/ClinicRegistration/Date/clinic_date.dart';
 import 'package:swp409/Interface/ClinicRegistration/Location/clinic_location.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -18,6 +19,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final descriptionController = TextEditingController();
+  ClinicService _clinicService = new ClinicService();
 
   @override
   void initState() {
@@ -91,18 +93,23 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (context) => MainScreen()));
+                        String url = "$ServerIP/api/v1/clinics";
                         print("email: ${emailController.text}");
                         print("name: ${nameController.text}");
                         print("phone: ${phoneController.text}");
                         print("description: ${descriptionController.text}");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClinicLocationScreen(
-                                    emailController.text,
-                                    nameController.text,
-                                    phoneController.text,
-                                    descriptionController.text)));
+                        _clinicService.register(_imageFile, url).then((value) {
+                          if (value.data['status'] == 'success') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClinicLocationScreen(
+                                        emailController.text,
+                                        nameController.text,
+                                        phoneController.text,
+                                        descriptionController.text)));
+                          }
+                        });
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -247,9 +254,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            child: _imageFile == null
-                ? Image.asset('images/0.jpg')
-                : FileImage(File(_imageFile.path)),
+            child: Image(
+            image: _imageFile == null
+                ? AssetImage('images/0.jpg')
+                : FileImage(File(_imageFile.path)),)
           ),
         ],
       ),
