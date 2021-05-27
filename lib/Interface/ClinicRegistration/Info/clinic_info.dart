@@ -92,12 +92,15 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (context) => MainScreen()));
-                        String url = "$ServerIP/api/v1/clinics";
-                        print("email: ${emailController.text}");
-                        print("name: ${nameController.text}");
-                        print("phone: ${phoneController.text}");
-                        print("description: ${descriptionController.text}");
-                        _clinicService.register(_imageFile, url).then((value) {
+
+                        var email = emailController.text;
+                        var name = nameController.text;
+                        var phone = phoneController.text;
+                        var description = descriptionController.text;
+                        _clinicService
+                            .register(url, email, name, phone, description,
+                                _imageFile)
+                            .then((value) {
                           if (value.data['status'] == 'success') {
                             Navigator.push(
                                 context,

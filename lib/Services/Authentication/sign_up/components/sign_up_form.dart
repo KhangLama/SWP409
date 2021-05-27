@@ -80,7 +80,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       var _phone = val.data['data']['user']['phone'];
                       var _role = val.data['data']['user']['role'];
                       var _email = val.data['data']['user']['email'];
-                      var _phone = val.data['data']['user']['phone'];
+                      
                       User _user = new User(
                           sId: _id,
                           name: _name,
