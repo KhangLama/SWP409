@@ -1,18 +1,24 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:io';
 import '../../size_config.dart';
 
+// ignore: must_be_immutable
 class ClinicPage extends StatefulWidget {
+  Clinic clinic;
+  ClinicPage.clinic({Key key, this.clinic}) : super(key: key);
   @override
   _ClinicPageState createState() => _ClinicPageState();
 }
 
 class _ClinicPageState extends State<ClinicPage> {
+  Clinic _clinic;
   double rating = 0.0;
 
   bool viewVisible = false;
@@ -26,6 +32,9 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   void initState() {
+    setState(() {
+      _clinic = widget.clinic;
+    });
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -38,6 +47,7 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(_clinic.coverImage.url);
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -91,10 +101,7 @@ class _ClinicPageState extends State<ClinicPage> {
                 ListBody(
                   children: [
                     Center(
-                      child: Image(
-                          image: NetworkImage(
-                              'https://lh5.googleusercontent.com/p/AF1QipNfMT9alf72auaXkafqbtfY51b-5Z0qzHBWEPsv=w408-h306-k-no',
-                              scale: 0.9)),
+                      child: Image.network(_clinic.coverImage.url),
                     ),
                     SizedBox(height: 10),
                     Card(
@@ -106,9 +113,10 @@ class _ClinicPageState extends State<ClinicPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
                             Center(
                               child: Text(
-                                'Phòng khám bác sĩ Tiêu Phương Lâm',
+                                _clinic.name,
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -124,7 +132,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                      '85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ',
+                                      _clinic.address?? "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ",
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -139,7 +147,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
-                                  child: Text('0123456789',
+                                  child: Text(_clinic.phone,
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -155,7 +163,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                      'Phòng khám xịn xò nhất đất nước Việt Nam',
+                                      _clinic.description,
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -603,7 +611,7 @@ class _ClinicPageState extends State<ClinicPage> {
     );
   }
 
-  String cmtChild;
+  String cmtChild = "";
 
   Widget buildViewCmtAndCmtChild() {
     return Padding(

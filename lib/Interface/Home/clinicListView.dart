@@ -142,7 +142,9 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Change password'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ChangePasswordScreen.user(user: _user,)));
+                  builder: (context) => ChangePasswordScreen.user(
+                        user: _user,
+                      )));
             },
           ),
           ListTile(
@@ -161,6 +163,7 @@ class _ClinicListViewState extends State<ClinicListView> {
   // List view of clinic card
   buildListView() {
     return NotificationListener<ScrollNotification>(
+      // ignore: missing_return
       onNotification: (scrollNotification) {
         assert(scrollNotification != null);
         if (scrollNotification.metrics.pixels ==
@@ -179,7 +182,7 @@ class _ClinicListViewState extends State<ClinicListView> {
               width: MediaQuery.of(context).size.width,
               child: GestureDetector(
                 onTap: () => Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(builder: (context) => ClinicPage())),
+                    MaterialPageRoute(builder: (context) => ClinicPage.clinic(clinic: _filteredclinic[index],))),
                 child: Card(
                     margin: const EdgeInsets.only(
                         top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),

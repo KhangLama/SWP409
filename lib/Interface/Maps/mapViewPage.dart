@@ -51,7 +51,7 @@ class _MapViewPageState extends State<MapViewPage> {
         print(value[0].toJson());
         _clinics = value;
         print('clinic');
-        print(_clinics[1].toJson());
+        print(_clinics[0].toJson());
         loading = false;
       });
     });
@@ -93,7 +93,7 @@ class _MapViewPageState extends State<MapViewPage> {
                 title: _clinics[i].name,
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ClinicPage()));
+                      MaterialPageRoute(builder: (context) => ClinicPage.clinic(clinic: _clinics[i])));
                 }),
             onTap: () {}));
       }
@@ -125,7 +125,7 @@ class _MapViewPageState extends State<MapViewPage> {
             polylines[id] = polyline;
           }
 
-          // await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
+          await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
         });
 
         setState(() {
@@ -135,36 +135,36 @@ class _MapViewPageState extends State<MapViewPage> {
     );
   }
 
-  // Future _buildWayPoint(Marker element, Clinic clinic,
-  //     Position _currentPosition, _addPolyLine()) async {
-  //   var flag;
-  //   for (var i = 0; i < _clinics.length; i++) {
-  //     flag = element.infoWindow.title
-  //         .toLowerCase()
-  //         .compareTo(_clinics[i].name.toLowerCase());
-  //     if (flag == 0) {
-  //       var latLngPosition =
-  //           LatLng(double.parse(clinic.lat), double.parse(clinic.lng));
-  //       var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
-  //       await newGoogleMapController
-  //           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  //       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //           FlutterConfig.get('GOOGLE_MAP_KEY'),
-  //           PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
-  //           PointLatLng(double.parse(clinic.lat), double.parse(clinic.lng)),
-  //           travelMode: TravelMode.driving,
-  //           wayPoints: [PolylineWayPoint(location: clinic.address)]);
-  //       polylineCoordinates.clear();
+  Future _buildWayPoint(Marker element, Clinic clinic,
+      Position _currentPosition, _addPolyLine()) async {
+    var flag;
+    for (var i = 0; i < _clinics.length; i++) {
+      flag = element.infoWindow.title
+          .toLowerCase()
+          .compareTo(_clinics[i].name.toLowerCase());
+      if (flag == 0) {
+        var latLngPosition =
+            LatLng(clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]);
+        var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
+        await newGoogleMapController
+            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+            FlutterConfig.get('GOOGLE_MAP_KEY'),
+            PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
+            PointLatLng(clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]),
+            travelMode: TravelMode.driving,
+            wayPoints: [PolylineWayPoint(location: clinic.address)]);
+        polylineCoordinates.clear();
 
-  //       if (result.points.isNotEmpty) {
-  //         result.points.forEach((PointLatLng point) {
-  //           polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //         });
-  //       }
-  //       _addPolyLine();
-  //     }
-  //   }
-  // }
+        if (result.points.isNotEmpty) {
+          result.points.forEach((PointLatLng point) {
+            polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+          });
+        }
+        _addPolyLine();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

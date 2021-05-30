@@ -16,15 +16,16 @@ class ClinicService {
   }
 
   Future<Response> register({url, Clinic clinic, path}) async {
-    //String geo = jsonEncode(clinic.geometry);
+    String geo = jsonEncode(clinic.geometry);
+    String schedule = jsonEncode(clinic.schedule);
     try {
       var data = new FormData.fromMap({
         "email": clinic.email,
         "phone": clinic.phone,
         "description": clinic.description,
         "name": clinic.name,
-        "schedule": clinic.schedule,
-        "geometry": clinic.geometry,
+        "schedule": schedule,
+        "geometry": geo,
         "coverImage": await MultipartFile.fromFile(path.path),
       });
       print('form');

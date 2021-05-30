@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:swp409/Clinic/Interface/home.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/form_error.dart';
@@ -26,6 +27,7 @@ class _SignFormState extends State<SignForm> {
   //int userID = 0;
   final List<String> errors = [];
   final storage = new FlutterSecureStorage();
+  bool loading = false;
   // List<User> _users = <User>[];
   // Future<List<User>> fetchUsers() async {
   //   var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
@@ -64,85 +66,95 @@ class _SignFormState extends State<SignForm> {
   @override
   Widget build(BuildContext context) {
     AuthService authService = new AuthService();
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Row(
+    return ModalProgressHUD(
+      inAsyncCall: loading,
+      opacity: 0.9,
+      color: Colors.blue,
+      progressIndicator: CircularProgressIndicator(),
+
+
+      child: Container(
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
+              buildEmailFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildPasswordFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              Row(
+                children: [
+                  Checkbox(
+                    value: remember,
+                    activeColor: kPrimaryColor,
+                    onChanged: (value) {
+                      setState(() {
+                        remember = value;
+                      });
+                    },
+                  ),
+                  Text("Remember me"),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen())),
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  )
+                ],
+              ),
+              FormError(errors: errors),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              SizedBox(height: SizeConfig.screenHeight * 0.08),
+              DefaultButton(
+                text: "Continue",
+                press: () async {
+                  String url = '$ServerIP/api/v1/users/login';
+                  if (_formKey.currentState.validate()) {
+                    authService.login(url, email, password).then((val) async {
+                      print(val.data);
+                      if (val.data["status"] == "success") {
+                        var _id = val.data['data']['user']['_id'];
+                        var _name = val.data['data']['user']['name'];
+                        var _role = val.data['data']['user']['role'];
+                        var _phone = val.data['data']['user']['phone'];
+                        var _email = val.data['data']['user']['email'];
+                        var _avatar = val.data['data']['user']['avatar'];
+                        User _user = new User(
+                            sId: _id,
+                            name: _name,
+                            email: _email,
+                            role: _role,
+                            phone: _phone,
+                            avatar: _avatar);
+
+                        KeyboardUtil.hideKeyboard(context);
+                        if (_role == 'patient') {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  MainScreen.user(user: _user)));
+                        }
+                        if (_role == 'doctor') {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      HomeScreenDoctor.user(user: _user)));
+                        }
+                      } else if (val.data["status"] == "error") {
+                        addError(error: "Incorrect email or password");
+                      }
+                    });
+                  }
                 },
               ),
-              Text("Remember me"),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen())),
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
             ],
           ),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          SizedBox(height: SizeConfig.screenHeight * 0.08),
-          DefaultButton(
-            text: "Continue",
-            press: () async {
-              String url = '$ServerIP/api/v1/users/login';
-              if (_formKey.currentState.validate()) {
-                authService.login(url, email, password).then((val) async {
-                  print(val.data);
-                  if (val.data["status"] == "success") {
-                    var _id = val.data['data']['user']['_id'];
-                    var _name = val.data['data']['user']['name'];
-                    var _role = val.data['data']['user']['role'];
-                    var _phone = val.data['data']['user']['phone'];
-                    var _email = val.data['data']['user']['email'];
-                    var _avatar = val.data['data']['user']['avatar'];
-                    User _user = new User(
-                        sId: _id,
-                        name: _name,
-                        email: _email,
-                        role: _role,
-                        phone: _phone,
-                        avatar: _avatar);
-
-                    KeyboardUtil.hideKeyboard(context);
-                    if (_role == 'patient') {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              MainScreen.user(user: _user)));
-                    }
-                    if (_role == 'doctor') {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  HomeScreenDoctor.user(user: _user)));
-                    }
-                  } else if (val.data["status"] == "error") {
-                    addError(error: "Incorrect email or password");
-                  }
-                });
-              }
-            },
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -25,16 +25,17 @@ class _BodyState extends State<Body> {
   String mail;
   String phoneNumber;
   String address;
-  PickedFile _imageFile;
+  PickedFile _imageFile ;
   final ImagePicker _picker = ImagePicker();
   User _user = new User();
   UserService _userService = new UserService();
   TextEditingController fieldNameController = new TextEditingController();
-
+  bool loading = true;
   @override
   void initState() {
     setState(() {
       _user = widget.user;
+      _imageFile = widget.user.avatar;
       print(widget.user.toJson());
     });
     //print(_user.toJson());
@@ -57,7 +58,7 @@ class _BodyState extends State<Body> {
 
   TextFormField buildAddressField() {
     return TextFormField(
-      initialValue: "79 Nguyen Van Cu noi dai, Ninh Kieu, Can Tho",
+      initialValue: _user.address ?? "",
       onSaved: (newValue) => address = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -75,7 +76,7 @@ class _BodyState extends State<Body> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: _user.address ?? "",
+        labelText: "address",
         hintText: "Enter your address",
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -304,13 +305,14 @@ class _BodyState extends State<Body> {
                                 .updateInfo(
                                     url, name, phoneNumber, address, _imageFile)
                                 .then((res) {
+
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {
                                 _user.name = name;
                                 _user.phone = phoneNumber;
                                 _user.address = address;
-                                _user.avatar = _imageFile;
+                                _user.avatar  = _imageFile ;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

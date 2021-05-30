@@ -8,8 +8,8 @@ class UserService {
   Future<Response> updateInfo(url, _name, _phone, _address, _avatar) async {
     try {
       if (_avatar != null) {
-        String _filename = _avatar.split('/').last;
-        String _filepath = _avatar;
+        String _filename = _avatar.path.split('/').last;
+        String _filepath = _avatar.path;
         print(_filepath);
         var formData = new FormData.fromMap({
           "name": _name,
