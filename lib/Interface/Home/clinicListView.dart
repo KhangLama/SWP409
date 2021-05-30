@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Interface/ChangePassword/change_password.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
@@ -134,6 +135,14 @@ class _ClinicListViewState extends State<ClinicListView> {
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                   builder: (context) => ProfilePage.user(user: _user)));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.lock_rounded),
+            title: Text('Change password'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ChangePasswordScreen.user(user: _user,)));
             },
           ),
           ListTile(

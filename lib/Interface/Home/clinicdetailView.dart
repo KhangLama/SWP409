@@ -15,6 +15,15 @@ class ClinicPage extends StatefulWidget {
 class _ClinicPageState extends State<ClinicPage> {
   double rating = 0.0;
 
+  bool viewVisible = false;
+  List<bool> name;
+
+  void changeVisible() {
+    setState(() {
+      viewVisible = !viewVisible;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -421,9 +430,7 @@ class _ClinicPageState extends State<ClinicPage> {
                               ],
                             ),
                             SizedBox(height: 20),
-                            buildList(),
-                            buildList(),
-                            buildList(),
+                            buildListCmt(),
                           ],
                         ),
                       ),
@@ -440,12 +447,13 @@ class _ClinicPageState extends State<ClinicPage> {
   }
 
   double ratingCmt = 4.5;
-  Widget buildList() {
+  Widget buildListCmt() {
+    bool isVisible = false;
     return Container(
       width: MediaQuery.of(context).size.width,
       child: GestureDetector(
         child: Card(
-          elevation: 5,
+          elevation: 2,
           shadowColor: Colors.black,
           margin: const EdgeInsets.only(
               top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
@@ -461,7 +469,7 @@ class _ClinicPageState extends State<ClinicPage> {
                     SizedBox(width: 20),
                     Expanded(
                       child: Text(
-                        "Trinh Ha d m m",
+                        "Trinh Ha",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.black, fontSize: 20),
@@ -489,7 +497,25 @@ class _ClinicPageState extends State<ClinicPage> {
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                   ),
-                ])
+                ]),
+                Row(children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed:
+                        changeVisible, //() => setState(() => isVisible = !isVisible),
+                    child: const Text(
+                      'Comment (1)',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
+                  ),
+                ]),
+                Visibility(
+                  visible: viewVisible, //isVisible,
+                  child: buildViewCmtAndCmtChild(),
+                ),
+                SizedBox(height: 5),
               ],
             ),
           ),
@@ -542,6 +568,84 @@ class _ClinicPageState extends State<ClinicPage> {
       ),
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
+    );
+  }
+
+  Widget buildViewCmtChild() {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(width: 10),
+              uploadClinicImg(),
+              SizedBox(width: 20),
+              Expanded(
+                child: Text(
+                  "+4 100%",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+          Row(children: [
+            Expanded(
+              child: Text(
+                "I don't think so! I think we need more 4 months",
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ),
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  String cmtChild;
+
+  Widget buildViewCmtAndCmtChild() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40, 5, 5, 5),
+      child: Column(
+        children: [
+          buildViewCmtChild(),
+          SizedBox(height: 10),
+          TextFormField(
+            maxLines: 1,
+            onChanged: (value) {
+              setState(() {
+                cmtChild = value;
+              });
+              return null;
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return "Cant null";
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              hintText: "Enter your comment",
+              enabledBorder: new OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderSide: BorderSide(color: kPrimaryColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor),
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              suffixIcon: cmtChild.length == 0 ? Container(width: 0) : IconButton(
+                icon: Icon(Feather.send),
+                onPressed: () {},
+                color: kPrimaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
