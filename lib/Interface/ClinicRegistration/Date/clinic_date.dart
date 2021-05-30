@@ -122,7 +122,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
             children:[
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
+                padding: const EdgeInsets.fromLTRB(0, 8, 8, 15),
                 child: Text(
                   'DAY',
                   style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
@@ -155,11 +155,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                 child: Text(
                   'Monday',
                   style: TextStyle(fontSize: 20.0),
-
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Padding(
@@ -197,10 +198,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Tuesday',
                     style: TextStyle(fontSize: 20.0),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Padding(
@@ -238,10 +241,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Wednesday',
                     style: TextStyle(fontSize: 20.0),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
 
                   ),
                 ),
@@ -280,10 +285,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Thursday',
                     style: TextStyle(fontSize: 20.0),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
 
                   ),
                 ),
@@ -322,11 +329,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Friday',
                     style: TextStyle(fontSize: 20.0),
-
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Padding(
@@ -364,11 +372,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Saturday',
                     style: TextStyle(fontSize: 20.0),
-
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Padding(
@@ -406,11 +415,12 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
                   child: Text(
                     'Sunday',
                     style: TextStyle(fontSize: 20.0),
-
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Padding(

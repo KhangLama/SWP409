@@ -266,7 +266,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
   }
 
   @override
-  Widget build(BuildContext context) {
+         Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(

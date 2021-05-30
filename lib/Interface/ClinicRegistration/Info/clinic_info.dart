@@ -18,6 +18,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final descriptionController = TextEditingController();
+  String errorEmail = "";
+  String errorName = "";
+  String errorPhone = "";
+  String errorDes = "";
   ClinicService _clinicService = new ClinicService();
   @override
   void initState() {
@@ -97,7 +101,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         var name = nameController.text;
                         var phone = phoneController.text;
                         var description = descriptionController.text;
-          
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
