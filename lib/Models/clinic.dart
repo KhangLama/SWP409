@@ -110,12 +110,11 @@ class Replies {
 
 @JsonSerializable(explicitToJson: true)
 class Schedule {
-  String sId;
   int dayOfWeek;
-  int startTime;
-  int endTime;
+  DateTime startTime;
+  DateTime endTime;
 
-  Schedule({this.sId, this.dayOfWeek, this.startTime, this.endTime});
+  Schedule({this.dayOfWeek, this.startTime, this.endTime});
 
   factory Schedule.fromJson(Map<String, dynamic> json) =>
       _$ScheduleFromJson(json);
