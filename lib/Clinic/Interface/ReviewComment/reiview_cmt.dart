@@ -56,6 +56,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
       viewVisible = !viewVisible;
     });
   }
+
   double ratingCmt = 4.5;
   Widget buildListCmt() {
     bool isVisible = false;
@@ -69,7 +70,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
               top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
           child: Padding(
             padding:
-            const EdgeInsets.only(top: 15, bottom: 5, left: 5, right: 5),
+                const EdgeInsets.only(top: 15, bottom: 5, left: 5, right: 5),
             child: Column(
               children: [
                 Row(
@@ -114,7 +115,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
                       textStyle: const TextStyle(fontSize: 20),
                     ),
                     onPressed:
-                    changeVisible, //() => setState(() => isVisible = !isVisible),
+                        changeVisible, //() => setState(() => isVisible = !isVisible),
                     child: const Text(
                       'Comment (1)',
                       style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -172,9 +173,9 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
         suffixIcon: cmtController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () => cmtController.clear(),
-        ),
+                icon: Icon(Icons.close),
+                onPressed: () => cmtController.clear(),
+              ),
       ),
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
@@ -213,7 +214,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
     );
   }
 
-  String cmtChild;
+  String cmtChild = "";
   Widget buildViewCmtAndCmtChild() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40, 5, 5, 5),
@@ -246,11 +247,13 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: cmtChild.length == 0 ? Container(width: 0) : IconButton(
-                icon: Icon(Feather.send),
-                onPressed: () {},
-                color: kPrimaryColor,
-              ),
+              suffixIcon: cmtChild.length == 0
+                  ? Container(width: 0)
+                  : IconButton(
+                      icon: Icon(Feather.send),
+                      onPressed: () {},
+                      color: kPrimaryColor,
+                    ),
             ),
           ),
         ],

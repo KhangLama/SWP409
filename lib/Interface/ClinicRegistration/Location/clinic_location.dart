@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/ClinicRegistration/Date/clinic_date.dart';
 import 'package:swp409/Models/clinic.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 // ignore: must_be_immutable
 class ClinicLocationScreen extends StatefulWidget {
   String email, name, phone, description;
-  var _imageFile;
+  PickedFile _imageFile;
   ClinicLocationScreen(
       this.email, this.name, this.phone, this.description, this._imageFile);
 
@@ -33,6 +34,8 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   GlobalKey<AutoCompleteTextFieldState<Clinic>> key = GlobalKey();
   List<Clinic> _suggest = <Clinic>[];
   Clinic _clinic = new Clinic();
+  Map<String, double> geo;
+  double lat, lng;
   String url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
   String url2 = 'https://maps.googleapis.com/maps/api/place/details/json';
   @override
@@ -98,12 +101,8 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
         '$url2?place_id=${predictions.last['place_id']}&key=$ggmapkey';
 
     Response response2 = await Dio().get(request2);
-    double lat = response2.data['result']['geometry']['location']['lat'];
-    double lng = response2.data['result']['geometry']['location']['lng'];
-    List<double> geo;
-    geo.add(lat);
-    geo.add(lng);
-    _clinic.geometry.coordinates = geo;
+    lat = response2.data['result']['geometry']['location']['lat'];
+    lng = response2.data['result']['geometry']['location']['lng'];
     markerCreate(lat, lng);
     return response2;
   }
@@ -211,12 +210,17 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                     text: "Continue",
                     press: () {
                       _clinic.address = _searchController.text;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClinicDateScreen(
-                                    clinic: _clinic,
-                                  )));
+                      print(lat);
+                      print(lng);
+                      List<Geometry> list = <Geometry>[];
+                      list.add(
+                          Geometry(coordinates: [lng, lat], type: "Point"));
+                      print(list.length);
+                      _clinic.geometry = list[0];
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ClinicDateScreen(
+                              clinic: _clinic, imageFile: widget._imageFile)));
                     },
                   ),
                 ),

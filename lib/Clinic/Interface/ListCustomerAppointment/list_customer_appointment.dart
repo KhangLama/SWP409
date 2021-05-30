@@ -12,8 +12,6 @@ class ListCustomerAppointment extends StatefulWidget {
 
 class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   @override
-
-
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -32,6 +30,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
               ),
               onPressed: () {
                 // do something
+                Navigator.of(context).pop();
               },
             )
           ],
@@ -41,11 +40,11 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
             child: Column(
               children: <Widget>[
                 // search bar
-               buildList(),
-               buildList1(),
-               buildList2(),
-               buildList3(),
-               buildList(),
+                buildList(),
+                buildList1(),
+                buildList2(),
+                buildList3(),
+                buildList(),
               ],
             ),
           ),
@@ -111,8 +110,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.phone,
-                                color: Colors.black, size: 17),
+                            Icon(Feather.phone, color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
                               "0123456789",
@@ -153,6 +151,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
       ),
     );
   }
+
   Widget buildList1() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -210,8 +209,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.phone,
-                                color: Colors.black, size: 17),
+                            Icon(Feather.phone, color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
                               "0258654789",
@@ -252,6 +250,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
       ),
     );
   }
+
   Widget buildList2() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -309,8 +308,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.phone,
-                                color: Colors.black, size: 17),
+                            Icon(Feather.phone, color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
                               "0245669987",
@@ -351,6 +349,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
       ),
     );
   }
+
   Widget buildList3() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -408,8 +407,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.phone,
-                                color: Colors.black, size: 17),
+                            Icon(Feather.phone, color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
                               "0909846995",

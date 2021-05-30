@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import '../../../size_config.dart';
 import '../../../constants.dart';
 
 class ClinicDateScreen extends StatefulWidget {
   Clinic clinic;
-
-  ClinicDateScreen({Key key, this.clinic}) : super(key: key);
+  PickedFile imageFile;
+  ClinicDateScreen({Key key, this.clinic, this.imageFile}) : super(key: key);
   @override
   _ClinicDateScreenState createState() => _ClinicDateScreenState();
 }
@@ -32,7 +34,8 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   TimeOfDay closeSun = TimeOfDay(hour: 7, minute: 00);
 
   Clinic _clinic = new Clinic();
-
+  ClinicService _clinicService = new ClinicService();
+  String url = "$ServerIP/api/v1/clinics";
   @override
   void initState() {
     // TODO: implement initState
@@ -79,20 +82,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                     DefaultButton(
                       text: "Submit",
                       press: () {
-                        print(
-                            "MON open: ${openMon.format(context)} close: ${closeMon.format(context)}");
-                        print(
-                            "TUE open: ${openTue.format(context)} close: ${closeTue.format(context)}");
-                        print(
-                            "WED open: ${openWed.format(context)} close: ${closeWed.format(context)}");
-                        print(
-                            "THU open: ${openThu.format(context)} close: ${closeThu.format(context)}");
-                        print(
-                            "FRI open: ${openFri.format(context)} close: ${closeFri.format(context)}");
-                        print(
-                            "SAT open: ${openSat.format(context)} close: ${closeSat.format(context)}");
-                        print(
-                            "SUN open: ${openSun.format(context)} close: ${closeSun.format(context)}");
                         List<Schedule> _schedule = <Schedule>[];
                         _schedule.add(Schedule(
                             dayOfWeek: 1,
@@ -124,10 +113,20 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                             endTime: closeSun.hour * 60 + closeSun.minute));
                         _clinic.schedule = _schedule;
                         print(_clinic.toJson());
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => SignInScreen()));
+                        _clinicService
+                            .register(
+                                url: url,
+                                clinic: _clinic,
+                                path: widget.imageFile)
+                            .then((value) {
+                          print(value.data);
+                          if (value.data['status'] == 'success') {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SignInScreen()));
+                          } else {
+                            print(value.data);
+                          }
+                        });
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
