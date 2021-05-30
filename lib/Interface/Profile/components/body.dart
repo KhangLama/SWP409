@@ -142,6 +142,7 @@ class _BodyState extends State<Body> {
   TextFormField buildEmailField() {
     return TextFormField(
       initialValue: _user.email ?? "",
+      readOnly: true,
       onSaved: (newValue) => mail = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

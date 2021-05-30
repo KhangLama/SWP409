@@ -1,8 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class ClinicService {
   Dio dio = new Dio();
   Response response;
+  Future<Response> getClinics(url) async {
+    try {
+      return response = await dio.get(url);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
   Future<Response> register(
     url,
     email,
@@ -12,40 +22,21 @@ class ClinicService {
     path,
   ) async {
     try {
-      if (path != null) {
-        String _filename = path.path.split('/').last;
-        String _filepath = path.path;
-        print(_filepath);
-        print(_filename);
-        FormData formData = new FormData.fromMap({
-          "coverImage": _filepath
-          //await MultipartFile.fromFile(_filepath, filename: _filename),
-        });
-        print(formData);
-        response = await dio.post(url,
-            data: formData,
-            options: Options(headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json'
-            }));
-      } else {
-        FormData formData = new FormData.fromMap({
-          "email": email,
-          "name": name,
-          "phone": phone,
-          "description": description,
-        });
-        response = await dio.post(url,
-            data: formData,
-            options: Options(headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json'
-            }));
-      }
+      FormData data = new FormData.fromMap({
+        "email": email,
+        "phone": phone,
+        "description": description,
+        "name": name,
+        "coverImage": await MultipartFile.fromFile(path.path),
+      });
+      print(data.fields);
+      response = await dio.post(url,
+          data: data,
+          options: Options(headers: {"Content-Type": "application/json"}));
+      return response;
     } on DioError catch (e) {
       print(e.response.data);
       return response = e.response;
     }
-    return response;
   }
 }

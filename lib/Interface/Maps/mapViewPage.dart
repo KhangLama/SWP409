@@ -9,6 +9,8 @@ import 'package:swp409/Interface/Home/clinicdetailView.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
+import 'package:swp409/constants.dart';
 import 'package:swp409/helper/keyboard.dart';
 
 class MapViewPage extends StatefulWidget {
@@ -28,11 +30,13 @@ class _MapViewPageState extends State<MapViewPage> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   bool loading = true;
+  String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
+  ClinicService _clinicService = new ClinicService();
 
   Future<List<Clinic>> fetchClinics() async {
-    var fetchdata = await rootBundle.loadString('assets/json/clinic.mock.json');
+    var fetchdata = await _clinicService.getClinics(urlGet);
     var clinics = <Clinic>[];
-    var clinicsjson = json.decode(fetchdata)['Clinic'] as List;
+    var clinicsjson = fetchdata.data['data']['data'] as List;
     for (var clinic in clinicsjson) {
       clinics.add(Clinic.fromJson(clinic));
     }
@@ -43,7 +47,11 @@ class _MapViewPageState extends State<MapViewPage> {
   void initState() {
     fetchClinics().then((value) {
       setState(() {
+        print('value');
+        print(value[0].toJson());
         _clinics = value;
+        print('clinic');
+        print(_clinics[1].toJson());
         loading = false;
       });
     });
@@ -79,8 +87,8 @@ class _MapViewPageState extends State<MapViewPage> {
         _markers.add(Marker(
             markerId: MarkerId(_clinics[i].id),
             draggable: false,
-            position: LatLng(
-                double.parse(_clinics[i].lat), double.parse(_clinics[i].lng)),
+            position: LatLng(_clinics[i].geometry.coordinates.last,
+                _clinics[i].geometry.coordinates.first),
             infoWindow: InfoWindow(
                 title: _clinics[i].name,
                 onTap: () {
@@ -117,7 +125,7 @@ class _MapViewPageState extends State<MapViewPage> {
             polylines[id] = polyline;
           }
 
-          await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
+          // await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
         });
 
         setState(() {
@@ -127,36 +135,36 @@ class _MapViewPageState extends State<MapViewPage> {
     );
   }
 
-  Future _buildWayPoint(Marker element, Clinic clinic,
-      Position _currentPosition, _addPolyLine()) async {
-    var flag;
-    for (var i = 0; i < _clinics.length; i++) {
-      flag = element.infoWindow.title
-          .toLowerCase()
-          .compareTo(_clinics[i].name.toLowerCase());
-      if (flag == 0) {
-        var latLngPosition =
-            LatLng(double.parse(clinic.lat), double.parse(clinic.lng));
-        var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
-        await newGoogleMapController
-            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-            FlutterConfig.get('GOOGLE_MAP_KEY'),
-            PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
-            PointLatLng(double.parse(clinic.lat), double.parse(clinic.lng)),
-            travelMode: TravelMode.driving,
-            wayPoints: [PolylineWayPoint(location: clinic.address)]);
-        polylineCoordinates.clear();
+  // Future _buildWayPoint(Marker element, Clinic clinic,
+  //     Position _currentPosition, _addPolyLine()) async {
+  //   var flag;
+  //   for (var i = 0; i < _clinics.length; i++) {
+  //     flag = element.infoWindow.title
+  //         .toLowerCase()
+  //         .compareTo(_clinics[i].name.toLowerCase());
+  //     if (flag == 0) {
+  //       var latLngPosition =
+  //           LatLng(double.parse(clinic.lat), double.parse(clinic.lng));
+  //       var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
+  //       await newGoogleMapController
+  //           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  //       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //           FlutterConfig.get('GOOGLE_MAP_KEY'),
+  //           PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
+  //           PointLatLng(double.parse(clinic.lat), double.parse(clinic.lng)),
+  //           travelMode: TravelMode.driving,
+  //           wayPoints: [PolylineWayPoint(location: clinic.address)]);
+  //       polylineCoordinates.clear();
 
-        if (result.points.isNotEmpty) {
-          result.points.forEach((PointLatLng point) {
-            polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-          });
-        }
-        _addPolyLine();
-      }
-    }
-  }
+  //       if (result.points.isNotEmpty) {
+  //         result.points.forEach((PointLatLng point) {
+  //           polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //         });
+  //       }
+  //       _addPolyLine();
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

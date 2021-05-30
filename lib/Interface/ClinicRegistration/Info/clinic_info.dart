@@ -98,21 +98,16 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                         var name = nameController.text;
                         var phone = phoneController.text;
                         var description = descriptionController.text;
-                        _clinicService
-                            .register(url, email, name, phone, description,
-                                _imageFile)
-                            .then((value) {
-                          if (value.data['status'] == 'success') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ClinicLocationScreen(
-                                        emailController.text,
-                                        nameController.text,
-                                        phoneController.text,
-                                        descriptionController.text)));
-                          }
-                        });
+          
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClinicLocationScreen(
+                                    email,
+                                    name,
+                                    phone,
+                                    description,
+                                    _imageFile)));
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
