@@ -7,6 +7,7 @@ import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import '../../../size_config.dart';
 import '../../../constants.dart';
+import 'package:date_format/date_format.dart';
 
 class ClinicDateScreen extends StatefulWidget {
   Clinic clinic;
@@ -88,56 +89,41 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                         _schedule.add(Schedule(
                             dayOfWeek: 1,
                             //"2014-08-18T08:00:00"
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+
+                            startTime: DateTime.parse("2014-08-18T08:00:00"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 2,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+                            startTime: DateTime.parse("2014-08-18T08:00:00"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 3,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+                            startTime: DateTime.parse("2014-08-18T08:00:00"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 4,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+                            startTime: DateTime.parse("2014-08-18T08:00:00"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 5,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+                            startTime: DateTime.parse("2014-08-18T08:00:00Z"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00Z")));
                         _schedule.add(Schedule(
                             dayOfWeek: 6,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+                            startTime: DateTime.parse("2014-08-18T08:00:00Z"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00Z")));
                         _schedule.add(Schedule(
                             dayOfWeek: 0,
-                            startTime: DateTime.parse(
-                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
-                            endTime: DateTime.parse(
-                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
-
+                            startTime: DateTime.parse("2014-08-18T08:00:00Z"),
+                            endTime: DateTime.parse("2014-08-18T08:00:00Z")));
+                        print(_schedule[1].startTime);
                         _clinic.schedule = _schedule;
-                        print(_clinic.toJson());
                         _clinicService
                             .register(
                                 url: url,
                                 clinic: _clinic,
                                 path: widget.imageFile)
                             .then((value) {
-                          print(value.data);
                           if (value.data['status'] == 'success') {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => SignInScreen()));

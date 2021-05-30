@@ -17,19 +17,29 @@ class ClinicService {
 
   Future<Response> register({url, Clinic clinic, path}) async {
     String geo = jsonEncode(clinic.geometry);
-    String schedule = jsonEncode(clinic.schedule);
     try {
       var data = new FormData.fromMap({
         "email": clinic.email,
         "phone": clinic.phone,
         "description": clinic.description,
         "name": clinic.name,
-        "schedule": schedule,
+        "startTimeMonday": clinic.schedule[0].startTime,
+        "endTimeMonday": clinic.schedule[0].endTime,
+        "startTimeTuesday": clinic.schedule[1].startTime,
+        "endTimeTuesday": clinic.schedule[1].endTime,
+        "startTimeWednesday": clinic.schedule[2].startTime,
+        "endTimeWednesday": clinic.schedule[2].endTime,
+        "startTimeThursday": clinic.schedule[3].startTime,
+        "endTimeThursday": clinic.schedule[3].endTime,
+        "startTimeFriday": clinic.schedule[4].startTime,
+        "endTimeFriday": clinic.schedule[4].endTime,
+        "startTimeSaturday": clinic.schedule[5].startTime,
+        "endTimeSaturday": clinic.schedule[5].endTime,
+        "startTimeSunday": clinic.schedule[6].startTime,
+        "endTimeSunday": clinic.schedule[6].endTime,
         "geometry": geo,
         "coverImage": await MultipartFile.fromFile(path.path),
       });
-      print('form');
-      print(data.fields);
       response = await dio.post(url,
           data: data,
           options: Options(headers: {"content-type": "application/json"}));
