@@ -36,6 +36,8 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   Clinic _clinic = new Clinic();
   ClinicService _clinicService = new ClinicService();
   String url = "$ServerIP/api/v1/clinics";
+  final now = new DateTime.now();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -85,32 +87,48 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                         List<Schedule> _schedule = <Schedule>[];
                         _schedule.add(Schedule(
                             dayOfWeek: 1,
-                            startTime: openMon.hour * 60 + openMon.minute,
-                            endTime: closeMon.hour * 60 + closeMon.minute));
+                            //"2014-08-18T08:00:00"
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 2,
-                            startTime: openTue.hour * 60 + openTue.minute,
-                            endTime: closeTue.hour * 60 + closeTue.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 3,
-                            startTime: openWed.hour * 60 + openWed.minute,
-                            endTime: closeWed.hour * 60 + closeWed.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 4,
-                            startTime: openThu.hour * 60 + openThu.minute,
-                            endTime: closeThu.hour * 60 + closeThu.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 5,
-                            startTime: openFri.hour * 60 + openFri.minute,
-                            endTime: closeFri.hour * 60 + closeFri.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 6,
-                            startTime: openSat.hour * 60 + openSat.minute,
-                            endTime: closeSat.hour * 60 + closeSat.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
                         _schedule.add(Schedule(
                             dayOfWeek: 0,
-                            startTime: openSun.hour * 60 + openSun.minute,
-                            endTime: closeSun.hour * 60 + closeSun.minute));
+                            startTime: DateTime.parse(
+                                "2014-08-18 ${openMon.hour}:${openMon.minute}:00"),
+                            endTime: DateTime.parse(
+                                "2014-08-18 ${closeMon.hour}:${closeMon.minute}:00")));
+
                         _clinic.schedule = _schedule;
                         print(_clinic.toJson());
                         _clinicService
