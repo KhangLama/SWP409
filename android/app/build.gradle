@@ -28,6 +28,7 @@ apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
 android {
     compileSdkVersion 30
+    buildToolsVersion '29.0.0'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'

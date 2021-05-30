@@ -87,8 +87,8 @@ class _MapViewPageState extends State<MapViewPage> {
         _markers.add(Marker(
             markerId: MarkerId(_clinics[i].id),
             draggable: false,
-            position: LatLng(_clinics[i].geometry.coordinates.last,
-                _clinics[i].geometry.coordinates.first),
+            position: LatLng(_clinics[i].geometry.coordinates[1],
+                _clinics[i].geometry.coordinates[0]),
             infoWindow: InfoWindow(
                 title: _clinics[i].name,
                 onTap: () {
