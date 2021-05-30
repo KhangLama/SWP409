@@ -59,7 +59,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     });
   }
 
-  List<String> getSuggest(String query) {
+  Future<List<String>> getSuggest(String query) async {
     List<String> matches = [];
     for (int i = 0; i < _suggest.length; i++) {
       matches.add(_suggest[i].address);
@@ -67,7 +67,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     return matches;
   }
 
-  void getLocationResult(String txt) async {
+  Future<List<Clinic>> getLocationResult(String txt) async {
     await DotEnv.load(fileName: ".env");
     if (txt.isEmpty) {
       return null;
@@ -79,7 +79,6 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
         '$url?input=$txt&key=$ggmapkey&type=$types&components=country:vn&language:vi';
 
     Response response = await Dio().get(request);
-    print(response);
     final predictions = response.data['predictions'] as List;
     List<Clinic> addresses = [];
     for (var p = 0; p < predictions.length; p++) {
@@ -89,14 +88,25 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     setState(() {
       _suggest = addresses;
     });
+    getCoor(predictions, ggmapkey);
+
+    return addresses;
   }
 
-  // void getCoor() {
-  //   String request2 =
-  //       '$url2?place_id=${predictions.last['place_id']}&key=$ggmapkey';
-  //   Response response2 = await Dio().get(request2);
-  //   print(response2);
-  // }
+  Future<void> getCoor(var predictions, String ggmapkey) async {
+    String request2 =
+        '$url2?place_id=${predictions.last['place_id']}&key=$ggmapkey';
+
+    Response response2 = await Dio().get(request2);
+    double lat = response2.data['result']['geometry']['location']['lat'];
+    double lng = response2.data['result']['geometry']['location']['lng'];
+    List<double> geo;
+    geo.add(lat);
+    geo.add(lng);
+    _clinic.geometry.coordinates = geo;
+    markerCreate(lat, lng);
+    return response2;
+  }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     setState(() {
@@ -105,8 +115,21 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     });
   }
 
-  Future<void> markerCreate() async {
-    try {} catch (e) {
+  Future<void> markerCreate(var lat, var lang) async {
+    try {
+      setState(() async {
+        _markers.add(Marker(
+          markerId: MarkerId('position'),
+          draggable: false,
+          position: LatLng(lat, lang),
+        ));
+        var latLngPosition = LatLng(lat, lang);
+
+        var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
+        await newGoogleMapController
+            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      });
+    } catch (e) {
       rethrow;
     }
   }
@@ -157,6 +180,9 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                       title: Text(suggestion),
                     );
                   },
+                  transitionBuilder: (context, suggestionBox, builder) {
+                    return suggestionBox;
+                  },
                   suggestionsCallback: (pattern) {
                     return getSuggest(pattern);
                   }),
@@ -173,6 +199,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                   mapToolbarEnabled: true,
                   zoomGesturesEnabled: true,
                   buildingsEnabled: true,
+                  markers: _markers,
                 ),
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.01),
@@ -183,10 +210,13 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                   child: DefaultButton(
                     text: "Continue",
                     press: () {
+                      _clinic.address = _searchController.text;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ClinicDateScreen()));
+                              builder: (context) => ClinicDateScreen(
+                                    clinic: _clinic,
+                                  )));
                     },
                   ),
                 ),
