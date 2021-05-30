@@ -129,18 +129,56 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                   onPrimary: Colors.white, // foreground
                                 ),
                                 onPressed: () {
-                                  // Navigator.of(context, rootNavigator: true).push(
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => new Booking()));
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>  AlertDialog(
+                                      title: Text("Approve this appointment", style: TextStyle(fontSize: 25),),
+                                      content: Text("Are you sure?", style: TextStyle(fontSize: 24),),
+                                      actions: [
+                                        // ignore: deprecated_member_use
+                                        new FlatButton(
+                                            onPressed: (){
+                                            },
+                                            child: Text("Yes", style: TextStyle(fontSize: 23),)),
+                                        // ignore: deprecated_member_use
+                                        new FlatButton(
+                                            onPressed: (){
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("No", style: TextStyle(fontSize: 23),)),
+                                      ],
+                                    ),
+                                  );
                                 },
                                 child: Text('Accept')),
-                            SizedBox(width: 10),
+                            SizedBox(width: 20),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.red, // background
                                   onPrimary: Colors.white, // foreground
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>  AlertDialog(
+                                      title: Text("Reject this appointment", style: TextStyle(fontSize: 25),),
+                                      content: Text("Are you sure?", style: TextStyle(fontSize: 24),),
+                                      actions: [
+                                        // ignore: deprecated_member_use
+                                        new FlatButton(
+                                            onPressed: (){
+                                            },
+                                            child: Text("Yes", style: TextStyle(fontSize: 23),)),
+                                        // ignore: deprecated_member_use
+                                        new FlatButton(
+                                            onPressed: (){
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("No", style: TextStyle(fontSize: 23),)),
+                                      ],
+                                    ),
+                                  );
+                                },
                                 child: Text('Cancel')),
                           ],
                         ),

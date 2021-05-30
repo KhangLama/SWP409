@@ -213,7 +213,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
     );
   }
 
-  String cmtChild;
+  String cmtChild= "";
   Widget buildViewCmtAndCmtChild() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40, 5, 5, 5),

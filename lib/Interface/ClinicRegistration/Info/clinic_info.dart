@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/ClinicRegistration/Location/clinic_location.dart';
+import 'package:swp409/Services/ApiService/auth_service.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 
 import '../../../constants.dart';
@@ -22,6 +23,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   String errorName = "";
   String errorPhone = "";
   String errorDes = "";
+  bool checkEmailErr = false;
+  bool checkNameErr = false;
+  bool checkPhoneErr = false;
+  bool checkDesErr = false;
   ClinicService _clinicService = new ClinicService();
   @override
   void initState() {
@@ -43,6 +48,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = new AuthService();
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -77,40 +83,91 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                     ),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     buildEmail(),
-                    SizedBox(height: getProportionateScreenHeight(30)),
+                    SizedBox(height: getProportionateScreenHeight(20)),
                     buildName(),
-                    SizedBox(height: getProportionateScreenHeight(30)),
+                    SizedBox(height: getProportionateScreenHeight(20)),
                     buildPhone(),
-                    SizedBox(height: getProportionateScreenHeight(30)),
+                    SizedBox(height: getProportionateScreenHeight(20)),
                     buildDescription(),
-                    SizedBox(height: getProportionateScreenHeight(30)),
+                    SizedBox(height: getProportionateScreenHeight(20)),
                     buildUploadImg(),
                     SizedBox(height: getProportionateScreenHeight(5)),
                     uploadClinicImg(),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     DefaultButton(
                       text: "Continue",
-                      press: () {
+                      press: () async {
                         String url = "$ServerIP/api/v1/clinics";
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => MainScreen()));
-
+                        String url1 = '$ServerIP/api/v1/users/signup';
                         var email = emailController.text;
                         var name = nameController.text;
                         var phone = phoneController.text;
                         var description = descriptionController.text;
+                        String password = "123456789";
+                        String confirm_password = "123456789";
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClinicLocationScreen(
-                                    email,
-                                    name,
-                                    phone,
-                                    description,
-                                    _imageFile)));
+                        if (email.isEmpty){
+                          setState(() {
+                            errorEmail = "Please enter email";
+                            checkEmailErr = true;
+                          });
+                        } else if (!emailValidatorRegExp.hasMatch(email)){
+                          setState(() {
+                            errorEmail = "Please enter valid email";
+                            checkEmailErr = true;
+                          });
+                        } else{
+                          authService
+                              .signup(url1, name, phone, email, password,
+                              confirm_password)
+                              .then((val) {
+                            if (val.statusCode == 400) {
+                              List list = val.data['errors'] as List;
+                              for (int i = 0; i < list.length; i++) {
+                                if (list[i]['field'] == 'email') {
+                                  setState(() {
+                                    errorEmail = list[i]['message'];
+                                    checkEmailErr = true;
+                                  });
+                                }
+                              }
+                            }
+                          });
+                        }
+
+                        if (name.isEmpty){
+                          setState(() {
+                            errorName = "Please enter name";
+                            checkNameErr = true;
+                          });
+                        }
+
+                        if (phone.isEmpty){
+                          setState(() {
+                            errorPhone = "Please enter phone";
+                            checkPhoneErr = true;
+                          });
+                        }
+
+                        if (description.isEmpty){
+                          setState(() {
+                            errorDes = "Please enter description";
+                            checkDesErr = true;
+                          });
+                        }
+
+                        if (!checkEmailErr && !checkNameErr && !checkPhoneErr && !checkDesErr){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ClinicLocationScreen(
+                                          email,
+                                          name,
+                                          phone,
+                                          description,
+                                          _imageFile)));
+                        }
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -126,22 +183,30 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildEmail() {
     return TextField(
+      onChanged: (v){
+        setState(() {
+          checkEmailErr = false;
+        });
+      },
       controller: emailController,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          //borderSide: BorderSide(color: Colors.black),
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: kPrimaryColor),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         labelText: "Email",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your email",
         prefixIcon: Icon(
           Icons.mail_outline,
           size: 30,
+          color: kPrimaryColor,
         ),
+        errorText: checkEmailErr ? errorEmail : "",
         suffixIcon: emailController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
@@ -156,21 +221,29 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildName() {
     return TextField(
+      onChanged: (v){
+        setState(() {
+          checkNameErr = false;
+        });
+      },
       controller: nameController,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          //borderSide: BorderSide(color: Colors.black),
+        errorText: checkNameErr ? errorName : "",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: kPrimaryColor),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         labelText: "Clinic name",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter clinic name",
         prefixIcon: Icon(
           Icons.local_hospital_outlined,
           size: 30,
+          color: kPrimaryColor,
         ),
         suffixIcon: nameController.text.isEmpty
             ? Container(width: 0)
@@ -186,21 +259,29 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildPhone() {
     return TextField(
+      onChanged: (v){
+        setState(() {
+          checkPhoneErr = false;
+        });
+      },
       controller: phoneController,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          //borderSide: BorderSide(color: Colors.black),
+        errorText: checkPhoneErr ? errorPhone : "",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: kPrimaryColor),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         labelText: "Phone",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your phone",
         prefixIcon: Icon(
           Icons.phone,
           size: 30,
+          color: kPrimaryColor,
         ),
         suffixIcon: phoneController.text.isEmpty
             ? Container(width: 0)
@@ -216,21 +297,29 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildDescription() {
     return TextField(
+      onChanged: (v){
+        setState(() {
+          checkDesErr = false;
+        });
+      },
       controller: descriptionController,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          //borderSide: BorderSide(color: Colors.black),
+        errorText: checkDesErr ? errorDes : "",
+        border: new OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: kPrimaryColor),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         labelText: "Clinic description",
+        labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter clinic description",
         prefixIcon: Icon(
           Icons.description_outlined,
           size: 30,
+          color: kPrimaryColor,
         ),
         suffixIcon: descriptionController.text.isEmpty
             ? Container(width: 0)
@@ -319,7 +408,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
           margin: const EdgeInsets.only(left: 5.0),
           child: Text(
             'UPLOAD IMAGE',
-            style: TextStyle(fontSize: 20.0),
+            style: TextStyle(fontSize: 20.0, color: Colors.black),
           ),
         ),
         SizedBox(width: 10),
@@ -331,13 +420,13 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
           child: FlatButton(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
-              side: BorderSide(color: Colors.black),
+              side: BorderSide(color: kPrimaryColor),
             ),
             padding: EdgeInsets.all(5.0),
             child: Column(
               // Replace with a Row for horizontal icon + text
               children: <Widget>[
-                Icon(Icons.file_copy_outlined),
+                Icon(Icons.file_copy_outlined, color: kPrimaryColor,),
               ],
             ),
             //color: Color(0xFFDFDFE3),

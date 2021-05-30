@@ -8,24 +8,6 @@ class Booking extends StatefulWidget {
   _BookingState createState() => _BookingState();
 }
 
-List hours = [
-  '9:30',
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-];
 int checkedIndex = 0;
 
 class _BookingState extends State<Booking> {
@@ -70,23 +52,35 @@ class _BookingState extends State<Booking> {
                       selectedStyle: TextStyle(color: Colors.black)),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Card(
-                    child: GridView.builder(
-                        itemCount: hours.length,
-                        controller: gridviewcontroller,
-                        gridDelegate:
-                            new SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5),
-                        itemBuilder: (BuildContext context, int index) {
-                          return _buildGridItem(index);
-                        }),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColorLight, // background
+                    onPrimary: kPrimaryLightColor, // foreground
                   ),
+                  onPressed: _selectTime,
+                  child: Text(select_time.format(context)),
                 ),
               ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(14.0),
+              //     child: Card(
+                    // child: GridView.builder(
+                    //     itemCount: hours.length,
+                    //     controller: gridviewcontroller,
+                    //     gridDelegate:
+                    //         new SliverGridDelegateWithFixedCrossAxisCount(
+                    //             crossAxisCount: 5),
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       return _buildGridItem(index);
+                    //     }),
+    
+                  //),
+              //   ),
+              // ),
               Expanded(
                 flex: 0,
                 child: SizedBox(
@@ -115,28 +109,43 @@ class _BookingState extends State<Booking> {
     );
   }
 
-  Widget _buildGridItem(int index) {
-    bool checked = index == checkedIndex;
-    return new GestureDetector(
-        onTap: () {
-          setState(() {
-            checkedIndex = index;
-          });
-        },
-        child: Center(
-            child: SizedBox(
-          height: 40,
-          width: 120,
-          child: Card(
-            elevation: 5.0,
-            color: checked ? Colors.orange : Colors.white,
-            child: Center(
-              child: new Text(
-                hours[index],
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
-        )));
+  TimeOfDay select_time = TimeOfDay(hour: 7, minute: 00);
+
+  void _selectTime() async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: select_time,
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+    if (newTime != null) {
+      setState(() {
+        select_time = newTime;
+      });
+    }
   }
+
+//   Widget _buildGridItem(int index) {
+//     bool checked = index == checkedIndex;
+//     return new GestureDetector(
+//         onTap: () {
+//           setState(() {
+//             checkedIndex = index;
+//           });
+//         },
+//         child: Center(
+//             child: SizedBox(
+//           height: 40,
+//           width: 120,
+//           child: Card(
+//             elevation: 5.0,
+//             color: checked ? Colors.orange : Colors.white,
+//             child: Center(
+//               child: new Text(
+//                 hours[index],
+//                 style: TextStyle(fontSize: 18),
+//               ),
+//             ),
+//           ),
+//         )));
+//   }
 }
