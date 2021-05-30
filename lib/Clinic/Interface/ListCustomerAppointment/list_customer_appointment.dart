@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../../constants.dart';
-import 'detail.dart';
 
 class ListCustomerAppointment extends StatefulWidget {
   @override

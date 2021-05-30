@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
@@ -24,6 +25,7 @@ class ClinicListView extends StatefulWidget {
 
 class _ClinicListViewState extends State<ClinicListView> {
   User _user = new User();
+  int _clinicListlength;
 
   @override
   void initState() {
@@ -32,10 +34,9 @@ class _ClinicListViewState extends State<ClinicListView> {
         _clinics = value;
         _filteredclinic = _clinics;
         _user = widget.user;
-        print('listview');
-        print(_user.toJson());
       });
     });
+    _clinicListlength = _filteredclinic.length == null ? 0 : 5;
     //getUserData(widget.storage).then((value) => _user = value);
     super.initState();
   }
@@ -46,7 +47,6 @@ class _ClinicListViewState extends State<ClinicListView> {
         backgroundColor: kPrimaryBackground,
         drawer: buildDrawer(context),
         appBar: AppBar(
-          
           title: Text(
             'Find Clinic You Want',
             style: TextStyle(color: kPrimaryLightColor),
@@ -150,83 +150,96 @@ class _ClinicListViewState extends State<ClinicListView> {
   }
 
   // List view of clinic card
-  ListView buildListView() {
-    return ListView.builder(
-        itemCount: _filteredclinic.length,
-        itemBuilder: (context, index) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            child: GestureDetector(
-              onTap: () => Navigator.of(context, rootNavigator: true)
-                  .push(MaterialPageRoute(
-                  builder: (context) => ClinicPage())),
-              child: Card(
-                  margin: const EdgeInsets.only(
-                      top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20, bottom: 15, left: 0, right: 16),
-                    child: Row(
-                      children: [
-                        Image(
-                          image: AssetImage('images/0-1.png'),
-                          width: 150,
-                          height: 100,
-                        ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _filteredclinic[index].name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on_outlined,
-                                      color: Colors.black),
-                                  SizedBox(width: 5),
-                                  Expanded(
-                                    child: Text(
-                                      _filteredclinic[index].address,
-                                      style: TextStyle(fontSize: 17),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: kPrimaryColor, // background
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.white,
-                                    ),
-                                    minimumSize: Size(180, 40),
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius: new BorderRadius.all(
-                                            Radius.circular(15))), // foreground
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => Booking()));
-                                  },
-                                  child: Text('Book an appointment'))
-                            ],
+  buildListView() {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        assert(scrollNotification != null);
+        if (scrollNotification.metrics.pixels ==
+            scrollNotification.metrics.maxScrollExtent) {
+          setState(() {
+            _clinicListlength = _clinicListlength + 5 <= _filteredclinic.length
+                ? _clinicListlength += 5
+                : _filteredclinic.length;
+          });
+        }
+      },
+      child: ListView.builder(
+          itemCount: _filteredclinic.length,
+          itemBuilder: (context, index) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(builder: (context) => ClinicPage())),
+                child: Card(
+                    margin: const EdgeInsets.only(
+                        top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 20, bottom: 15, left: 0, right: 16),
+                      child: Row(
+                        children: [
+                          Image(
+                            image: AssetImage('images/0-1.png'),
+                            width: 150,
+                            height: 100,
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          );
-        });
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _filteredclinic[index].name,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Icon(Icons.location_on_outlined,
+                                        color: Colors.black),
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: Text(
+                                        _filteredclinic[index].address,
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: kPrimaryColor, // background
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.white,
+                                      ),
+                                      minimumSize: Size(180, 40),
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius: new BorderRadius.all(
+                                              Radius.circular(
+                                                  15))), // foreground
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Booking()));
+                                    },
+                                    child: Text('Book an appointment'))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+            );
+          }),
+    );
   }
 
   Future<User> getUserData(FlutterSecureStorage storage) async {
@@ -241,10 +254,12 @@ class _ClinicListViewState extends State<ClinicListView> {
 
 List<Clinic> _clinics = <Clinic>[];
 List<Clinic> _filteredclinic = <Clinic>[];
+String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
+ClinicService _clinicService = new ClinicService();
 Future<List<Clinic>> fetchClinics() async {
-  var fetchdata = await rootBundle.loadString('assets/json/clinic.mock.json');
+  var fetchdata = await _clinicService.getClinics(urlGet);
   var clinics = <Clinic>[];
-  var clinicsjson = json.decode(fetchdata)['Clinic'] as List;
+  var clinicsjson = fetchdata.data['data']['data'] as List;
   for (var clinic in clinicsjson) {
     clinics.add(Clinic.fromJson(clinic));
   }
