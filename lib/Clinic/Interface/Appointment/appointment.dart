@@ -11,8 +11,6 @@ class Appointment extends StatefulWidget {
 
 class _AppointmentState extends State<Appointment> {
   @override
-  String status = "approve";
-  Colors colorStatus;
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -54,14 +52,14 @@ class _AppointmentState extends State<Appointment> {
       child: GestureDetector(
         child: Card(
             margin: const EdgeInsets.only(
-                top: 0, bottom: 15.0, left: 10.0, right: 10.0),
+                top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 15, bottom: 10, left: 0, right: 16),
+                  top: 20, bottom: 20, left: 0, right: 16),
               child: Row(
                 children: [
                   Image(
-                    image: AssetImage('images/0.jpg'),
+                    image: AssetImage('images/userprofile.jpg'),
                     width: 150,
                     height: 100,
                   ),
@@ -71,13 +69,11 @@ class _AppointmentState extends State<Appointment> {
                       children: [
                         Row(
                           children: [
-                            Expanded(
-                              child: Text(
-                                "Benh Vien Da Khoa Can Tho",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            Text(
+                              "Trinh Ha",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
                             )
                           ],
@@ -87,32 +83,28 @@ class _AppointmentState extends State<Appointment> {
                           children: [
                             Icon(Feather.clock, color: Colors.black, size: 17),
                             SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                "31 May 2021, 10.00 AM",
-                                style: TextStyle(fontSize: 17),
-                              ),
+                            Text(
+                              "31 May 2021, 10.00 AM",
+                              style: TextStyle(fontSize: 17),
                             )
                           ],
                         ),
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.navigation,
-                                color: Colors.black, size: 17),
+                            Icon(Feather.mail, color: Colors.black, size: 17),
                             SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                "389 duong Nguyen Van Cu, quan Ninh Kieu, thanh pho Can Tho",
-                                style: TextStyle(fontSize: 17),
-                              ),
+                            Text(
+                              "trinhhq@gmail.com",
+                              style: TextStyle(fontSize: 17),
                             )
                           ],
                         ),
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Icon(Feather.phone, color: Colors.black, size: 17),
+                            Icon(Feather.phone,
+                                color: Colors.black, size: 17),
                             SizedBox(width: 10),
                             Text(
                               "0123456789",
@@ -121,22 +113,6 @@ class _AppointmentState extends State<Appointment> {
                           ],
                         ),
                         SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text(
-                              "Status: ",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              status,
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: getStatusColor(status),
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),
@@ -147,13 +123,4 @@ class _AppointmentState extends State<Appointment> {
     );
   }
 
-  Color getStatusColor(String statusColor) {
-    if (statusColor.compareTo("approve") == 0) {
-      return Colors.green;
-    } else if (statusColor.compareTo("pending") == 0) {
-      return Colors.lightBlue;
-    } else {
-      return Colors.red;
-    }
-  }
 }

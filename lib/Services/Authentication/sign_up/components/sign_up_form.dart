@@ -24,7 +24,7 @@ class _SignUpFormState extends State<SignUpForm> {
   bool remember = false;
   final List<String> errors = [];
   String errorMsg;
-  bool checkMailDup;
+  bool checkMailDup = false;
   var emailController;
   final myController = TextEditingController();
   final storage = new FlutterSecureStorage();
@@ -80,7 +80,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       var _phone = val.data['data']['user']['phone'];
                       var _role = val.data['data']['user']['role'];
                       var _email = val.data['data']['user']['email'];
-                      
+
                       User _user = new User(
                           sId: _id,
                           name: _name,
@@ -219,11 +219,12 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      //onSaved: (newValue) => email = newValue,
       controller: myController,
       onChanged: (value) {
         setState(() {
           checkMailDup = false;
+          email = value;
         });
 
         if (value.isNotEmpty) {
@@ -232,9 +233,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        if (!checkMailDup) {
-          removeError(error: errorMsg);
-        }
+  
         email = value;
         return null;
       },
@@ -247,15 +246,14 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
         }
-        if (checkMailDup) {
-          return errorMsg;
-        }
+       
         return null;
       },
       decoration: InputDecoration(
         labelText: "Email",
         labelStyle: TextStyle(color: kPrimaryColor),
         hintText: "Enter your email",
+        errorText: checkMailDup ? "Email already in use" : null,
         border: new OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),

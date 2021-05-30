@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Clinic/Interface/ReviewComment/reiview_cmt.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
 
@@ -20,6 +20,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
   int _selectedIndex = 0;
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -45,10 +46,17 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                   color: Colors.orange,
                 )),
             BottomNavigationBarItem(
-                icon: Icon(Feather.calendar, color: Colors.grey),
+                icon: Icon(Feather.shopping_bag, color: Colors.grey),
                 label: Text('Appointment').toString(),
                 activeIcon: Icon(
-                  Feather.calendar,
+                  Feather.shopping_bag,
+                  color: Colors.orange,
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(Feather.message_square, color: Colors.grey),
+                label: Text('Review  comment').toString(),
+                activeIcon: Icon(
+                  Feather.message_square,
                   color: Colors.orange,
                 )),
             BottomNavigationBarItem(
@@ -71,6 +79,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           pages: [
             ListCustomerAppointment(),
             Appointment(),
+            ReviewCmtScreen(),
             ClinicProfile(),
           ],
         ),
