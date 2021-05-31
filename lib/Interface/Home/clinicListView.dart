@@ -34,9 +34,9 @@ class _ClinicListViewState extends State<ClinicListView> {
       setState(() {
         _clinics = value;
         _filteredclinic = _clinics;
-        _user = widget.user;
       });
     });
+    _user = widget.user;
     _clinicListlength = _filteredclinic.length == null ? 0 : 5;
     //getUserData(widget.storage).then((value) => _user = value);
     super.initState();
@@ -181,8 +181,11 @@ class _ClinicListViewState extends State<ClinicListView> {
             return Container(
               width: MediaQuery.of(context).size.width,
               child: GestureDetector(
-                onTap: () => Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(builder: (context) => ClinicPage.clinic(clinic: _filteredclinic[index],))),
+                onTap: () => Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(
+                        builder: (context) => ClinicPage.clinic(
+                              clinic: _filteredclinic[index],
+                            ))),
                 child: Card(
                     margin: const EdgeInsets.only(
                         top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
