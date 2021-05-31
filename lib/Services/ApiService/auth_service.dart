@@ -1,17 +1,16 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 class AuthService {
   Dio dio = new Dio();
   Response response;
+  var cookiejar = CookieJar();
+  Map<String, String> headers = {};
   Future<Response> signup(url, name, phone, email, password, repassword) async {
     try {
-      var data2 = {
-        "name": name,
-        "email": email,
-        "password": password,
-        "passwordConfirm": repassword,
-        "phone": phone
-      };
       response = await dio.post(
         url,
         data: {
@@ -33,6 +32,7 @@ class AuthService {
   }
 
   Future<Response> login(url, email, password) async {
+    dio.interceptors.add(CookieManager(cookiejar));
     try {
       response = await dio.post(
         url,
@@ -45,10 +45,12 @@ class AuthService {
           'Accept': 'application/json'
         }),
       );
+      
     } on DioError catch (e) {
       print(e);
       return response = e.response;
     }
     return response;
   }
+
 }

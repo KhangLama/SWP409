@@ -107,25 +107,25 @@ class _SignFormState extends State<SignForm> {
                         var url = val.data['data']['user']['avatar']['url'];
                         await storage.write(
                             key: 'token', value: val.data['token']);
+                        var ava = new Avatar(filename: filename, url: url);
                         _user = new User(
                             sId: sId,
                             email: email,
                             name: name,
                             role: role,
                             phone: phone,
-                            avatar: new Avatar(filename: filename, url: url));
+                            avatar: ava);
                         KeyboardUtil.hideKeyboard(context);
-                        print('token');
-                        print(token);
-                        print('token 2');
-                        print(await storage.read(key: 'token'));
+                        final cookies = val.headers.map['set-cookie'];
+                        print('cook');
+                        print(cookies);
                         token = await storage.read(key: 'token');
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       MainScreen.user(
-                                          user: _user, token: token)));
+                                          user: _user, cookies: cookies)));
                         }
                         if (_user.role == 'doctor') {
                           Navigator.pushReplacement(

@@ -7,24 +7,23 @@ import 'components/body.dart';
 // ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
   final User user;
-  String token;
-  ProfilePage.user({Key key, this.user, this.token}) : super(key: key);
+  List<String> cookies;
+  ProfilePage.user({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   User _user;
-  String _token;
+  List<String> _cookies;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print(widget.user.toJson());
     setState(() {
       print('profile');
       _user = widget.user;
-      _token = widget.token;
+      _cookies = widget.cookies;
       print(_user.toJson());
     });
   }
@@ -42,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
-        body: Body.user(user: _user, token: _token),
+        body: Body.user(user: _user, cookies: _cookies),
       ),
     );
   }

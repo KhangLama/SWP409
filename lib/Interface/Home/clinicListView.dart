@@ -16,9 +16,9 @@ import 'package:dio/dio.dart';
 
 // ignore: must_be_immutable
 class ClinicListView extends StatefulWidget {
-  String token;
+  List<String> cookies;
   User user;
-  ClinicListView.user({Key key, this.user, token}) : super(key: key);
+  ClinicListView.user({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _ClinicListViewState createState() => _ClinicListViewState();
 }
@@ -133,7 +133,7 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Profile'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ProfilePage.user(user: _user, token: widget.token,)));
+                  builder: (context) => ProfilePage.user(user: _user, cookies: widget.cookies,)));
             },
           ),
           ListTile(

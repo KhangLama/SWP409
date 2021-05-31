@@ -14,8 +14,8 @@ import 'package:image_picker/image_picker.dart';
 // ignore: must_be_immutable
 class Body extends StatefulWidget {
   User user;
-  String token;
-  Body.user({Key key, this.user, this.token}) : super(key: key);
+  List<String> cookies;
+  Body.user({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -33,15 +33,15 @@ class _BodyState extends State<Body> {
   UserService _userService = new UserService();
   TextEditingController fieldNameController = new TextEditingController();
   bool loading = true;
-  String token;
+  List<String> cookies;
 
   @override
   void initState() {
     setState(() {
       _user = widget.user;
       print('token');
-      print(widget.token);
-      token = widget.token;
+      print(widget.cookies);
+      cookies = widget.cookies;
       print(widget.user.toJson());
     });
 
@@ -309,7 +309,7 @@ class _BodyState extends State<Body> {
                           if (_formKey.currentState.validate()) {
                             _userService
                                 .updateInfo(url, name, phoneNumber, address,
-                                    _imageFile, token)
+                                    _imageFile, cookies)
                                 .then((res) {
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);

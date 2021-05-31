@@ -9,9 +9,9 @@ import 'clinicListView.dart';
 
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
-  String token;
+  List<String> cookies;
   User user;
-  MainScreen.user({Key key, this.user, this.token}) : super(key: key);
+  MainScreen.user({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -70,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ClinicListView.user(user: widget.user, token: widget.token),
+            ClinicListView.user(user: widget.user, cookies: widget.cookies),
             MapViewPage(),
             HistoryPage(),
           ],
