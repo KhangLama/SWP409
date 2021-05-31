@@ -7,7 +7,6 @@ import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import '../../../size_config.dart';
 import '../../../constants.dart';
-import 'package:date_format/date_format.dart';
 
 class ClinicDateScreen extends StatefulWidget {
   Clinic clinic;
@@ -86,7 +85,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                       text: "Submit",
                       press: () {
                         List<Schedule> _schedule = <Schedule>[];
-                        
+
                         _schedule.add(Schedule(
                             dayOfWeek: 1,
                             startTime: openMon.hour * 60 + openMon.minute,

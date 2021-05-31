@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
@@ -13,7 +14,8 @@ import 'package:image_picker/image_picker.dart';
 // ignore: must_be_immutable
 class Body extends StatefulWidget {
   User user;
-  Body.user({Key key, this.user}) : super(key: key);
+  String token;
+  Body.user({Key key, this.user, this.token}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -31,12 +33,18 @@ class _BodyState extends State<Body> {
   UserService _userService = new UserService();
   TextEditingController fieldNameController = new TextEditingController();
   bool loading = true;
+  String token;
+
   @override
   void initState() {
     setState(() {
       _user = widget.user;
+      print('token');
+      print(widget.token);
+      token = widget.token;
       print(widget.user.toJson());
     });
+
     //print(_user.toJson());
     super.initState();
   }
@@ -300,8 +308,8 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.sId}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(
-                                    url, name, phoneNumber, address, _imageFile)
+                                .updateInfo(url, name, phoneNumber, address,
+                                    _imageFile, token)
                                 .then((res) {
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);
@@ -330,6 +338,10 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  Future<String> getToken(FlutterSecureStorage _st) async {
+    return await _st.read(key: 'token');
   }
 
   void takePhoto(ImageSource source) async {

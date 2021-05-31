@@ -105,6 +105,8 @@ class _SignFormState extends State<SignForm> {
                         var filename =
                             val.data['data']['user']['avatar']['filename'];
                         var url = val.data['data']['user']['avatar']['url'];
+                        await storage.write(
+                            key: 'token', value: val.data['token']);
                         _user = new User(
                             sId: sId,
                             email: email,
@@ -113,11 +115,17 @@ class _SignFormState extends State<SignForm> {
                             phone: phone,
                             avatar: new Avatar(filename: filename, url: url));
                         KeyboardUtil.hideKeyboard(context);
+                        print('token');
+                        print(token);
+                        print('token 2');
+                        print(await storage.read(key: 'token'));
+                        token = await storage.read(key: 'token');
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      MainScreen.user(user: _user)));
+                                      MainScreen.user(
+                                          user: _user, token: token)));
                         }
                         if (_user.role == 'doctor') {
                           Navigator.pushReplacement(

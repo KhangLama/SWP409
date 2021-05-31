@@ -16,10 +16,9 @@ import 'package:dio/dio.dart';
 
 // ignore: must_be_immutable
 class ClinicListView extends StatefulWidget {
-  FlutterSecureStorage storage;
+  String token;
   User user;
-  ClinicListView(this.storage);
-  ClinicListView.user(this.user);
+  ClinicListView.user({Key key, this.user, token}) : super(key: key);
   @override
   _ClinicListViewState createState() => _ClinicListViewState();
 }
@@ -134,7 +133,7 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Profile'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ProfilePage.user(user: _user)));
+                  builder: (context) => ProfilePage.user(user: _user, token: widget.token,)));
             },
           ),
           ListTile(
@@ -255,15 +254,6 @@ class _ClinicListViewState extends State<ClinicListView> {
             );
           }),
     );
-  }
-
-  Future<User> getUserData(FlutterSecureStorage storage) async {
-    var email = await widget.storage.read(key: 'userEmail');
-    var sId = await widget.storage.read(key: 'userID');
-    var name = await widget.storage.read(key: 'userName');
-    var role = await widget.storage.read(key: 'userRole');
-    User u = new User(sId: sId, email: email, name: name, role: role);
-    return u;
   }
 }
 

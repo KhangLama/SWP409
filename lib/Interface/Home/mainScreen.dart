@@ -9,10 +9,9 @@ import 'clinicListView.dart';
 
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
-  FlutterSecureStorage storage;
+  String token;
   User user;
-  MainScreen.storage(this.storage);
-  MainScreen.user({Key key, this.user}) : super(key: key);
+  MainScreen.user({Key key, this.user, this.token}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -71,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ClinicListView.user(widget.user),
+            ClinicListView.user(user: widget.user, token: widget.token),
             MapViewPage(),
             HistoryPage(),
           ],
