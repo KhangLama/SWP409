@@ -28,26 +28,7 @@ class _SignFormState extends State<SignForm> {
   final List<String> errors = [];
   final storage = new FlutterSecureStorage();
   bool loading = false;
-  // List<User> _users = <User>[];
-  // Future<List<User>> fetchUsers() async {
-  //   var fetchdata = await rootBundle.loadString('assets/json/user.mock.json');
-  //   var users = <User>[];
-  //   var userjson = json.decode(fetchdata)['User'] as List;
-  //   for (var user in userjson) {
-  //     users.add(User.fromJson(user));
-  //   }
-  //   return users;
-  // }
-
-  //@override
-  // void initState() {
-  //   fetchUsers().then((value) {
-  //     setState(() {
-  //       _users.addAll(value);
-  //     });
-  //   });
-  //   super.initState();
-  // }
+  User _user = new User();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -71,8 +52,6 @@ class _SignFormState extends State<SignForm> {
       opacity: 0.9,
       color: Colors.blue,
       progressIndicator: CircularProgressIndicator(),
-
-
       child: Container(
         child: Form(
           key: _formKey,
@@ -118,27 +97,29 @@ class _SignFormState extends State<SignForm> {
                     authService.login(url, email, password).then((val) async {
                       print(val.data);
                       if (val.data["status"] == "success") {
-                        var _id = val.data['data']['user']['_id'];
-                        var _name = val.data['data']['user']['name'];
-                        var _role = val.data['data']['user']['role'];
-                        var _phone = val.data['data']['user']['phone'];
-                        var _email = val.data['data']['user']['email'];
-                        var _avatar = val.data['data']['user']['avatar'];
-                        User _user = new User(
-                            sId: _id,
-                            name: _name,
-                            email: _email,
-                            role: _role,
-                            phone: _phone,
-                            avatar: _avatar);
-
+                        var sId = val.data['data']['user']['_id'];
+                        var name = val.data['data']['user']['name'];
+                        var role = val.data['data']['user']['role'];
+                        var phone = val.data['data']['user']['phone'];
+                        var email = val.data['data']['user']['email'];
+                        var filename =
+                            val.data['data']['user']['avatar']['filename'];
+                        var url = val.data['data']['user']['avatar']['url'];
+                        _user = new User(
+                            sId: sId,
+                            email: email,
+                            name: name,
+                            role: role,
+                            phone: phone,
+                            avatar: new Avatar(filename: filename, url: url));
                         KeyboardUtil.hideKeyboard(context);
-                        if (_role == 'patient') {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  MainScreen.user(user: _user)));
+                        if (_user.role == 'patient') {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MainScreen.user(user: _user)));
                         }
-                        if (_role == 'doctor') {
+                        if (_user.role == 'doctor') {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

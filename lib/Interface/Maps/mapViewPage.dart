@@ -92,8 +92,9 @@ class _MapViewPageState extends State<MapViewPage> {
             infoWindow: InfoWindow(
                 title: _clinics[i].name,
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ClinicPage.clinic(clinic: _clinics[i])));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ClinicPage.clinic(clinic: _clinics[i])));
                 }),
             onTap: () {}));
       }
@@ -104,8 +105,8 @@ class _MapViewPageState extends State<MapViewPage> {
 
   Widget row(Clinic clinic) {
     return ListTile(
-      title: Text(clinic.name, style: TextStyle(fontSize: 16)),
-      subtitle: Text(clinic.address, style: TextStyle(fontSize: 14)),
+      title: Text(clinic.name ?? "", style: TextStyle(fontSize: 16)),
+      subtitle: Text(clinic.address ?? "", style: TextStyle(fontSize: 14)),
       onTap: () async {
         KeyboardUtil.hideKeyboard(context);
         _markers.forEach((element) async {
@@ -143,15 +144,16 @@ class _MapViewPageState extends State<MapViewPage> {
           .toLowerCase()
           .compareTo(_clinics[i].name.toLowerCase());
       if (flag == 0) {
-        var latLngPosition =
-            LatLng(clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]);
+        var latLngPosition = LatLng(
+            clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]);
         var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
         await newGoogleMapController
             .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
         PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
             FlutterConfig.get('GOOGLE_MAP_KEY'),
             PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
-            PointLatLng(clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]),
+            PointLatLng(
+                clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]),
             travelMode: TravelMode.driving,
             wayPoints: [PolylineWayPoint(location: clinic.address)]);
         polylineCoordinates.clear();

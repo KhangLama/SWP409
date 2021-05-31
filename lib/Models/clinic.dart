@@ -111,8 +111,8 @@ class Replies {
 @JsonSerializable(explicitToJson: true)
 class Schedule {
   int dayOfWeek;
-  DateTime startTime;
-  DateTime endTime;
+  int startTime;
+  int endTime;
 
   Schedule({this.dayOfWeek, this.startTime, this.endTime});
 

@@ -17,26 +17,41 @@ class ClinicService {
 
   Future<Response> register({url, Clinic clinic, path}) async {
     String geo = jsonEncode(clinic.geometry);
+    //DateTime.parse("2014-08-18T08:00:00")
     try {
       var data = new FormData.fromMap({
         "email": clinic.email,
         "phone": clinic.phone,
         "description": clinic.description,
         "name": clinic.name,
-        "startTimeMonday": clinic.schedule[0].startTime,
-        "endTimeMonday": clinic.schedule[0].endTime,
-        "startTimeTuesday": clinic.schedule[1].startTime,
-        "endTimeTuesday": clinic.schedule[1].endTime,
-        "startTimeWednesday": clinic.schedule[2].startTime,
-        "endTimeWednesday": clinic.schedule[2].endTime,
-        "startTimeThursday": clinic.schedule[3].startTime,
-        "endTimeThursday": clinic.schedule[3].endTime,
-        "startTimeFriday": clinic.schedule[4].startTime,
-        "endTimeFriday": clinic.schedule[4].endTime,
-        "startTimeSaturday": clinic.schedule[5].startTime,
-        "endTimeSaturday": clinic.schedule[5].endTime,
-        "startTimeSunday": clinic.schedule[6].startTime,
-        "endTimeSunday": clinic.schedule[6].endTime,
+        "startTimeMonday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[0].startTime / 60}:${clinic.schedule[0].startTime % 60}:00"),
+        "endTimeMonday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[0].endTime / 60}:${clinic.schedule[0].endTime % 60}:00"),
+        "startTimeTuesday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[1].startTime / 60}:${clinic.schedule[1].endTime % 60}:00"),
+        "endTimeTuesday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[1].endTime / 60}:${clinic.schedule[1].endTime % 60}:00"),
+        "startTimeWednesday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[2].startTime / 60}:${clinic.schedule[2].startTime % 60}:00"),
+        "endTimeWednesday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[2].endTime / 60}:${clinic.schedule[2].endTime % 60}:00"),
+        "startTimeThursday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[3].startTime / 60}:${clinic.schedule[3].startTime % 60}:00"),
+        "endTimeThursday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[3].endTime / 60}:${clinic.schedule[3].endTime % 60}:00"),
+        "startTimeFriday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[4].startTime / 60}:${clinic.schedule[4].startTime % 60}:00"),
+        "endTimeFriday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[4].endTime / 60}:${clinic.schedule[4].endTime % 60}:00"),
+        "startTimeSaturday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[5].startTime / 60}:${clinic.schedule[5].startTime % 60}:00"),
+        "endTimeSaturday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[5].endTime / 60}:${clinic.schedule[5].endTime % 60}:00"),
+        "startTimeSunday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[6].startTime / 60}:${clinic.schedule[6].startTime % 60}:00"),
+        "endTimeSunday": DateTime.parse(
+            "2014-08-18T${clinic.schedule[6].endTime / 60}:${clinic.schedule[6].endTime % 60}:00"),
         "geometry": geo,
         "coverImage": await MultipartFile.fromFile(path.path),
       });

@@ -113,7 +113,6 @@ class _ClinicPageState extends State<ClinicPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Center(
                               child: Text(
                                 _clinic.name,
@@ -132,7 +131,8 @@ class _ClinicPageState extends State<ClinicPage> {
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: Text(
-                                      _clinic.address?? "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ",
+                                      _clinic.address ??
+                                          "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ",
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -162,8 +162,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     color: Colors.black),
                                 SizedBox(width: 5),
                                 Expanded(
-                                  child: Text(
-                                      _clinic.description,
+                                  child: Text(_clinic.description,
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -645,11 +644,13 @@ class _ClinicPageState extends State<ClinicPage> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: cmtChild.length == 0 ? Container(width: 0) : IconButton(
-                icon: Icon(Feather.send),
-                onPressed: () {},
-                color: kPrimaryColor,
-              ),
+              suffixIcon: cmtChild.length == 0
+                  ? Container(width: 0)
+                  : IconButton(
+                      icon: Icon(Feather.send),
+                      onPressed: () {},
+                      color: kPrimaryColor,
+                    ),
             ),
           ),
         ],

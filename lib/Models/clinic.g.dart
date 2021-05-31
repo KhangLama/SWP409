@@ -124,19 +124,15 @@ Map<String, dynamic> _$RepliesToJson(Replies instance) => <String, dynamic>{
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) {
   return Schedule(
     dayOfWeek: json['dayOfWeek'] as int,
-    startTime: json['startTime'] == null
-        ? null
-        : DateTime.parse(json['startTime'] as String),
-    endTime: json['endTime'] == null
-        ? null
-        : DateTime.parse(json['endTime'] as String),
+    startTime: json['startTime'] as int,
+    endTime: json['endTime'] as int,
   );
 }
 
 Map<String, dynamic> _$ScheduleToJson(Schedule instance) => <String, dynamic>{
       'dayOfWeek': instance.dayOfWeek,
-      'startTime': instance.startTime?.toIso8601String(),
-      'endTime': instance.endTime?.toIso8601String(),
+      'startTime': instance.startTime,
+      'endTime': instance.endTime,
     };
 
 CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {

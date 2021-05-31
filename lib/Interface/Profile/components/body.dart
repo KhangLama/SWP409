@@ -25,7 +25,7 @@ class _BodyState extends State<Body> {
   String mail;
   String phoneNumber;
   String address;
-  PickedFile _imageFile ;
+  PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   User _user = new User();
   UserService _userService = new UserService();
@@ -35,7 +35,6 @@ class _BodyState extends State<Body> {
   void initState() {
     setState(() {
       _user = widget.user;
-      _imageFile = widget.user.avatar;
       print(widget.user.toJson());
     });
     //print(_user.toJson());
@@ -58,7 +57,7 @@ class _BodyState extends State<Body> {
 
   TextFormField buildAddressField() {
     return TextFormField(
-      initialValue: _user.address ?? "",
+      initialValue: "",
       onSaved: (newValue) => address = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -247,10 +246,9 @@ class _BodyState extends State<Body> {
                     fit: StackFit.expand,
                     children: [
                       CircleAvatar(
-                        backgroundImage: _imageFile == null
-                            ? AssetImage('images/userprofile.jpg')
-                            : FileImage(File(_imageFile.path)),
-                      ),
+                          backgroundImage: _imageFile == null
+                              ? NetworkImage(_user.avatar.url)
+                              : FileImage(File(_imageFile.path))),
                       Positioned(
                         right: 25,
                         bottom: 0,
@@ -305,14 +303,13 @@ class _BodyState extends State<Body> {
                                 .updateInfo(
                                     url, name, phoneNumber, address, _imageFile)
                                 .then((res) {
-
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {
                                 _user.name = name;
                                 _user.phone = phoneNumber;
-                                _user.address = address;
-                                _user.avatar  = _imageFile ;
+                                //_user.address = address;
+                                _user.avatar.url = _imageFile.path;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

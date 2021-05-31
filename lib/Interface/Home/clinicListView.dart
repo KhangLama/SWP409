@@ -218,7 +218,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                                     SizedBox(width: 5),
                                     Expanded(
                                       child: Text(
-                                        _filteredclinic[index].address,
+                                        _filteredclinic[index].address ?? "",
                                         style: TextStyle(fontSize: 17),
                                       ),
                                     ),
