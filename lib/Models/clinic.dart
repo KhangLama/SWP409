@@ -18,7 +18,7 @@ class Clinic {
   CoverImage coverImage;
   int iV;
   int reviewCount;
-  int ratingAvg;
+  double ratingAvg;
   String id;
 
   Clinic(
@@ -60,7 +60,7 @@ class Geometry {
 class Reviews {
   List<Replies> replies;
   String sId;
-  int rating;
+  double rating;
   String review;
   User user;
   String createdAt;
@@ -86,7 +86,7 @@ class Reviews {
 @JsonSerializable(explicitToJson: true)
 class Replies {
   String sId;
-  int rating;
+  double rating;
   String review;
   User user;
   String createdAt;

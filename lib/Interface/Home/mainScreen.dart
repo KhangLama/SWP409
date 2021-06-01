@@ -18,12 +18,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-
+  User _user = new User();
+  List<String> _cookies;
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _user = widget.user;
+    _cookies = widget.cookies;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ClinicListView.user(user: widget.user, cookies: widget.cookies),
+            ClinicListView.user(user: _user, cookies: _cookies),
             MapViewPage(),
             HistoryPage(),
           ],

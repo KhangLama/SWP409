@@ -77,7 +77,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ListCustomerAppointment(),
+            ListCustomerAppointment.user(user: widget.user,),
             Appointment(),
             ReviewCmtScreen(),
             ClinicProfile(),

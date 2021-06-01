@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/user.dart';
+import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/Services/Booking/medical_record.dart';
 import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Booking extends StatefulWidget {
+  List<String> cookies;
+  Clinic clinic;
+  User user;
+  Booking({Key key, this.clinic, this.user, this.cookies}) : super(key: key);
   @override
   _BookingState createState() => _BookingState();
 }
@@ -11,13 +19,22 @@ class Booking extends StatefulWidget {
 int checkedIndex = 0;
 
 class _BookingState extends State<Booking> {
-  CalendarController _calendarController;
-
+  CalendarController _calendarController = CalendarController();
   var gridviewcontroller;
+  UserService _userService = new UserService();
+
+  User _user = new User();
+  Clinic _clinic = new Clinic();
+  List<String> _cookies;
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
+    setState(() {
+      _user = widget.user;
+      _clinic = widget.clinic;
+      _cookies = widget.cookies;
+      print(_clinic.id);
+    });
   }
 
   @override
@@ -28,8 +45,10 @@ class _BookingState extends State<Booking> {
           onPressed: () => Navigator.pop(context),
           color: kPrimaryLightColor,
         ),
-        title: Text('Pick a date',
-          style: TextStyle(color: kPrimaryLightColor) ,),
+        title: Text(
+          'Pick a date',
+          style: TextStyle(color: kPrimaryLightColor),
+        ),
         backgroundColor: kPrimaryAppbar,
       ),
       body: SafeArea(
@@ -68,17 +87,17 @@ class _BookingState extends State<Booking> {
               //   child: Padding(
               //     padding: const EdgeInsets.all(14.0),
               //     child: Card(
-                    // child: GridView.builder(
-                    //     itemCount: hours.length,
-                    //     controller: gridviewcontroller,
-                    //     gridDelegate:
-                    //         new SliverGridDelegateWithFixedCrossAxisCount(
-                    //             crossAxisCount: 5),
-                    //     itemBuilder: (BuildContext context, int index) {
-                    //       return _buildGridItem(index);
-                    //     }),
-    
-                  //),
+              // child: GridView.builder(
+              //     itemCount: hours.length,
+              //     controller: gridviewcontroller,
+              //     gridDelegate:
+              //         new SliverGridDelegateWithFixedCrossAxisCount(
+              //             crossAxisCount: 5),
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return _buildGridItem(index);
+              //     }),
+
+              //),
               //   ),
               // ),
               Expanded(
@@ -90,14 +109,29 @@ class _BookingState extends State<Booking> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(kPrimaryColor)),
-                    child:
-                        Text('Continue', style: TextStyle(color: kPrimaryLightColor)),
+                    child: Text('Continue',
+                        style: TextStyle(color: kPrimaryLightColor)),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MedicalRecords(
-                                  calendarController: _calendarController)));
+                      print('booking');
+                      print(_cookies);
+                      var time = select_time.hour * 60 + select_time.minute;
+                      DateTime pickedDate = _calendarController.selectedDay;
+                      String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
+                      print(pickedDate.isUtc);
+                      _userService
+                          .booking(url, _user.sId, _clinic.sId, time,
+                              pickedDate, _cookies)
+                          .then((value) {
+                        
+                        if (value.data['status'] == 'success') {
+                          print(value.data);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MainScreen.user(
+                                    user: _user,
+                                    cookies: _cookies,
+                                  )));
+                        }
+                      });
                     },
                   ),
                 ),

@@ -7,14 +7,37 @@ class UserService {
   Dio dio = new Dio();
   Response response;
 
+  Future<Response> booking(
+      url, userId, clinicId, _bookTime, _bookDate, cookies) async {
+    try {
+      Map<String, dynamic> headers = new Map();
+      print('cook booking');
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
+      headers['Content-Type'] = 'application/json';
+      Options options = new Options(headers: headers);
+
+      var formData = new FormData.fromMap({
+        "bookedDate": DateTime.now(),
+        "bookedTime": DateTime.now(),
+      });
+      print(formData.fields);
+      return response = await dio.post(url, data: formData, options: options);
+    } on DioError catch (e) {
+      print(e.response);
+      return response = e.response;
+    }
+  }
+
   Future<Response> updateInfo(
-      url, _name, _phone, _address, _avatar, cookies) async {
+      url, _name, _phone, _address, _avatar, email, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();
       print('cook update');
-      print(cookies);
-      headers['Cookie'] = cookies;
-      headers['Accept'] = 'application/json';
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
       Options options = new Options(headers: headers);
       if (_avatar != null) {
         String _filename = _avatar.path.split('/').last;
@@ -27,7 +50,7 @@ class UserService {
               await MultipartFile.fromFile(_filepath, filename: _filename),
         });
         print(formData.fields);
-        response = await dio.patch(url, data: formData, options: options);
+        response = await dio.put(url, data: formData, options: options);
       }
       if (_avatar == null) {
         var formData = new FormData.fromMap({
@@ -37,7 +60,7 @@ class UserService {
         });
         print('null');
         print(formData.fields);
-        response = await dio.patch(url,
+        response = await dio.put(url,
             data: formData,
             options: Options(headers: {
               'Content-type': 'application/json',

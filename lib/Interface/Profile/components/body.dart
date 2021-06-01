@@ -44,7 +44,6 @@ class _BodyState extends State<Body> {
       cookies = widget.cookies;
       print(widget.user.toJson());
     });
-
     //print(_user.toJson());
     super.initState();
   }
@@ -299,7 +298,6 @@ class _BodyState extends State<Body> {
                       SizedBox(height: getProportionateScreenHeight(30)),
                       buildPhoneField(),
                       SizedBox(height: getProportionateScreenHeight(30)),
-                      buildAddressField(),
                       //FormError(errors: errors),
                       SizedBox(height: getProportionateScreenHeight(40)),
                       DefaultButton(
@@ -308,21 +306,35 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.sId}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(url, name, phoneNumber, address,
-                                    _imageFile, cookies)
+                                .updateInfo(
+                                    url,
+                                    name,
+                                    phoneNumber,
+                                    address,
+                                    _imageFile,
+                                    widget.user.email,
+                                    cookies)
                                 .then((res) {
+                              print('body');
                               print(res.data);
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {
-                                _user.name = name;
-                                _user.phone = phoneNumber;
-                                //_user.address = address;
-                                _user.avatar.url = _imageFile.path;
+                                _user.sId = res.data['data']['data']['_id'];
+                                _user.name = res.data['data']['data']['name'];
+                                _user.phone = res.data['data']['data']['phone'];
+                                _user.email = res.data['data']['data']['email'];
+                                _user.role = res.data['data']['data']['role'];
+                                _user.avatar.sId =
+                                    res.data['data']['data']['avatar']['_id'];
+                                _user.avatar.filename = res.data['data']['data']
+                                    ['avatar']['filename'];
+                                _user.avatar.url =
+                                    res.data['data']['data']['avatar']['url'];
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            MainScreen.user(user: _user)));
+                                            MainScreen.user(user: _user, cookies: cookies)));
                               }
                             });
                           }
