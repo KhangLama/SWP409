@@ -25,6 +25,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   @override
   void initState() {
     _user = widget.user;
+    _cookies = widget.cookies;
     fetchClinics().then((value) {
       setState(() {
         _clinics = value;

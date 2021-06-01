@@ -26,6 +26,7 @@ class _MapViewPageState extends State<MapViewPage> {
   List<Clinic> _clinics = <Clinic>[];
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Clinic>> key = GlobalKey();
+  TextEditingController _editingController = new TextEditingController();
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
@@ -108,6 +109,9 @@ class _MapViewPageState extends State<MapViewPage> {
       title: Text(clinic.name ?? "", style: TextStyle(fontSize: 16)),
       subtitle: Text(clinic.address ?? "", style: TextStyle(fontSize: 14)),
       onTap: () async {
+         setState(() {
+           _editingController.text = clinic.name;
+         });
         KeyboardUtil.hideKeyboard(context);
         _markers.forEach((element) async {
           var _currentPosition = await Geolocator.getCurrentPosition(
@@ -127,10 +131,6 @@ class _MapViewPageState extends State<MapViewPage> {
           }
 
           await _buildWayPoint(element, clinic, _currentPosition, _addPolyLine);
-        });
-
-        setState(() {
-          searchTextField.textField.controller.text = clinic.name;
         });
       },
     );
@@ -178,6 +178,7 @@ class _MapViewPageState extends State<MapViewPage> {
             loading
                 ? CircularProgressIndicator()
                 : searchTextField = AutoCompleteTextField<Clinic>(
+                  controller: _editingController,
                     suggestionsAmount: 5,
                     onFocusChanged: (hasFocus) {
                       searchTextField.clear();

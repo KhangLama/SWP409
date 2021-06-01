@@ -11,7 +11,8 @@ import 'Profile/profile.dart';
 
 class HomeScreenDoctor extends StatefulWidget {
   User user;
-  HomeScreenDoctor.user({Key key, this.user}) : super(key: key);
+  List<String> cookies;
+  HomeScreenDoctor.user({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _HomeScreenDoctorState createState() => _HomeScreenDoctorState();
 }
@@ -77,7 +78,10 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ListCustomerAppointment.user(user: widget.user,),
+            ListCustomerAppointment.user(
+              user: widget.user,
+              cookies: widget.cookies
+            ),
             Appointment(),
             ReviewCmtScreen(),
             ClinicProfile(),

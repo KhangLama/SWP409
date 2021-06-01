@@ -80,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
           pages: [
             ClinicListView.user(user: _user, cookies: _cookies),
             MapViewPage(),
-            HistoryPage(),
+            HistoryPage(user: _user, cookies: _cookies,),
           ],
         ),
       ),

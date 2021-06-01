@@ -117,6 +117,7 @@ class _SignFormState extends State<SignForm> {
                             avatar: ava);
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
+                        _user.avatar.url = val.data['data']['user']['avatar']['url'];
                         print('cook');
                         print(cookies);
                         print(val.data);
@@ -134,7 +135,7 @@ class _SignFormState extends State<SignForm> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      HomeScreenDoctor.user(user: _user)));
+                                      HomeScreenDoctor.user(user: _user,cookies: cookies,)));
                         }
                       } else if (val.data["status"] == "error") {
                         addError(error: "Incorrect email or password");

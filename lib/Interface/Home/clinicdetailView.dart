@@ -94,367 +94,364 @@ class _ClinicPageState extends State<ClinicPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Image.network(_clinic.coverImage.url),
+              ),
+              SizedBox(height: 10),
+              Card(
+                elevation: 10,
+                shadowColor: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 10, right: 10),
                   child: Column(
-              children: <Widget>[
-                Center(
-          child: Image.network(_clinic.coverImage.url),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          _clinic.name,
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on_outlined, color: Colors.black),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(
+                                _clinic.address ??
+                                    "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.local_phone_outlined, color: Colors.black),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(_clinic.phone,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.description_outlined, color: Colors.black),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(_clinic.description,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 10),
-                Card(
-          elevation: 10,
-          shadowColor: Colors.black,
-          child: Padding(
-          padding: const EdgeInsets.only(
-              top: 10, bottom: 10, left: 10, right: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  _clinic.name,
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              Card(
+                elevation: 10,
+                shadowColor: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 10, right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Open hours',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Monday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Tuesday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Wednesday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Thursday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Friday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Saturday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: 130,
+                                child: Text(
+                                  'Sunday',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                // width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                //width: 230,
+                                child: Text(
+                                  '${(_clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  Icon(Icons.location_on_outlined,
-                      color: Colors.black),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: Text(
-                        _clinic.address ??
-                            "85A Đường Nguyễn Văn Cừ, An Bình, Ninh Kiều, Cần Thơ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        )),
+              Card(
+                elevation: 10,
+                shadowColor: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 10, right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Rating this clinic',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          'Let other know what you think',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(child: buildCmtField()),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              SmoothStarRating(
+                                starCount: 5,
+                                size: 40.0,
+                                color: Colors.orange,
+                                borderColor: Colors.orange,
+                                spacing: 3.0,
+                                isReadOnly: false,
+                                allowHalfRating: true,
+                                rating: rating,
+                                onRated: (value) {
+                                  rating = value;
+                                  print("Rating is: $rating");
+                                },
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Column(
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor, // background
+                                    onPrimary: Colors.white, // foreground
+                                  ),
+                                  onPressed: () {},
+                                  child: Text('Send')),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                    ],
                   ),
-                ],
+                ),
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  Icon(Icons.local_phone_outlined,
-                      color: Colors.black),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: Text(_clinic.phone,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        )),
-                  ),
-                ],
+              Container(
+                height: 300,
+                child: buildListCmt(),
               ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Icon(Icons.description_outlined,
-                      color: Colors.black),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: Text(_clinic.description,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        )),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
             ],
           ),
-          ),
-                ),
-                SizedBox(height: 10),
-                Card(
-          elevation: 10,
-          shadowColor: Colors.black,
-          child: Padding(
-          padding: const EdgeInsets.only(
-              top: 10, bottom: 10, left: 10, right: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  'Open hours',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Monday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Tuesday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Wednesday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Thursday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Friday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Saturday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 130,
-                        child: Text(
-                          'Sunday',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 230,
-                        child: Text(
-                          '${(_clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].endTime%60).toInt().toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 5),
-            ],
-          ),
-          ),
-                ),
-                SizedBox(height: 10),
-                Card(
-          elevation: 10,
-          shadowColor: Colors.black,
-          child: Padding(
-          padding: const EdgeInsets.only(
-              top: 10, bottom: 10, left: 10, right: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  'Rating this clinic',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Center(
-                child: Text(
-                  'Let other know what you think',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(child: buildCmtField()),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Column(
-                    children: [
-                      SmoothStarRating(
-                        starCount: 5,
-                        size: 40.0,
-                        color: Colors.orange,
-                        borderColor: Colors.orange,
-                        spacing: 3.0,
-                        isReadOnly: false,
-                        allowHalfRating: true,
-                        rating: rating,
-                        onRated: (value) {
-                          rating = value;
-                          print("Rating is: $rating");
-                        },
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Column(
-                    children: [
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: kPrimaryColor, // background
-                            onPrimary: Colors.white, // foreground
-                          ),
-                          onPressed: () {},
-                          child: Text('Send')),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: 20),
-              
-            ],
-          ),
-          ),
-                ),
-                SizedBox(height: 10),
-              Expanded(child: buildListCmt()),
-              ],
-              
-            ),
         ),
       ),
     );
   }
 
   double ratingCmt = 4.5;
-  ListView buildListCmt() {
+  buildListCmt() {
     bool isVisible = false;
     return ListView.builder(
-
       itemCount: _clinic.reviewCount,
-          itemBuilder: (context, index) =>Container(
+      itemBuilder: (context, index) => Container(
         width: MediaQuery.of(context).size.width,
         child: GestureDetector(
           child: Card(
@@ -471,18 +468,19 @@ class _ClinicPageState extends State<ClinicPage> {
                     children: [
                       SizedBox(width: 10),
                       SizedBox(
-      height: 50,
-      width: 50,
-      child: Stack(
-        clipBehavior: Clip.none,
-        fit: StackFit.expand,
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(_clinic.reviews[index].user.avatar.url),
-          ),
-        ],
-      ),
-    ),
+                        height: 50,
+                        width: 50,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          fit: StackFit.expand,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  _clinic.reviews[index].user.avatar.url),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(width: 20),
                       Expanded(
                         child: Text(
@@ -530,7 +528,7 @@ class _ClinicPageState extends State<ClinicPage> {
                   ]),
                   Visibility(
                     visible: viewVisible, //isVisible,
-                    child: buildViewCmtAndCmtChild(),
+                    child: buildViewCmtAndCmtChild(index),
                   ),
                   SizedBox(height: 5),
                 ],
@@ -570,18 +568,33 @@ class _ClinicPageState extends State<ClinicPage> {
     );
   }
 
-  Widget buildViewCmtChild() {
-    return Container(
+//o day ne
+  buildViewCmtChild(int i) {
+    return ListView.builder( itemCount: _clinic.reviews[i].replies.length,
+      itemBuilder: (context, index) => Container(
       child: Column(
         children: [
           Row(
             children: [
               SizedBox(width: 10),
-              //uploadClinicImg(),
+              SizedBox(
+                height: 50,
+                width: 50,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  fit: StackFit.expand,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(_clinic.reviews[i].replies[index].user.avatar.url),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(width: 20),
               Expanded(
                 child: Text(
-                  "+4 100%",
+                  _clinic.reviews[i].replies[index].user.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.black, fontSize: 20),
@@ -592,24 +605,28 @@ class _ClinicPageState extends State<ClinicPage> {
           Row(children: [
             Expanded(
               child: Text(
-                "I don't think so! I think we need more 4 months",
+                _clinic.reviews[i].replies[index].review,
                 style: TextStyle(color: Colors.black, fontSize: 18),
               ),
             ),
           ]),
         ],
       ),
-    );
+    ));
+    
   }
 
   String cmtChild = "";
 
-  Widget buildViewCmtAndCmtChild() {
+  Widget buildViewCmtAndCmtChild(int i) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40, 5, 5, 5),
       child: Column(
         children: [
-          buildViewCmtChild(),
+          Container(
+          height: 50,
+            child:  buildViewCmtChild(i),
+          ),
           SizedBox(height: 10),
           TextFormField(
             maxLines: 1,

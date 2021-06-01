@@ -117,9 +117,9 @@ class _BookingState extends State<Booking> {
                       var time = select_time.hour * 60 + select_time.minute;
                       DateTime pickedDate = _calendarController.selectedDay;
                       String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
-                      print(pickedDate.isUtc);
+                
                       _userService
-                          .booking(url, _user.sId, _clinic.sId, time,
+                          .booking(url, time,
                               pickedDate, _cookies)
                           .then((value) {
                         
