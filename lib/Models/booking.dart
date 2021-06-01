@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:swp409/Models/user.dart';
+
+import 'clinic.dart';
 
 part 'booking.g.dart';
 
@@ -8,8 +11,8 @@ class Booking {
   String status;
   DateTime bookedDate;
   int bookedTime;
-  String user;
-  String clinic;
+  User user;
+  Clinic clinic;
   DateTime createdAt;
   DateTime updatedAt;
 
