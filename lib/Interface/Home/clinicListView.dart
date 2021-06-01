@@ -26,7 +26,7 @@ class ClinicListView extends StatefulWidget {
 class _ClinicListViewState extends State<ClinicListView> {
   User _user = new User();
   int _clinicListlength;
-
+  List<String> _cookies;
   @override
   void initState() {
     fetchClinics().then((value) {
@@ -35,6 +35,7 @@ class _ClinicListViewState extends State<ClinicListView> {
         _filteredclinic = _clinics;
       });
     });
+    _cookies = widget.cookies;
     _user = widget.user;
     _clinicListlength = _filteredclinic.length == null ? 0 : 5;
     //getUserData(widget.storage).then((value) => _user = value);
@@ -133,7 +134,10 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Profile'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ProfilePage.user(user: _user, cookies: widget.cookies,)));
+                  builder: (context) => ProfilePage.user(
+                        user: _user,
+                        cookies: _cookies,
+                      )));
             },
           ),
           ListTile(
@@ -241,7 +245,12 @@ class _ClinicListViewState extends State<ClinicListView> {
                                     onPressed: () {
                                       Navigator.of(context, rootNavigator: true)
                                           .push(MaterialPageRoute(
-                                              builder: (context) => Booking()));
+                                              builder: (context) => Booking(
+                                                    clinic:
+                                                        _filteredclinic[index],
+                                                    user: _user,
+                                                    cookies: _cookies,
+                                                  )));
                                     },
                                     child: Text('Book an appointment'))
                               ],

@@ -119,6 +119,8 @@ class _SignFormState extends State<SignForm> {
                         final cookies = val.headers.map['set-cookie'];
                         print('cook');
                         print(cookies);
+                        print(val.data);
+                        print(_user.toJson());
                         token = await storage.read(key: 'token');
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(

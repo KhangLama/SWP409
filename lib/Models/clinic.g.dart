@@ -31,7 +31,7 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
         : CoverImage.fromJson(json['coverImage'] as Map<String, dynamic>),
     iV: json['iV'] as int,
     reviewCount: json['reviewCount'] as int,
-    ratingAvg: json['ratingAvg'] as int,
+    ratingAvg: (json['ratingAvg'] as num)?.toDouble(),
     id: json['id'] as String,
   );
 }
@@ -75,7 +75,7 @@ Reviews _$ReviewsFromJson(Map<String, dynamic> json) {
             e == null ? null : Replies.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     sId: json['sId'] as String,
-    rating: json['rating'] as int,
+    rating: (json['rating'] as num)?.toDouble(),
     review: json['review'] as String,
     user: json['user'] == null
         ? null
@@ -100,7 +100,7 @@ Map<String, dynamic> _$ReviewsToJson(Reviews instance) => <String, dynamic>{
 Replies _$RepliesFromJson(Map<String, dynamic> json) {
   return Replies(
     sId: json['sId'] as String,
-    rating: json['rating'] as int,
+    rating: (json['rating'] as num)?.toDouble(),
     review: json['review'] as String,
     user: json['user'] == null
         ? null

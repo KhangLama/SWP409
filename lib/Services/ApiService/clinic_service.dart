@@ -6,6 +6,22 @@ import 'package:swp409/Models/clinic.dart';
 class ClinicService {
   Dio dio = new Dio();
   Response response;
+
+  Future<Response> getBookingsOfClinic(url, cookies) async{
+    try {
+      Map<String, dynamic> headers = new Map();
+      print('cook update');
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+      return response = await dio.get(url, options: options);
+    } on DioError catch(e){
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
   Future<Response> getClinics(url) async {
     try {
       return response = await dio.get(url);
