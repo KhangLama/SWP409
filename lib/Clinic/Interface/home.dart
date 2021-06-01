@@ -27,6 +27,16 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     GlobalKey<NavigatorState>(),
   ];
 
+  User _user;
+  List<String> _cookies;
+
+  @override
+  void initState() {
+    _user = widget.user;
+    _cookies = widget.cookies;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,10 +88,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ListCustomerAppointment.user(
-              user: widget.user,
-              cookies: widget.cookies
-            ),
+            ListCustomerAppointment.user(user: widget.user, cookies: _cookies,),
             Appointment(),
             ReviewCmtScreen(),
             ClinicProfile(),

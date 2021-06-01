@@ -21,6 +21,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool isPasswordVisible = true;
   bool isNewPasswordVisible = true;
   bool isConfirmNewPasswordVisible = true;
+  String errCur = "", errNew = "", errCon = "";
+  bool checkCur = false, checkNew = false, checkCon = false;
   @override
   void initState() {
     setState(() {
@@ -72,10 +74,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     buildConfirmNewPassword(),
                     SizedBox(height: SizeConfig.screenHeight * 0.08),
-                    DefaultButton(
-                        text: "Continue",
-                        press: () {
-                        }),
+                    DefaultButton(text: "Continue", press: () {
+    
+                      // if(currentPassword.length < 6){
+                      //   checkCur = true;
+                      //   errCur ="Please enter pass more than 6"
+                      // }
+                    }),
                   ],
                 ),
               ),
@@ -91,6 +96,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       onChanged: (value) => setState(() => currentPassword = value),
       onSubmitted: (value) => setState(() => currentPassword = value),
       decoration: InputDecoration(
+        errorText: checkCur? errCur : "",
         hintText: 'Enter current password',
         labelText: 'Current Password',
         labelStyle: TextStyle(color: Colors.black54),
@@ -102,7 +108,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () =>
               setState(() => isPasswordVisible = !isPasswordVisible),
         ),
-        enabledBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
           borderSide: BorderSide(color: kPrimaryColor),
         ),
@@ -120,6 +126,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       onChanged: (value) => setState(() => newPassword = value),
       onSubmitted: (value) => setState(() => newPassword = value),
       decoration: InputDecoration(
+        errorText: checkNew? errNew : "",
         hintText: 'Enter new password',
         labelText: 'New Password',
         labelStyle: TextStyle(color: Colors.black54),
@@ -131,7 +138,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () =>
               setState(() => isNewPasswordVisible = !isNewPasswordVisible),
         ),
-        enabledBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
           borderSide: BorderSide(color: kPrimaryColor),
         ),
@@ -149,6 +156,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       onChanged: (value) => setState(() => confirmNewPassword = value),
       onSubmitted: (value) => setState(() => confirmNewPassword = value),
       decoration: InputDecoration(
+        errorText: checkCon? errCon : "",
         hintText: 'Confirm new password',
         labelText: 'Confirm new Password',
         labelStyle: TextStyle(color: Colors.black54),
@@ -160,7 +168,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () => setState(
               () => isConfirmNewPasswordVisible = !isConfirmNewPasswordVisible),
         ),
-        enabledBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
           borderSide: BorderSide(color: kPrimaryColor),
         ),
