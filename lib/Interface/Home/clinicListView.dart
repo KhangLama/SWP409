@@ -187,7 +187,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                 onTap: () => Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
                         builder: (context) => ClinicPage.clinic(
-                              clinic: _filteredclinic[index],
+                              clinic: _filteredclinic[index], user: _user, cookies: _cookies,
                             ))),
                 child: Card(
                     margin: const EdgeInsets.only(
@@ -198,7 +198,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                       child: Row(
                         children: [
                           Image(
-                            image: AssetImage('images/0-1.png'),
+                            image: NetworkImage(_filteredclinic[index].coverImage.url),
                             width: 150,
                             height: 100,
                           ),

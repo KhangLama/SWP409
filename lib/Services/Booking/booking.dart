@@ -3,7 +3,6 @@ import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
-import 'package:swp409/Services/Booking/medical_record.dart';
 import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -19,10 +18,9 @@ class Booking extends StatefulWidget {
 int checkedIndex = 0;
 
 class _BookingState extends State<Booking> {
-  CalendarController _calendarController = CalendarController();
   var gridviewcontroller;
   UserService _userService = new UserService();
-
+  DateTime _selectedDay, _focusDay;
   User _user = new User();
   Clinic _clinic = new Clinic();
   List<String> _cookies;
@@ -58,17 +56,16 @@ class _BookingState extends State<Booking> {
               Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: TableCalendar(
-                  initialCalendarFormat: CalendarFormat.month,
-                  calendarController: _calendarController,
-                  startDay: DateTime.now(),
+                  firstDay: DateTime.now(),
+                  focusedDay: DateTime.now(),
+                  lastDay: DateTime.utc(2040),
                   startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarStyle: CalendarStyle(
-                      highlightSelected: true,
-                      highlightToday: true,
-                      todayColor: Colors.orangeAccent[100],
-                      todayStyle: TextStyle(color: Colors.black),
-                      selectedColor: Colors.orangeAccent[400],
-                      selectedStyle: TextStyle(color: Colors.black)),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusDay = focusedDay;
+                    });
+                  },
                 ),
               ),
               Padding(
@@ -115,12 +112,11 @@ class _BookingState extends State<Booking> {
                       print('booking');
                       print(_cookies);
                       var time = select_time.hour * 60 + select_time.minute;
-                      DateTime pickedDate = _calendarController.selectedDay;
                       String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
                 
                       _userService
                           .booking(url, time,
-                              pickedDate, _cookies)
+                              _selectedDay, _cookies)
                           .then((value) {
                         
                         if (value.data['status'] == 'success') {

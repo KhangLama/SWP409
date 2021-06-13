@@ -210,6 +210,7 @@ class _MapViewPageState extends State<MapViewPage> {
             Container(
               height: MediaQuery.of(context).size.height - 128,
               child: GoogleMap(
+                
                 mapType: MapType.normal,
                 initialCameraPosition:
                     CameraPosition(target: LatLng(10.03711, 105.78825)),
@@ -220,6 +221,7 @@ class _MapViewPageState extends State<MapViewPage> {
                 mapToolbarEnabled: true,
                 zoomGesturesEnabled: true,
                 buildingsEnabled: true,
+                
                 polylines: Set<Polyline>.of(polylines.values),
               ),
             ),

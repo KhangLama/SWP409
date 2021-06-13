@@ -20,27 +20,30 @@ class _HistoryPageState extends State<HistoryPage> {
   User _user = new User();
   UserService _userService = new UserService();
   List<String> _cookies;
-  List<Booking> _bookings;
+  List<Booking> _bookings = <Booking>[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _user = widget.user;
     _cookies = widget.cookies;
-    fetchBookings().then((value) => _bookings = value);
-    print(_bookings.length);
-    print(_bookings[0].toJson());
+    fetchBookings().then((value) {
+      setState(() {
+        _bookings = value;
+      });
+    });
   }
 
   Future<List<Booking>> fetchBookings() async {
     String url = '$ServerIP/api/v1/bookings/${_user.sId}';
     var fetchdata = await _userService.getHistory(url, _cookies);
-    print(fetchdata.data);
     var bookings = <Booking>[];
     var bookingsjson = fetchdata.data['data']['data'] as List;
     for (var clinic in bookingsjson) {
       bookings.add(Booking.fromJson(clinic));
     }
+    print('akjsdnkjsa');
+    print(bookings);
     return bookings;
   }
 
@@ -57,13 +60,7 @@ class _HistoryPageState extends State<HistoryPage> {
           backgroundColor: kPrimaryAppbar,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildList(_bookings),
-              ],
-            ),
-          ),
+          child: buildList(_bookings),
         ),
       ),
     );
@@ -72,7 +69,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget buildList(List<Booking> _bookings) {
     return ListView.builder(
       itemCount: _bookings.length,
-          itemBuilder:(context, index) => Container(
+      itemBuilder: (context, index) => Container(
         width: MediaQuery.of(context).size.width,
         child: GestureDetector(
           child: Card(
@@ -84,7 +81,8 @@ class _HistoryPageState extends State<HistoryPage> {
                 child: Row(
                   children: [
                     Image(
-                      image: AssetImage('images/0.jpg'),
+                      image:
+                          NetworkImage(_bookings[index].clinic.coverImage.url),
                       width: 150,
                       height: 100,
                     ),
@@ -96,7 +94,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Benh Vien Da Khoa Can Tho",
+                                  _bookings[index].clinic.name,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -108,11 +106,15 @@ class _HistoryPageState extends State<HistoryPage> {
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Icon(Feather.clock, color: Colors.black, size: 17),
+                              Icon(Feather.clock,
+                                  color: Colors.black, size: 17),
                               SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  "31 May 2021, 10.00 AM",
+                                  DateTime.parse(_bookings[index]
+                                          .bookedDate
+                                          .toIso8601String())
+                                      .toString(),
                                   style: TextStyle(fontSize: 17),
                                 ),
                               )
@@ -126,7 +128,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  "389 duong Nguyen Van Cu, quan Ninh Kieu, thanh pho Can Tho",
+                                  _bookings[index].clinic.address,
                                   style: TextStyle(fontSize: 17),
                                 ),
                               )
@@ -135,10 +137,11 @@ class _HistoryPageState extends State<HistoryPage> {
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Icon(Feather.phone, color: Colors.black, size: 17),
+                              Icon(Feather.phone,
+                                  color: Colors.black, size: 17),
                               SizedBox(width: 10),
                               Text(
-                                "0123456789",
+                                _bookings[index].clinic.phone,
                                 style: TextStyle(fontSize: 17),
                               )
                             ],
@@ -147,7 +150,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           Row(
                             children: [
                               Text(
-                                "Status: ",
+                                _bookings[index].status,
                                 style: TextStyle(fontSize: 17),
                               ),
                               SizedBox(width: 10),

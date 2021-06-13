@@ -1,18 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'dart:io';
 import '../../size_config.dart';
 
 // ignore: must_be_immutable
 class ClinicPage extends StatefulWidget {
   Clinic clinic;
-  ClinicPage.clinic({Key key, this.clinic}) : super(key: key);
+  User user;
+  List<String> cookies;
+  ClinicPage.clinic({Key key, this.clinic, this.user, this.cookies})
+      : super(key: key);
   @override
   _ClinicPageState createState() => _ClinicPageState();
 }
@@ -20,10 +22,10 @@ class ClinicPage extends StatefulWidget {
 class _ClinicPageState extends State<ClinicPage> {
   Clinic _clinic;
   double rating = 0.0;
-
+  List<String> _cookies;
   bool viewVisible = false;
   List<bool> name;
-
+  User _user;
   void changeVisible() {
     setState(() {
       viewVisible = !viewVisible;
@@ -34,6 +36,8 @@ class _ClinicPageState extends State<ClinicPage> {
   void initState() {
     setState(() {
       _clinic = widget.clinic;
+      _user = widget.user;
+      _cookies = widget.cookies;
     });
     super.initState();
     cmtController.addListener(() => setState(() {}));
@@ -84,7 +88,8 @@ class _ClinicPageState extends State<ClinicPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Booking()),
+                      MaterialPageRoute(
+                          builder: (context) => Booking(clinic: _clinic, cookies: _cookies, user: _user)),
                     );
                   },
                   child: Text('Book an appointment')),
@@ -570,50 +575,50 @@ class _ClinicPageState extends State<ClinicPage> {
 
 //o day ne
   buildViewCmtChild(int i) {
-    return ListView.builder( itemCount: _clinic.reviews[i].replies.length,
-      itemBuilder: (context, index) => Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(width: 10),
-              SizedBox(
-                height: 50,
-                width: 50,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  fit: StackFit.expand,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(_clinic.reviews[i].replies[index].user.avatar.url),
+    return ListView.builder(
+        itemCount: _clinic.reviews[i].replies.length,
+        itemBuilder: (context, index) => Container(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          fit: StackFit.expand,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(_clinic
+                                  .reviews[i].replies[index].user.avatar.url),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          _clinic.reviews[i].replies[index].user.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(children: [
+                    Expanded(
+                      child: Text(
+                        _clinic.reviews[i].replies[index].review,
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
                     ),
-                  ],
-                ),
+                  ]),
+                ],
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: Text(
-                  _clinic.reviews[i].replies[index].user.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-          Row(children: [
-            Expanded(
-              child: Text(
-                _clinic.reviews[i].replies[index].review,
-                style: TextStyle(color: Colors.black, fontSize: 18),
-              ),
-            ),
-          ]),
-        ],
-      ),
-    ));
-    
+            ));
   }
 
   String cmtChild = "";
@@ -624,8 +629,8 @@ class _ClinicPageState extends State<ClinicPage> {
       child: Column(
         children: [
           Container(
-          height: 50,
-            child:  buildViewCmtChild(i),
+            height: 50,
+            child: buildViewCmtChild(i),
           ),
           SizedBox(height: 10),
           TextFormField(
