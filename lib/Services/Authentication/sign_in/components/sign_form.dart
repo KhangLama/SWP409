@@ -117,6 +117,7 @@ class _SignFormState extends State<SignForm> {
                             avatar: ava);
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
+                        _user.avatar.url = val.data['data']['user']['avatar']['url'];
                         print('cook');
                         print(cookies);
                         print(val.data);

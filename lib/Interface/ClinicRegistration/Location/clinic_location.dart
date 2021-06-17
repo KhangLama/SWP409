@@ -11,7 +11,7 @@ import 'package:swp409/Interface/ClinicRegistration/Date/clinic_date.dart';
 import 'package:swp409/Models/clinic.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 // ignore: must_be_immutable
@@ -71,34 +71,34 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   }
 
   Future<List<Clinic>> getLocationResult(String txt) async {
-    await DotEnv.load(fileName: ".env");
+    await dotenv.load(fileName: '.env');
     if (txt.isEmpty) {
       return null;
     }
-    var ggmapkey = DotEnv.env['GOOGLE_MAP_KEY'];
+    var ggmapkey = dotenv.env['GOOGLE_MAP_KEY'];
 
     String types = 'address';
     String request =
         '$url?input=$txt&key=$ggmapkey&type=$types&components=country:vn&language:vi';
 
     Response response = await Dio().get(request);
-    final predictions = response.data['predictions'] as List;
+    List predictions = response.data['predictions'] as List;
     List<Clinic> addresses = [];
     for (var p = 0; p < predictions.length; p++) {
       String addr = predictions[p]['description'];
       addresses.add(Clinic(address: addr));
     }
+    print(predictions);
     setState(() {
       _suggest = addresses;
     });
-    getCoor(predictions, ggmapkey);
+    getCoor(predictions.last, ggmapkey);
 
     return addresses;
   }
 
   Future<void> getCoor(var predictions, String ggmapkey) async {
-    String request2 =
-        '$url2?place_id=${predictions.last['place_id']}&key=$ggmapkey';
+    String request2 = '$url2?place_id=${predictions['place_id']}&key=$ggmapkey';
 
     Response response2 = await Dio().get(request2);
     lat = response2.data['result']['geometry']['location']['lat'];
@@ -175,9 +175,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                     _searchController.text = pattern;
                   },
                   itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion),
-                    );
+                    return row(suggestion);
                   },
                   transitionBuilder: (context, suggestionBox, builder) {
                     return suggestionBox;
@@ -232,7 +230,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     );
   }
 
-  Widget row(Clinic suggestion) {
+  row(Clinic suggestion) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

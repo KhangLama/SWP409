@@ -85,7 +85,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                       text: "Submit",
                       press: () {
                         List<Schedule> _schedule = <Schedule>[];
-
                         _schedule.add(Schedule(
                             dayOfWeek: 1,
                             startTime: openMon.hour * 60 + openMon.minute,
@@ -114,7 +113,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                             dayOfWeek: 0,
                             startTime: openSun.hour * 60 + openSun.minute,
                             endTime: closeSun.hour * 60 + closeSun.minute));
-                        print(_schedule[1].startTime);
                         _clinic.schedule = _schedule;
                         _clinicService
                             .register(
