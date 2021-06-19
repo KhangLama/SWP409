@@ -41,7 +41,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     for (var i = 0; i < list.length; i++) {
       if (list[i].email == user.email) {
         print('abv');
-        print(list[i]);
+        //print(list[i]);
         return list[i];
       }
     }
@@ -56,7 +56,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
       clinics.add(Clinic.fromJson(clinic));
     }
     print('abcde');
-    print(clinics.length);
+    //print(clinics.length);
     return clinics;
   }
   @override
@@ -64,16 +64,14 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     super.initState();
     _cookies = widget.cookies;
     _user = widget.user;
-    print('init');
-    print(_user.toJson());
+    //print('init');
+    //print(_user.toJson());
     fetchClinics().then((value) {
-      print(value.toList());
+      //print(value.toList());
       _clinic = getClinicId(value, _user);
     });
 
-    print(_clinic);
-
-
+    //print(_clinic);
   }
   @override
   Widget build(BuildContext context) {
