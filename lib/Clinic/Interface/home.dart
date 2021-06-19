@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Clinic/Interface/ReviewComment/reiview_cmt.dart';
+import 'package:swp409/Interface/Home/clinicListView.dart';
+import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Controller/navigation_bar_controller.dart';
+import 'package:swp409/constants.dart';
 
 import 'Appointment/appointment.dart';
 import 'ListCustomerAppointment/list_customer_appointment.dart';
@@ -29,14 +33,35 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
 
   User _user;
   List<String> _cookies;
-
+  Clinic _clinic;
+  List<Clinic> _clinics;
   @override
   void initState() {
     _user = widget.user;
     _cookies = widget.cookies;
+    fetchClinics().then((value) => _clinics = value);
+    getClinicId(_clinics, _user);
     super.initState();
   }
+  String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
+  ClinicService _clinicService = new ClinicService();
 
+  void getClinicId(List<Clinic> list, User user){
+    for(var i = 0; i <= list.length; i++){
+      if(user.email == list[i].email){
+        _clinic = list[i];
+      }
+    }
+  }
+  Future<List<Clinic>> fetchClinics() async {
+    var fetchdata = await _clinicService.getClinics(urlGet);
+    var clinics = <Clinic>[];
+    var clinicsjson = fetchdata.data['data']['data'] as List;
+    for (var clinic in clinicsjson) {
+      clinics.add(Clinic.fromJson(clinic));
+    }
+    return clinics;
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,7 +113,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           selectedIndex: _selectedIndex,
           navigatorKeys: _navigatorKeys,
           pages: [
-            ListCustomerAppointment.user(user: widget.user, cookies: _cookies,),
+            ListCustomerAppointment.user(user: _user, cookies: _cookies),
             Appointment(),
             ReviewCmtScreen(),
             ClinicProfile(),
