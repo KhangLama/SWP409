@@ -27,8 +27,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     PickedFile _imageFile;
     final ImagePicker _picker = ImagePicker();
     List<String> _cookies;
-    List<Clinic> _clinic = <Clinic>[];
-
+    Clinic _clinic;
     String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
     ClinicService _clinicService = new ClinicService();
 
@@ -45,10 +44,18 @@ class _ClinicProfileState extends State<ClinicProfile> {
           errors.remove(error);
         });
     }
-
+    @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      setState(() {
+        _clinic = widget.clinic;
+        _cookies = widget.cookies;
+      });
+    }
     TextFormField buildDescriptionField() {
       return TextFormField(
-        initialValue: "Phong kham tot nhat cho moi nha",
+        initialValue: _clinic.description,
         maxLines: 3,
         maxLength: 150,
         onSaved: (newValue) => description = newValue,
@@ -90,7 +97,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
     TextFormField buildAddressField() {
       return TextFormField(
-        initialValue: "79 Nguyen Van Cu noi dai, Ninh Kieu, Can Tho",
+        initialValue: _clinic.address,
         onSaved: (newValue) => address = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -136,7 +143,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
     TextFormField buildPhoneField() {
       return TextFormField(
-        initialValue: "0123456789",
+        initialValue: _clinic.phone,
         keyboardType: TextInputType.phone,
         onSaved: (newValue) => phoneNumber = newValue,
         onChanged: (value) {
@@ -183,7 +190,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     TextFormField buildEmailField() {
       return TextFormField(
         readOnly: true,
-        initialValue: "clinic@gmail.com",
+        initialValue: _clinic.email,
         onSaved: (newValue) => mail = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -232,7 +239,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
     TextFormField buildNameField() {
       return TextFormField(
-        initialValue: "Phong kham Tam Phuc",
+        initialValue: "",
         onSaved: (newValue) => name = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -275,12 +282,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
       );
     }
 
-    @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _cookies = widget.cookies;
-  }
+
     @override
     Widget build(BuildContext context) {
       return MaterialApp(

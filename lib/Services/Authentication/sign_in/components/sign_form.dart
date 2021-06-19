@@ -93,7 +93,6 @@ class _SignFormState extends State<SignForm> {
                   String url = '$ServerIP/api/v1/users/login';
                   if (_formKey.currentState.validate()) {
                     authService.login(url, email, password).then((val) async {
-                      print(val.data);
                       if (val.data["status"] == "success") {
                         var sId = val.data['data']['user']['_id'];
                         var name = val.data['data']['user']['name'];
@@ -114,10 +113,6 @@ class _SignFormState extends State<SignForm> {
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
                         _user.avatar.url = val.data['data']['user']['avatar']['url'];
-                        print('cook');
-                        print(cookies);
-                        print(val.data);
-                        print(_user.toJson());
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(

@@ -116,24 +116,25 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                             errorEmail = "Please enter valid email";
                             checkEmailErr = true;
                           });
-                        } else{
-                          authService
-                              .signup(url1, name, phone, email, password,
-                              confirm_password)
-                              .then((val) {
-                            if (val.statusCode == 400) {
-                              List list = val.data['errors'] as List;
-                              for (int i = 0; i < list.length; i++) {
-                                if (list[i]['field'] == 'email') {
-                                  setState(() {
-                                    errorEmail = list[i]['message'];
-                                    checkEmailErr = true;
-                                  });
-                                }
-                              }
-                            }
-                          });
                         }
+                        // else{
+                        //   authService
+                        //       .signup(url1, name, phone, email, password,
+                        //       confirm_password)
+                        //       .then((val) {
+                        //     if (val.statusCode == 400) {
+                        //       List list = val.data['errors'] as List;
+                        //       for (int i = 0; i < list.length; i++) {
+                        //         if (list[i]['field'] == 'email') {
+                        //           setState(() {
+                        //             errorEmail = list[i]['message'];
+                        //             checkEmailErr = true;
+                        //           });
+                        //         }
+                        //       }
+                        //     }
+                        //   });
+                        // }
 
                         if (name.isEmpty){
                           setState(() {
