@@ -27,11 +27,11 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   @override
   void initState() {
     _cookies = widget.cookies;
-    fetchBookings().then((value) {
-      setState(() {
-        _booking = value;
-      });
-    });
+    // fetchBookings().then((value) {
+    //   setState(() {
+    //     _booking = value;
+    //   });
+    // });
     print(_booking.length);
     super.initState();
   }
@@ -245,16 +245,16 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   List<Booking> _booking = <Booking>[];
   String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
   ClinicService _clinicService = new ClinicService();
-  Future<List<Booking>> fetchBookings() async {
-    var fetchdata =
-        await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
-    var list = <Booking>[];
-    var bookingsjson = fetchdata.data['data']['data'] as List;
-    print('booking json');
-    print(bookingsjson);
-    for (var booking in bookingsjson) {
-      list.add(new Booking.fromJson(booking));
-    }
-    return list;
-  }
+  // Future<List<Booking>> fetchBookings() async {
+  //   var fetchdata =
+  //       await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
+  //   var list = <Booking>[];
+  //   var bookingsjson = fetchdata.data['data']['data'] as List;
+  //   print('booking json');
+  //   print(bookingsjson);
+  //   for (var booking in bookingsjson) {
+  //     list.add(new Booking.fromJson(booking));
+  //   }
+  //   return list;
+  // }
 }

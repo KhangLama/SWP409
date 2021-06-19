@@ -1,27 +1,35 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:swp409/Models/clinic.dart';
 
 class ClinicService {
   Dio dio = new Dio();
   Response response;
 
-  Future<Response> getBookingsOfClinic(url, cookies) async{
+  Future<Response> getBookingsOfClinic(url, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();
-      print('cook update');
       var token = cookies[0].split(';')[0];
-      print(token);
       headers['Cookie'] = token;
       Options options = new Options(headers: headers);
       return response = await dio.get(url, options: options);
-    } on DioError catch(e){
+    } on DioError catch (e) {
       print(e.response.data);
       return response = e.response;
     }
   }
 
+  Future<Response> getClinic(url, cookies) async {
+    try {
+      Map<String, dynamic> headers = new Map();
+      var token = cookies[0].split(';')[0];
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+      return response = await dio.get(url, options: options);
+    } on DioError catch (e) {
+      return response = e.response;
+    }
+  }
   Future<Response> getClinics(url) async {
     try {
       return response = await dio.get(url);
@@ -41,33 +49,33 @@ class ClinicService {
         "description": clinic.description,
         "name": clinic.name,
         "startTimeMonday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeMonday": DateTime.parse(
-                 "2014-08-18T${(clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeTuesday": DateTime.parse(
-                 "2014-08-18T${(clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeTuesday": DateTime.parse(
-                 "2014-08-18T${(clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeWednesday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeWednesday": DateTime.parse(
-                  "2014-08-18T${(clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeThursday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeThursday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeFriday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeFriday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeSaturday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeSaturday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "startTimeSunday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeSunday": DateTime.parse(
-                "2014-08-18T${(clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
+            "2014-08-18T${(clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "geometry": geo,
         "coverImage": await MultipartFile.fromFile(path.path),
       });

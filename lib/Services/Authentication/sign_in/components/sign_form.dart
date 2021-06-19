@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:swp409/Clinic/Interface/home.dart';
 import 'package:swp409/Components/default_button.dart';
@@ -22,11 +21,10 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  var email, password, token;
+  var email, password;
   bool remember = false;
   //int userID = 0;
   final List<String> errors = [];
-  final storage = new FlutterSecureStorage();
   bool loading = false;
   User _user = new User();
 
@@ -97,8 +95,6 @@ class _SignFormState extends State<SignForm> {
                     print(url);
                     print("${email} ${password}");
                     authService.login(url, email, password).then((val) async {
-                      print(val.data);
-
                       if (val.data["status"] == "success") {
                         var sId = val.data['data']['user']['_id'];
                         var name = val.data['data']['user']['name'];
@@ -108,8 +104,6 @@ class _SignFormState extends State<SignForm> {
                         var filename =
                             val.data['data']['user']['avatar']['filename'];
                         var url = val.data['data']['user']['avatar']['url'];
-                        await storage.write(
-                            key: 'token', value: val.data['token']);
                         var ava = new Avatar(filename: filename, url: url);
                         _user = new User(
                             sId: sId,
@@ -121,11 +115,6 @@ class _SignFormState extends State<SignForm> {
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
                         _user.avatar.url = val.data['data']['user']['avatar']['url'];
-                        print('cook');
-                        print(cookies);
-                        print(val.data);
-                        print(_user.toJson());
-                        token = await storage.read(key: 'token');
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
