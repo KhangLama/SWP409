@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'dart:io';
 import '../../../constants.dart';
@@ -10,8 +11,9 @@ import '../../../size_config.dart';
 
 class ClinicProfile extends StatefulWidget {
   Clinic clinic;
+  User user;
   List<String> cookies;
-  ClinicProfile({Key key, this.clinic, this.cookies}) : super(key: key);
+  ClinicProfile({Key key, this.user, this.cookies}) : super(key: key);
   @override
   _ClinicProfileState createState() => _ClinicProfileState();
 }
@@ -27,8 +29,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
     PickedFile _imageFile;
     final ImagePicker _picker = ImagePicker();
     List<String> _cookies;
-    Clinic _clinic;
+    User _user;
+    Clinic _clinic = new Clinic();
     String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
+    String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
     ClinicService _clinicService = new ClinicService();
 
     void addError({String error}) {
@@ -44,18 +48,43 @@ class _ClinicProfileState extends State<ClinicProfile> {
           errors.remove(error);
         });
     }
+    Clinic getClinicId(List<Clinic> list, User user) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].email == user.email) {
+          print('abv');
+          print(list[i].toJson());
+          return list[i];
+        }
+      }
+      return null;
+    }
+
+    Future<List<Clinic>> fetchClinics() async {
+      var fetchdata = await _clinicService.getClinics(urlGet);
+      var clinics = <Clinic>[];
+      var clinicsjson = fetchdata.data['data']['data'] as List;
+      for (var clinic in clinicsjson) {
+        clinics.add(Clinic.fromJson(clinic));
+      }
+      print('abcde');
+      print(clinics.length);
+      return clinics;
+    }
     @override
     void initState() {
       // TODO: implement initState
       super.initState();
-      setState(() {
-        _clinic = widget.clinic;
-        _cookies = widget.cookies;
+      _user = widget.user;
+      fetchClinics().then((value) {
+        setState(() {
+          _clinic = getClinicId(value, _user);
+        });
       });
+        _cookies = widget.cookies;
     }
     TextFormField buildDescriptionField() {
       return TextFormField(
-        initialValue: _clinic.description,
+        initialValue: _clinic.description ?? "",
         maxLines: 3,
         maxLength: 150,
         onSaved: (newValue) => description = newValue,
@@ -97,7 +126,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
     TextFormField buildAddressField() {
       return TextFormField(
-        initialValue: _clinic.address,
+        initialValue: _clinic.address ?? "",
         onSaved: (newValue) => address = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -190,7 +219,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     TextFormField buildEmailField() {
       return TextFormField(
         readOnly: true,
-        initialValue: _clinic.email,
+        initialValue: _clinic.email ?? "",
         onSaved: (newValue) => mail = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -239,7 +268,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
     TextFormField buildNameField() {
       return TextFormField(
-        initialValue: "",
+        initialValue: _clinic.name ?? "",
         onSaved: (newValue) => name = newValue,
         onChanged: (value) {
           if (value.isNotEmpty) {
@@ -286,129 +315,132 @@ class _ClinicProfileState extends State<ClinicProfile> {
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Home',
-              style: TextStyle(color: kPrimaryLightColor),
+        home: FutureBuilder(
+          future: Future.delayed(Duration(seconds: 1)),
+          builder: (c, s) => s.connectionState == ConnectionState.done ? Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Home',
+                style: TextStyle(color: kPrimaryLightColor),
+              ),
+              backgroundColor: kPrimaryAppbar,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    // do something
+                  },
+                )
+              ],
             ),
-            backgroundColor: kPrimaryAppbar,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  // do something
-                },
-              )
-            ],
-          ),
-          body: SafeArea(
-            child: SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
-                      SizedBox(
-                        height: 250,
-                        width: 350,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          fit: StackFit.expand,
-                          children: [
-                            Image(
-                              image: _imageFile == null
-                                  ? AssetImage('images/0.jpg')
-                                  : FileImage(File(_imageFile.path)),
-                            ),
-                            Positioned(
-                              right: 25,
-                              bottom: 0,
-                              child: SizedBox(
-                                height: 45,
-                                width: 45,
-                                // ignore: deprecated_member_use
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                    side: BorderSide(color: Color(0xFFDFDFE3)),
-                                  ),
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Column(
-                                    // Replace with a Row for horizontal icon + text
-                                    children: <Widget>[
-                                      Icon(Icons.camera_alt),
-                                    ],
-                                  ),
-                                  color: Color(0xFFDFDFE3),
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: ((builder) => bottomSheet()));
-                                  },
-                                ),
+            body: SafeArea(
+              child: SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(20)),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: SizeConfig.screenHeight * 0.02),
+                        SizedBox(
+                          height: 250,
+                          width: 350,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            fit: StackFit.expand,
+                            children: [
+                              Image(
+                                image: _imageFile == null
+                                    ? AssetImage('images/0.jpg')
+                                    : FileImage(File(_imageFile.path)),
                               ),
-                            )
-                          ],
+                              Positioned(
+                                right: 25,
+                                bottom: 0,
+                                child: SizedBox(
+                                  height: 45,
+                                  width: 45,
+                                  // ignore: deprecated_member_use
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      side: BorderSide(color: Color(0xFFDFDFE3)),
+                                    ),
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      // Replace with a Row for horizontal icon + text
+                                      children: <Widget>[
+                                        Icon(Icons.camera_alt),
+                                      ],
+                                    ),
+                                    color: Color(0xFFDFDFE3),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: ((builder) => bottomSheet()));
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: SizeConfig.screenHeight * 0.03),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            buildNameField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildEmailField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildPhoneField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildAddressField(),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                            buildDescriptionField(),
-                            //FormError(errors: errors),
-                            SizedBox(height: getProportionateScreenHeight(40)),
-                            DefaultButton(
-                              text: "Save change",
-                              press: () {
-                                if (_formKey.currentState.validate()) {
-                                  // _userService
-                                  //     .updateInfo(
-                                  //         url, name, phoneNumber, address, _imageFile)
-                                  //     .then((res) {
-                                  //   print(res.data);
-                                  //   KeyboardUtil.hideKeyboard(context);
-                                  //   if (res.data['status'] == "success") {
-                                  //     _user.name = name;
-                                  //     _user.phone = phoneNumber;
-                                  //     _user.address = address;
-                                  //     _user.avatar = _imageFile;
-                                  //     Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) =>
-                                  //                 MainScreen.user(user: _user)));
-                                  //   }
-                                  // });
-                                }
-                              },
-                            ),
-                          ],
+                        SizedBox(height: SizeConfig.screenHeight * 0.03),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              buildNameField(),
+                              SizedBox(height: getProportionateScreenHeight(30)),
+                              buildEmailField(),
+                              SizedBox(height: getProportionateScreenHeight(30)),
+                              buildPhoneField(),
+                              SizedBox(height: getProportionateScreenHeight(30)),
+                              buildAddressField(),
+                              SizedBox(height: getProportionateScreenHeight(30)),
+                              buildDescriptionField(),
+                              //FormError(errors: errors),
+                              SizedBox(height: getProportionateScreenHeight(40)),
+                              DefaultButton(
+                                text: "Save change",
+                                press: () {
+                                  if (_formKey.currentState.validate()) {
+                                    // _userService
+                                    //     .updateInfo(
+                                    //         url, name, phoneNumber, address, _imageFile)
+                                    //     .then((res) {
+                                    //   print(res.data);
+                                    //   KeyboardUtil.hideKeyboard(context);
+                                    //   if (res.data['status'] == "success") {
+                                    //     _user.name = name;
+                                    //     _user.phone = phoneNumber;
+                                    //     _user.address = address;
+                                    //     _user.avatar = _imageFile;
+                                    //     Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //                 MainScreen.user(user: _user)));
+                                    //   }
+                                    // });
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                    ],
+                        SizedBox(height: getProportionateScreenHeight(30)),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ) : Center(child: CircularProgressIndicator()),
         ),
       );
     }
