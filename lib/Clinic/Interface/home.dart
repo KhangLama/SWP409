@@ -30,48 +30,20 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
-
-  User _user;
+  Future loading;
+  User _user = new User();
   List<String> _cookies;
-  Clinic _clinic;
-  String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
-  ClinicService _clinicService = new ClinicService();
 
-  Clinic getClinicId(List<Clinic> list, User user) {
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].email == user.email) {
-        print('abv');
-        //print(list[i]);
-        return list[i];
-      }
-    }
-    return null;
-  }
 
-  Future<List<Clinic>> fetchClinics() async {
-    var fetchdata = await _clinicService.getClinics(urlGet);
-    var clinics = <Clinic>[];
-    var clinicsjson = fetchdata.data['data']['data'] as List;
-    for (var clinic in clinicsjson) {
-      clinics.add(Clinic.fromJson(clinic));
-    }
-    print('abcde');
-    //print(clinics.length);
-    return clinics;
-  }
+
   @override
   void initState() {
-    super.initState();
     _cookies = widget.cookies;
     _user = widget.user;
-    //print('init');
-    //print(_user.toJson());
-    fetchClinics().then((value) {
-      //print(value.toList());
-      _clinic = getClinicId(value, _user);
-    });
+    print('init');
+    print(_user.toJson());
 
-    //print(_clinic);
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -121,16 +93,15 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
           },
         ),
         body: CommonBottomNavigationBar(
-          selectedIndex: _selectedIndex,
-          navigatorKeys: _navigatorKeys,
-          pages: [
-            ListCustomerAppointment.user(user: _user, cookies: _cookies),
-            Appointment(),
-            ReviewCmtScreen(),
-            ClinicProfile(clinic: _clinic, cookies: _cookies),
-          ],
-        ),
-      ),
-    );
+                selectedIndex: _selectedIndex,
+                navigatorKeys: _navigatorKeys,
+                pages: <Widget>[
+                  ListCustomerAppointment.user(user: _user, cookies: _cookies),
+                  Appointment(),
+                  ReviewCmtScreen(),
+                  ClinicProfile(user: _user, cookies: _cookies),
+                ],
+          ),
+        ));
   }
 }
