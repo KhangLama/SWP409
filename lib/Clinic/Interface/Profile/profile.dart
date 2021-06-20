@@ -5,6 +5,7 @@ import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
+import 'package:swp409/helper/keyboard.dart';
 import 'dart:io';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -33,6 +34,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     Clinic _clinic = new Clinic();
     String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
     String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
+    String url = '$ServerIP/api/v1/clinics/detail';
     ClinicService _clinicService = new ClinicService();
 
     void addError({String error}) {
@@ -355,7 +357,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                             children: [
                               Image(
                                 image: _imageFile == null
-                                    ? AssetImage('images/0.jpg')
+                                    ? NetworkImage(_clinic.coverImage.url)//AssetImage('images/0.jpg')
                                     : FileImage(File(_imageFile.path)),
                               ),
                               Positioned(
@@ -409,24 +411,28 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                 text: "Save change",
                                 press: () {
                                   if (_formKey.currentState.validate()) {
-                                    // _userService
-                                    //     .updateInfo(
-                                    //         url, name, phoneNumber, address, _imageFile)
-                                    //     .then((res) {
-                                    //   print(res.data);
-                                    //   KeyboardUtil.hideKeyboard(context);
-                                    //   if (res.data['status'] == "success") {
-                                    //     _user.name = name;
-                                    //     _user.phone = phoneNumber;
-                                    //     _user.address = address;
-                                    //     _user.avatar = _imageFile;
-                                    //     Navigator.push(
-                                    //         context,
-                                    //         MaterialPageRoute(
-                                    //             builder: (context) =>
-                                    //                 MainScreen.user(user: _user)));
-                                    //   }
-                                    // });
+                                    _clinic.name= name;
+                                    _clinic.phone = phoneNumber;
+                                    _clinic.address = address;
+                                    _clinic.description = description;
+                                    _clinicService
+                                        .updateInfo(
+                                        url,
+                                        _clinic,
+                                        _imageFile,
+                                        _cookies
+                                    )
+                                        .then((res) {
+                                      print('bodyyyyy');
+                                      print(res.data);
+                                      KeyboardUtil.hideKeyboard(context);
+                                      // if (res.data['status'] == "success") {
+                                      //   // thong bao thanh cong
+                                      //   print('update success');
+                                      // } else {
+                                      //   print('fail to update');
+                                      // }
+                                    });
                                   }
                                 },
                               ),

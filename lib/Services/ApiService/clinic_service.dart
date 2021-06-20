@@ -19,6 +19,36 @@ class ClinicService {
     }
   }
 
+  Future<Response> updateInfo(
+      url,  Clinic clinic, path, cookies) async {
+    String geo = jsonEncode(clinic.geometry);
+    try {
+      Map<String, dynamic> headers = new Map();
+      print('cook update');
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+
+      var formData = new FormData.fromMap({
+        "email": clinic.email,
+        "phone": clinic.phone,
+        "description": clinic.description,
+        "name": clinic.name,
+        "geometry": geo,
+        "address": clinic.address,
+        "coverImage": await MultipartFile.fromFile(path.path),
+      });
+        print(formData.fields);
+        response = await dio.patch(url, data: formData, options: options);
+
+    } on DioError catch (e) {
+      print(e..response);
+      return response = e.response;
+    }
+    return response;
+  }
+
   Future<Response> getClinic(url, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();

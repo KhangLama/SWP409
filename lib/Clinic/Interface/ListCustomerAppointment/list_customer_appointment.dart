@@ -32,7 +32,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     //     _booking = value;
     //   });
     // });
-    print(_booking.length);
+    //print(_booking.length);
     super.initState();
   }
 
@@ -249,9 +249,10 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   //   var fetchdata =
   //       await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
   //   var list = <Booking>[];
+  //   print(urlGetBooking);
   //   var bookingsjson = fetchdata.data['data']['data'] as List;
   //   print('booking json');
-  //   print(bookingsjson);
+  //   //print(bookingsjson);
   //   for (var booking in bookingsjson) {
   //     list.add(new Booking.fromJson(booking));
   //   }

@@ -92,6 +92,8 @@ class _SignFormState extends State<SignForm> {
                 press: () async {
                   String url = '$ServerIP/api/v1/users/login';
                   if (_formKey.currentState.validate()) {
+                    print(url);
+                    print("${email} ${password}");
                     authService.login(url, email, password).then((val) async {
                       if (val.data["status"] == "success") {
                         print('login');
