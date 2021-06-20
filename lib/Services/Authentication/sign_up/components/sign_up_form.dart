@@ -28,7 +28,7 @@ class _SignUpFormState extends State<SignUpForm> {
   var emailController;
   final myController = TextEditingController();
   final storage = new FlutterSecureStorage();
-
+  User _user;
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
@@ -75,33 +75,22 @@ class _SignUpFormState extends State<SignUpForm> {
                           confirm_password)
                       .then((val) {
                     if (val.data['status'] == 'success') {
-                      var _id = val.data['data']['user']['_id'];
-                      var _name = val.data['data']['user']['name'];
-                      var _phone = val.data['data']['user']['phone'];
-                      var _role = val.data['data']['user']['role'];
-                      var _email = val.data['data']['user']['email'];
-
-                      User _user = new User(
-                          sId: _id,
-                          name: _name,
-                          phone: _phone,
-                          email: _email,
-                          role: _role);
-
+                      _user = new User.fromJson(val.data['data']['user']);
                       KeyboardUtil.hideKeyboard(context);
-                      if (_role == 'patient') {
+                      final cookies = val.headers.map['set-cookie'];
+                      if (_user.role == 'patient') {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    MainScreen.user(user: _user)));
+                                    MainScreen.user(user: _user, cookies: cookies,)));
                       }
-                      if (_role == 'doctor') {
+                      if (_user.role == 'doctor') {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    HomeScreenDoctor.user(user: _user)));
+                                    HomeScreenDoctor.user(user: _user, cookies: cookies,)));
                       }
                     }
                     if (val.statusCode == 400) {

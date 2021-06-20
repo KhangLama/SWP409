@@ -37,14 +37,9 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    setState(() {
-      _user = widget.user;
-      print('token');
-      print(widget.cookies);
-      cookies = widget.cookies;
-      print(widget.user.toJson());
-    });
-    //print(_user.toJson());
+    _user = widget.user;
+    cookies = widget.cookies;
+
     super.initState();
   }
 
@@ -306,35 +301,18 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.sId}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(
-                                    url,
-                                    name,
-                                    phoneNumber,
-                                    address,
-                                    _imageFile,
-                                    widget.user.email,
-                                    cookies)
+                                .updateInfo(url, name, phoneNumber, address,
+                                    _imageFile, _user.email, cookies)
                                 .then((res) {
-                              print('body');
-                              print(res.data);
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {
-                                _user.sId = res.data['data']['data']['_id'];
-                                _user.name = res.data['data']['data']['name'];
-                                _user.phone = res.data['data']['data']['phone'];
-                                _user.email = res.data['data']['data']['email'];
-                                _user.role = res.data['data']['data']['role'];
-                                _user.avatar.sId =
-                                    res.data['data']['data']['avatar']['_id'];
-                                _user.avatar.filename = res.data['data']['data']
-                                    ['avatar']['filename'];
-                                _user.avatar.url =
-                                    res.data['data']['data']['avatar']['url'];
+                                _user =
+                                    new User.fromJson(res.data['data']['data']);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            MainScreen.user(user: _user, cookies: cookies)));
+                                        builder: (context) => MainScreen.user(
+                                            user: _user, cookies: cookies)));
                               }
                             });
                           }
