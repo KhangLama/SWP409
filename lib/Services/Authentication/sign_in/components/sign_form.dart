@@ -94,25 +94,11 @@ class _SignFormState extends State<SignForm> {
                   if (_formKey.currentState.validate()) {
                     authService.login(url, email, password).then((val) async {
                       if (val.data["status"] == "success") {
-                        var sId = val.data['data']['user']['_id'];
-                        var name = val.data['data']['user']['name'];
-                        var role = val.data['data']['user']['role'];
-                        var phone = val.data['data']['user']['phone'];
-                        var email = val.data['data']['user']['email'];
-                        var filename =
-                            val.data['data']['user']['avatar']['filename'];
-                        var url = val.data['data']['user']['avatar']['url'];
-                        var ava = new Avatar(filename: filename, url: url);
-                        _user = new User(
-                            sId: sId,
-                            email: email,
-                            name: name,
-                            role: role,
-                            phone: phone,
-                            avatar: ava);
+                        print('login');
+                        print(val.data['data']);
+                        _user = new User.fromJson(val.data['data']['user']);
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
-                        _user.avatar.url = val.data['data']['user']['avatar']['url'];
                         if (_user.role == 'patient') {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(

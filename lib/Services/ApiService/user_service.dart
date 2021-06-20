@@ -50,6 +50,7 @@ class UserService {
       var token = cookies[0].split(';')[0];
       print(token);
       headers['Cookie'] = token;
+
       Options options = new Options(headers: headers);
       if (_avatar != null) {
         String _filename = _avatar.path.split('/').last;
@@ -61,26 +62,9 @@ class UserService {
           "avatar":
               await MultipartFile.fromFile(_filepath, filename: _filename),
         });
-        print(formData.fields);
         response = await dio.put(url, data: formData, options: options);
       }
-      if (_avatar == null) {
-        var formData = new FormData.fromMap({
-          "name": _name,
-          "phone": _phone,
-          "address": _address,
-        });
-        print('null');
-        print(formData.fields);
-        response = await dio.put(url,
-            data: formData,
-            options: Options(headers: {
-              'Content-type': 'application/json',
-              'Accept': 'application/json'
-            }));
-      }
     } on DioError catch (e) {
-      print(e..response);
       return response = e.response;
     }
     return response;
