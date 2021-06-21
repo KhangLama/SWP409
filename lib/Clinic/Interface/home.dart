@@ -97,7 +97,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                 navigatorKeys: _navigatorKeys,
                 pages: <Widget>[
                   ListCustomerAppointment.user(user: _user, cookies: _cookies),
-                  Appointment(),
+                  Appointment(cookies: _cookies),
                   ReviewCmtScreen(),
                   ClinicProfile(user: _user, cookies: _cookies),
                 ],
