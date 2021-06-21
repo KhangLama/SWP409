@@ -14,7 +14,7 @@ class User {
   int iV;
 
   User(
-      {this.avatar,
+  {this.avatar,
       this.role,
       this.sId,
       this.name,
