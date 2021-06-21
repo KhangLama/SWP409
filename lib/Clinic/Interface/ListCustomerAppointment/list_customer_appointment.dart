@@ -27,12 +27,12 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   @override
   void initState() {
     _cookies = widget.cookies;
-    // fetchBookings().then((value) {
-    //   setState(() {
-    //     _booking = value;
-    //   });
-    // });
-    //print(_booking.length);
+    fetchBookings().then((value) {
+      setState(() {
+        _booking = value;
+      });
+    });
+    print(_booking.length);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
               child: GestureDetector(
                 child: Card(
                     margin: const EdgeInsets.only(
-                        top: 0, bottom: 15.0, left: 10.0, right: 10.0),
+                        top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 10, left: 0, right: 16),
@@ -110,10 +110,11 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                         color: Colors.black, size: 17),
                                     SizedBox(width: 10),
                                     Text(
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(_booking[index].bookedDate),
+                                      '${DateFormat('yyyy-MM-dd')
+                                          .format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
                                       style: TextStyle(fontSize: 17),
-                                    )
+                                    ),
+                                    SizedBox(width: 5),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -154,7 +155,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                             builder: (BuildContext context) =>
                                                 AlertDialog(
                                               title: Text(
-                                                "Approve this appointment",
+                                                "Approve this booking",
                                                 style: TextStyle(fontSize: 25),
                                               ),
                                               content: Text(
@@ -243,19 +244,19 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   }
 
   List<Booking> _booking = <Booking>[];
-  String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
+  String urlGetBooking = "$ServerIP/api/v1/bookings/users";
   ClinicService _clinicService = new ClinicService();
-  // Future<List<Booking>> fetchBookings() async {
-  //   var fetchdata =
-  //       await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
-  //   var list = <Booking>[];
-  //   print(urlGetBooking);
-  //   var bookingsjson = fetchdata.data['data']['data'] as List;
-  //   print('booking json');
-  //   //print(bookingsjson);
-  //   for (var booking in bookingsjson) {
-  //     list.add(new Booking.fromJson(booking));
-  //   }
-  //   return list;
-  // }
+  Future<List<Booking>> fetchBookings() async {
+    var fetchdata =
+        await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
+    var list = <Booking>[];
+    print(urlGetBooking);
+    var bookingsjson = fetchdata.data['data']['data'] as List;
+    print('booking json');
+    //print(bookingsjson);
+    for (var booking in bookingsjson) {
+      list.add(new Booking.fromJson(booking));
+    }
+    return list;
+  }
 }

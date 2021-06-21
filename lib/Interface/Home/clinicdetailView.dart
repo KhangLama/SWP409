@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
+import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -26,6 +27,8 @@ class _ClinicPageState extends State<ClinicPage> {
   bool viewVisible = false;
   List<bool> name;
   User _user;
+  ClinicService _clinicService = new ClinicService();
+
   void changeVisible() {
     setState(() {
       viewVisible = !viewVisible;
@@ -34,11 +37,11 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   void initState() {
-    setState(() {
+
       _clinic = widget.clinic;
+      print(_clinic.toJson());
       _user = widget.user;
       _cookies = widget.cookies;
-    });
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -428,7 +431,19 @@ class _ClinicPageState extends State<ClinicPage> {
                                     primary: kPrimaryColor, // background
                                     onPrimary: Colors.white, // foreground
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print("id: ${_clinic.id}");
+                                    String review = cmtController.text;
+                                    print ("review: ${review}, rating: ${rating}");
+                                    String urlAddReview = '$ServerIP/api/v1/reviews/${_clinic.id}';
+                                    _clinicService.addReviewClinic(urlAddReview, _cookies, review, rating)
+                                        .then((value) {
+                                          print("Review: ${value.data}");
+                                          setState(() {
+                                          });
+                                    });
+
+                                  },
                                   child: Text('Send')),
                             ],
                           )
@@ -441,7 +456,7 @@ class _ClinicPageState extends State<ClinicPage> {
               ),
               SizedBox(height: 10),
               Container(
-                height: 300,
+                height: (_clinic.reviewCount == 0) ? 0 : 300,
                 child: buildListCmt(),
               ),
             ],
