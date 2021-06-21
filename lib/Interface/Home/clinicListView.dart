@@ -165,103 +165,106 @@ class _ClinicListViewState extends State<ClinicListView> {
 
   // List view of clinic card
   buildListView() {
-    return NotificationListener<ScrollNotification>(
-      // ignore: missing_return
-      onNotification: (scrollNotification) {
-        assert(scrollNotification != null);
-        if (scrollNotification.metrics.pixels ==
-            scrollNotification.metrics.maxScrollExtent) {
-          setState(() {
-            _clinicListlength = _clinicListlength + 5 <= _filteredclinic.length
-                ? _clinicListlength += 5
-                : _filteredclinic.length;
-          });
-        }
-      },
-      child: ListView.builder(
-          itemCount: _filteredclinic.length,
-          itemBuilder: (context, index) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              child: GestureDetector(
-                onTap: () => Navigator.of(context, rootNavigator: true)
-                    .push(MaterialPageRoute(
-                        builder: (context) => ClinicPage.clinic(
-                              clinic: _filteredclinic[index], user: _user, cookies: _cookies,
-                            ))),
-                child: Card(
-                    margin: const EdgeInsets.only(
-                        top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, bottom: 15, left: 0, right: 16),
-                      child: Row(
-                        children: [
-                          Image(
-                            image: NetworkImage(_filteredclinic[index].coverImage.url),
-                            width: 150,
-                            height: 100,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _filteredclinic[index].name,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined,
-                                        color: Colors.black),
-                                    SizedBox(width: 5),
-                                    Expanded(
-                                      child: Text(
-                                        _filteredclinic[index].address ?? "",
-                                        style: TextStyle(fontSize: 17),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: kPrimaryColor, // background
-                                      onPrimary: Colors.white,
-                                      textStyle: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.white,
-                                      ),
-                                      minimumSize: Size(180, 40),
-                                      shape: new RoundedRectangleBorder(
-                                          borderRadius: new BorderRadius.all(
-                                              Radius.circular(
-                                                  15))), // foreground
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => Booking(
-                                                    clinic:
-                                                        _filteredclinic[index],
-                                                    user: _user,
-                                                    cookies: _cookies,
-                                                  )));
-                                    },
-                                    child: Text('Book an appointment'))
-                              ],
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 1)),
+      builder: (c, s) => s.connectionState == ConnectionState.done ? NotificationListener<ScrollNotification>(
+        // ignore: missing_return
+        onNotification: (scrollNotification) {
+          assert(scrollNotification != null);
+          if (scrollNotification.metrics.pixels ==
+              scrollNotification.metrics.maxScrollExtent) {
+            setState(() {
+              _clinicListlength = _clinicListlength + 5 <= _filteredclinic.length
+                  ? _clinicListlength += 5
+                  : _filteredclinic.length;
+            });
+          }
+        },
+        child: ListView.builder(
+            itemCount: _filteredclinic.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(
+                          builder: (context) => ClinicPage.clinic(
+                                clinic: _filteredclinic[index], user: _user, cookies: _cookies,
+                              ))),
+                  child: Card(
+                      margin: const EdgeInsets.only(
+                          top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20, bottom: 15, left: 0, right: 16),
+                        child: Row(
+                          children: [
+                            Image(
+                              image: NetworkImage(_filteredclinic[index].coverImage.url),
+                              width: 150,
+                              height: 100,
                             ),
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
-            );
-          }),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _filteredclinic[index].name,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.location_on_outlined,
+                                          color: Colors.black),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                        child: Text(
+                                          _filteredclinic[index].address ?? "",
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: kPrimaryColor, // background
+                                        onPrimary: Colors.white,
+                                        textStyle: TextStyle(
+                                          fontSize: 17,
+                                          color: Colors.white,
+                                        ),
+                                        minimumSize: Size(180, 40),
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius: new BorderRadius.all(
+                                                Radius.circular(
+                                                    15))), // foreground
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context, rootNavigator: true)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) => Booking(
+                                                      clinic:
+                                                          _filteredclinic[index],
+                                                      user: _user,
+                                                      cookies: _cookies,
+                                                    )));
+                                      },
+                                      child: Text('Book an appointment'))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              );
+            }),
+      ) : CircularProgressIndicator(),
     );
   }
 }
