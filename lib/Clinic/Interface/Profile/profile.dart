@@ -30,7 +30,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     PickedFile _imageFile;
     final ImagePicker _picker = ImagePicker();
     List<String> _cookies;
-    User _user;
+    User _user = new User();
     Clinic _clinic = new Clinic();
     String urlGetBooking = "$ServerIP/api/v1/bookings/booking-for-clinics";
     String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
