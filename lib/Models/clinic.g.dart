@@ -17,11 +17,10 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
         ?.toList(),
     status: json['status'] as String,
     sId: json['sId'] as String,
-    name: json['name'] as String,
-    phone: json['phone'] as String,
     email: json['email'] as String,
+    phone: json['phone'] as String,
     description: json['description'] as String,
-    address: json['address'] as String,
+    name: json['name'] as String,
     schedule: (json['schedule'] as List)
         ?.map((e) =>
             e == null ? null : Schedule.fromJson(e as Map<String, dynamic>))
@@ -30,6 +29,7 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
         ? null
         : CoverImage.fromJson(json['coverImage'] as Map<String, dynamic>),
     iV: json['iV'] as int,
+    address: json['address'] as String,
     reviewCount: json['reviewCount'] as int,
     ratingAvg: (json['ratingAvg'] as num)?.toDouble(),
     id: json['id'] as String,
@@ -41,14 +41,14 @@ Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
       'reviews': instance.reviews?.map((e) => e?.toJson())?.toList(),
       'status': instance.status,
       'sId': instance.sId,
-      'name': instance.name,
-      'phone': instance.phone,
       'email': instance.email,
+      'phone': instance.phone,
       'description': instance.description,
-      'address': instance.address,
+      'name': instance.name,
       'schedule': instance.schedule?.map((e) => e?.toJson())?.toList(),
       'coverImage': instance.coverImage?.toJson(),
       'iV': instance.iV,
+      'address': instance.address,
       'reviewCount': instance.reviewCount,
       'ratingAvg': instance.ratingAvg,
       'id': instance.id,
@@ -70,55 +70,47 @@ Map<String, dynamic> _$GeometryToJson(Geometry instance) => <String, dynamic>{
 
 Reviews _$ReviewsFromJson(Map<String, dynamic> json) {
   return Reviews(
+    id: json['_id'] as String,
+    rating: (json['rating'] as num)?.toDouble(),
+    review: json['review'] as String,
     replies: (json['replies'] as List)
         ?.map((e) =>
             e == null ? null : Replies.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    sId: json['sId'] as String,
-    rating: (json['rating'] as num)?.toDouble(),
-    review: json['review'] as String,
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
     createdAt: json['createdAt'] as String,
     updatedAt: json['updatedAt'] as String,
-    iV: json['iV'] as int,
+    v: json['v'] as int,
   );
 }
 
 Map<String, dynamic> _$ReviewsToJson(Reviews instance) => <String, dynamic>{
-      'replies': instance.replies?.map((e) => e?.toJson())?.toList(),
-      'sId': instance.sId,
+      'id': instance.id,
       'rating': instance.rating,
       'review': instance.review,
+      'replies': instance.replies?.map((e) => e?.toJson())?.toList(),
       'user': instance.user?.toJson(),
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
-      'iV': instance.iV,
+      'v': instance.v,
     };
 
 Replies _$RepliesFromJson(Map<String, dynamic> json) {
   return Replies(
     sId: json['sId'] as String,
-    rating: (json['rating'] as num)?.toDouble(),
-    review: json['review'] as String,
+    reply: json['reply'] as String,
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
-    createdAt: json['createdAt'] as String,
-    updatedAt: json['updatedAt'] as String,
-    iV: json['iV'] as int,
   );
 }
 
 Map<String, dynamic> _$RepliesToJson(Replies instance) => <String, dynamic>{
       'sId': instance.sId,
-      'rating': instance.rating,
-      'review': instance.review,
+      'reply': instance.reply,
       'user': instance.user?.toJson(),
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'iV': instance.iV,
     };
 
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) {

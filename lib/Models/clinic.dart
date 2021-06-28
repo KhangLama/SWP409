@@ -9,14 +9,14 @@ class Clinic {
   List<Reviews> reviews;
   String status;
   String sId;
-  String name;
-  String phone;
   String email;
+  String phone;
   String description;
-  String address;
+  String name;
   List<Schedule> schedule;
   CoverImage coverImage;
   int iV;
+  String address;
   int reviewCount;
   double ratingAvg;
   String id;
@@ -26,14 +26,14 @@ class Clinic {
       this.reviews,
       this.status,
       this.sId,
-      this.name,
-      this.phone,
       this.email,
+      this.phone,
       this.description,
-      this.address,
+      this.name,
       this.schedule,
       this.coverImage,
       this.iV,
+      this.address,
       this.reviewCount,
       this.ratingAvg,
       this.id});
@@ -58,24 +58,24 @@ class Geometry {
 
 @JsonSerializable(explicitToJson: true)
 class Reviews {
-  List<Replies> replies;
-  String sId;
+  String id;
   double rating;
   String review;
+  List<Replies> replies;
   User user;
   String createdAt;
   String updatedAt;
-  int iV;
+  int v;
 
   Reviews(
-      {this.replies,
-      this.sId,
+      {this.id,
       this.rating,
       this.review,
+      this.replies,
       this.user,
       this.createdAt,
       this.updatedAt,
-      this.iV});
+      this.v});
 
   factory Reviews.fromJson(Map<String, dynamic> json) =>
       _$ReviewsFromJson(json);
@@ -86,21 +86,24 @@ class Reviews {
 @JsonSerializable(explicitToJson: true)
 class Replies {
   String sId;
-  double rating;
-  String review;
+  //double rating;
+  //String review;
+  String reply;
   User user;
-  String createdAt;
-  String updatedAt;
-  int iV;
+  // String createdAt;
+  // String updatedAt;
+  // int iV;
 
-  Replies(
-      {this.sId,
-      this.rating,
-      this.review,
-      this.user,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  Replies({
+    this.sId,
+    //this.rating,
+    //this.review,
+    this.reply,
+    this.user,
+    // this.createdAt,
+    // this.updatedAt,
+    // this.iV
+  });
 
   factory Replies.fromJson(Map<String, dynamic> json) =>
       _$RepliesFromJson(json);

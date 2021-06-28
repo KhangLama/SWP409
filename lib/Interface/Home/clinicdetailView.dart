@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
@@ -37,9 +38,7 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   void initState() {
-
       _clinic = widget.clinic;
-      print(_clinic.toJson());
       _user = widget.user;
       _cookies = widget.cookies;
     super.initState();
@@ -54,7 +53,6 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(_clinic.coverImage.url);
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -418,7 +416,6 @@ class _ClinicPageState extends State<ClinicPage> {
                                 rating: rating,
                                 onRated: (value) {
                                   rating = value;
-                                  print("Rating is: $rating");
                                 },
                               ),
                             ],
@@ -432,16 +429,34 @@ class _ClinicPageState extends State<ClinicPage> {
                                     onPrimary: Colors.white, // foreground
                                   ),
                                   onPressed: () {
-                                    print("id: ${_clinic.id}");
                                     String review = cmtController.text;
-                                    print ("review: ${review}, rating: ${rating}");
                                     String urlAddReview = '$ServerIP/api/v1/reviews/${_clinic.id}';
                                     _clinicService.addReviewClinic(urlAddReview, _cookies, review, rating)
                                         .then((value) {
-                                          print("Review: ${value.data}");
                                           setState(() {
+                                            List<Clinic> clinics = <Clinic>[];
+                                            fetchClinics().then((value) {
+                                              setState(() {
+                                                clinics = value;
+                                                print("list clinic: ${clinics.toString()}");
+                                                for (Clinic getClinic in clinics){
+                                                  if (getClinic.id.compareTo(_clinic.id) == 0){
+                                                    _clinic = getClinic;
+                                                    print("clinicc: ${_clinic.toJson()}");
+                                                    break;
+                                                  }
+                                                }
+                                                Navigator.pop(context);
+                                                Navigator.of(context, rootNavigator: true)
+                                                    .push(MaterialPageRoute(
+                                                    builder: (context) => ClinicPage.clinic(
+                                                      clinic: _clinic, user: _user, cookies: _cookies,
+                                                    )));
+                                              });
+                                            });
                                           });
                                     });
+
 
                                   },
                                   child: Text('Send')),
@@ -626,11 +641,12 @@ class _ClinicPageState extends State<ClinicPage> {
                   Row(children: [
                     Expanded(
                       child: Text(
-                        _clinic.reviews[i].replies[index].review,
+                        _clinic.reviews[i].replies[index].reply,
                         style: TextStyle(color: Colors.black, fontSize: 18),
                       ),
                     ),
                   ]),
+                  SizedBox(height: 10),
                 ],
               ),
             ));
@@ -644,7 +660,7 @@ class _ClinicPageState extends State<ClinicPage> {
       child: Column(
         children: [
           Container(
-            height: 50,
+            height: _clinic.reviews[i].replies.length == 0 ? 0 : 150,
             child: buildViewCmtChild(i),
           ),
           SizedBox(height: 10),
@@ -677,7 +693,35 @@ class _ClinicPageState extends State<ClinicPage> {
                   ? Container(width: 0)
                   : IconButton(
                       icon: Icon(Feather.send),
-                      onPressed: () {},
+                      onPressed: () {
+                        String reply = cmtChild;
+                        String urlAddReview = '$ServerIP/api/v1/reviews/reply/${_clinic.reviews[i].id}';
+                        _clinicService.addReplyClinic(urlAddReview, _cookies, reply)
+                            .then((value) {
+                              setState(() {
+                                List<Clinic> clinics = <Clinic>[];
+                                fetchClinics().then((value) {
+                                  setState(() {
+                                    clinics = value;
+                                    print("list clinic: ${clinics.toString()}");
+                                    for (Clinic getClinic in clinics){
+                                      if (getClinic.id.compareTo(_clinic.id) == 0){
+                                        _clinic = getClinic;
+                                        print("clinicc: ${_clinic.toJson()}");
+                                        break;
+                                      }
+                                    }
+                                    Navigator.pop(context);
+                                    Navigator.of(context, rootNavigator: true)
+                                        .push(MaterialPageRoute(
+                                        builder: (context) => ClinicPage.clinic(
+                                          clinic: _clinic, user: _user, cookies: _cookies,
+                                        )));
+                                  });
+                                });
+                              });
+                        });
+                      },
                       color: kPrimaryColor,
                     ),
             ),
