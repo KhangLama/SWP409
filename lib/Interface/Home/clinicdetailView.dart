@@ -483,7 +483,6 @@ class _ClinicPageState extends State<ClinicPage> {
 
   double ratingCmt = 4.5;
   buildListCmt() {
-    bool isVisible = false;
     return ListView.builder(
       itemCount: _clinic.reviewCount,
       itemBuilder: (context, index) => Container(
