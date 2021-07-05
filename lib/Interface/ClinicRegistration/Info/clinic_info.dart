@@ -97,77 +97,56 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                     DefaultButton(
                       text: "Continue",
                       press: () async {
-                        String url = "$ServerIP/api/v1/clinics";
-                        String url1 = '$ServerIP/api/v1/users/signup';
                         var email = emailController.text;
                         var name = nameController.text;
                         var phone = phoneController.text;
                         var description = descriptionController.text;
-                        String password = "123456789";
-                        String confirm_password = "123456789";
 
-                        if (email.isEmpty){
+                        if (email.isEmpty) {
                           setState(() {
                             errorEmail = "Please enter email";
                             checkEmailErr = true;
                           });
-                        } else if (!emailValidatorRegExp.hasMatch(email)){
+                        } else if (!emailValidatorRegExp.hasMatch(email)) {
                           setState(() {
                             errorEmail = "Please enter valid email";
                             checkEmailErr = true;
                           });
                         }
-                        // else{
-                        //   authService
-                        //       .signup(url1, name, phone, email, password,
-                        //       confirm_password)
-                        //       .then((val) {
-                        //     if (val.statusCode == 400) {
-                        //       List list = val.data['errors'] as List;
-                        //       for (int i = 0; i < list.length; i++) {
-                        //         if (list[i]['field'] == 'email') {
-                        //           setState(() {
-                        //             errorEmail = list[i]['message'];
-                        //             checkEmailErr = true;
-                        //           });
-                        //         }
-                        //       }
-                        //     }
-                        //   });
-                        // }
-
-                        if (name.isEmpty){
+                        if (name.isEmpty) {
                           setState(() {
                             errorName = "Please enter name";
                             checkNameErr = true;
                           });
                         }
 
-                        if (phone.isEmpty){
+                        if (phone.isEmpty) {
                           setState(() {
                             errorPhone = "Please enter phone";
                             checkPhoneErr = true;
                           });
                         }
 
-                        if (description.isEmpty){
+                        if (description.isEmpty) {
                           setState(() {
                             errorDes = "Please enter description";
                             checkDesErr = true;
                           });
                         }
 
-                        if (!checkEmailErr && !checkNameErr && !checkPhoneErr && !checkDesErr){
+                        if (!checkEmailErr &&
+                            !checkNameErr &&
+                            !checkPhoneErr &&
+                            !checkDesErr) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      ClinicLocationScreen(
-                                          email,
-                                          name,
-                                          phone,
-                                          description,
-                                          _imageFile)));
+                                  builder: (context) => ClinicLocationScreen(
+                                      email,
+                                      name,
+                                      phone,
+                                      description,
+                                      _imageFile)));
                         }
                       },
                     ),
@@ -184,7 +163,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildEmail() {
     return TextField(
-      onChanged: (v){
+      onChanged: (v) {
         setState(() {
           checkEmailErr = false;
         });
@@ -222,7 +201,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildName() {
     return TextField(
-      onChanged: (v){
+      onChanged: (v) {
         setState(() {
           checkNameErr = false;
         });
@@ -260,7 +239,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildPhone() {
     return TextField(
-      onChanged: (v){
+      onChanged: (v) {
         setState(() {
           checkPhoneErr = false;
         });
@@ -298,7 +277,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
 
   TextField buildDescription() {
     return TextField(
-      onChanged: (v){
+      onChanged: (v) {
         setState(() {
           checkDesErr = false;
         });
@@ -427,7 +406,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
             child: Column(
               // Replace with a Row for horizontal icon + text
               children: <Widget>[
-                Icon(Icons.file_copy_outlined, color: kPrimaryColor,),
+                Icon(
+                  Icons.file_copy_outlined,
+                  color: kPrimaryColor,
+                ),
               ],
             ),
             //color: Color(0xFFDFDFE3),

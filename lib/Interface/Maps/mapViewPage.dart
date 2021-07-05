@@ -74,11 +74,10 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      newGoogleMapController = controller;
-      _controllerGoogleMap.complete(controller);
-      markerCreate();
-    });
+    newGoogleMapController = controller;
+    _controllerGoogleMap.complete(controller);
+    markerCreate();
+
     locatePosition();
   }
 
@@ -92,6 +91,7 @@ class _MapViewPageState extends State<MapViewPage> {
                 _clinics[i].geometry.coordinates[0]),
             infoWindow: InfoWindow(
                 title: _clinics[i].name,
+                snippet: _clinics[i].address,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
@@ -109,9 +109,9 @@ class _MapViewPageState extends State<MapViewPage> {
       title: Text(clinic.name ?? "", style: TextStyle(fontSize: 16)),
       subtitle: Text(clinic.address ?? "", style: TextStyle(fontSize: 14)),
       onTap: () async {
-         setState(() {
-           _editingController.text = clinic.name;
-         });
+        setState(() {
+          _editingController.text = clinic.name;
+        });
         KeyboardUtil.hideKeyboard(context);
         _markers.forEach((element) async {
           var _currentPosition = await Geolocator.getCurrentPosition(
@@ -178,7 +178,7 @@ class _MapViewPageState extends State<MapViewPage> {
             loading
                 ? CircularProgressIndicator()
                 : searchTextField = AutoCompleteTextField<Clinic>(
-                  controller: _editingController,
+                    controller: _editingController,
                     suggestionsAmount: 5,
                     onFocusChanged: (hasFocus) {
                       searchTextField.clear();
@@ -210,7 +210,6 @@ class _MapViewPageState extends State<MapViewPage> {
             Container(
               height: MediaQuery.of(context).size.height - 128,
               child: GoogleMap(
-                
                 mapType: MapType.normal,
                 initialCameraPosition:
                     CameraPosition(target: LatLng(10.03711, 105.78825)),
@@ -221,7 +220,6 @@ class _MapViewPageState extends State<MapViewPage> {
                 mapToolbarEnabled: true,
                 zoomGesturesEnabled: true,
                 buildingsEnabled: true,
-                
                 polylines: Set<Polyline>.of(polylines.values),
               ),
             ),
