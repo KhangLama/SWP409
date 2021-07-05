@@ -19,6 +19,26 @@ class ClinicService {
     }
   }
 
+  Future<Response> addReplyClinic(url, cookies, reply) async {
+    try {
+      Map<String, dynamic> headers = new Map();
+      var token = cookies[0].split(';')[0];
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+
+      var formData = new FormData.fromMap({
+        "reply": reply,
+      });
+      print(formData.fields);
+      return response = await dio.post(url, data: {
+        "reply": reply,
+      }, options: options);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
   Future<Response> addReviewClinic(url, cookies, review, rating) async {
     try {
       Map<String, dynamic> headers = new Map();

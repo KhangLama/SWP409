@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Models/clinic.dart';
@@ -17,21 +18,25 @@ class ClinicDateScreen extends StatefulWidget {
 }
 
 class _ClinicDateScreenState extends State<ClinicDateScreen> {
-  TimeOfDay openMon = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openTue = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openWed = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openThu = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openFri = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openSat = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay openSun = TimeOfDay(hour: 7, minute: 00);
+  TimeOfDay openMon = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openTue = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openWed = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openThu = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openFri = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openSat = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay openSun = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay open = TimeOfDay(hour: 8, minute: 00);
 
-  TimeOfDay closeMon = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeTue = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeWed = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeThu = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeFri = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeSat = TimeOfDay(hour: 7, minute: 00);
-  TimeOfDay closeSun = TimeOfDay(hour: 7, minute: 00);
+  TimeOfDay closeMon = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeTue = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeWed = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeThu = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeFri = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeSat = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay closeSun = TimeOfDay(hour: 17, minute: 00);
+  TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
+
+  List<bool> isSelected = [false, false, false, false, false, false, false];
 
   Clinic _clinic = new Clinic();
   ClinicService _clinicService = new ClinicService();
@@ -45,6 +50,198 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
     _clinic = widget.clinic;
   }
 
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: kPrimaryColor, width: 2)),
+            content: Container(
+              height: 365,
+              width: 300,
+              child: Column(
+                children: [
+                  SizedBox(height: 15),
+                  Row(children: [
+                    Text(
+                      "QUICK SETTING OPEN TIME",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ]),
+                  SizedBox(height: 25),
+                  Row(
+                    children: [
+                      Text(
+                        "OPEN AT",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      SizedBox(width: 12),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: kPrimaryColorLight, // background
+                            onPrimary: kPrimaryLightColor, // foreground
+                          ),
+                          onPressed: _selectOpen,
+                          child: Text(
+                            open.format(context),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "CLOSE AT",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: kPrimaryColorLight, // background
+                            onPrimary: kPrimaryLightColor, // foreground
+                          ),
+                          onPressed: _selectClose,
+                          child: Text(
+                            close.format(context),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Text(
+                        "REPEAT AT",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    //color: Colors.white,
+                    child: ToggleButtons(
+                      constraints: BoxConstraints(minHeight: 35, minWidth: 35),
+
+                      isSelected: isSelected,
+
+                      color: Colors.black, // mau cua chu khi k chon
+
+                      selectedColor:
+                          kPrimaryLightColor, // mau trang cua chu khi chon
+
+                      borderWidth: 2,
+
+                      borderColor: kPrimaryColorLight,
+
+                      selectedBorderColor: kPrimaryColor,
+
+                      fillColor: kPrimaryColorLight,
+
+                      children: <Widget>[
+                        Text('SU', style: TextStyle(fontSize: 18)),
+                        Text('MO', style: TextStyle(fontSize: 18)),
+                        Text('TU', style: TextStyle(fontSize: 18)),
+                        Text('WE', style: TextStyle(fontSize: 18)),
+                        Text('TH', style: TextStyle(fontSize: 18)),
+                        Text('FR', style: TextStyle(fontSize: 18)),
+                        Text('SA', style: TextStyle(fontSize: 18))
+                      ],
+                      onPressed: (int idx) {
+                        setState(() {
+                          isSelected[idx] = !isSelected[idx];
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 50,
+                    // ignore: deprecated_member_use
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: kPrimaryColorLight,
+                      child: Text(
+                        "Setting",
+                        style: TextStyle(
+                          fontSize: getProportionateScreenWidth(18),
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      if (value) {
+        if (isSelected[0]) {
+          setState(() {
+            openSun = open;
+            closeSun = close;
+          });
+        }
+        if (isSelected[1]) {
+          setState(() {
+            openMon = open;
+            closeMon = close;
+          });
+        }
+        if (isSelected[2]) {
+          setState(() {
+            openTue = open;
+            closeTue = close;
+          });
+        }
+        if (isSelected[3]) {
+          setState(() {
+            openWed = open;
+            closeWed = close;
+          });
+        }
+        if (isSelected[4]) {
+          setState(() {
+            openThu = open;
+            closeThu = close;
+          });
+        }
+        if (isSelected[5]) {
+          setState(() {
+            openFri = open;
+            closeFri = close;
+          });
+        }
+        if (isSelected[6]) {
+          setState(() {
+            openSat = open;
+            closeSat = close;
+          });
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,6 +253,23 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           title: Text('Clinic Registration'),
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Container(
+            width: 60,
+            height: 60,
+            child: Icon(
+              Icons.add,
+              size: 30,
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    colors: [Color(0xFFFF9966), Color(0xFFFF5E62)])),
+          ),
+          onPressed: () {
+            _showDialog();
+          },
         ),
         body: SafeArea(
           child: SizedBox(
@@ -183,21 +397,21 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
               child: Text(
                 'DAY',
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
               child: Text(
                 'OPEN',
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
               child: Text(
                 'CLOSE',
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
           ]),
@@ -216,25 +430,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenMon,
-                child: Text(openMon.format(context)),
+                child: Text(openMon.format(context), style: TextStyle(fontSize: 18.0),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseMon,
-                child: Text(closeMon.format(context)),
+                child: Text(closeMon.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -253,25 +467,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenTue,
-                child: Text(openTue.format(context)),
+                child: Text(openTue.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseTue,
-                child: Text(closeTue.format(context)),
+                child: Text(closeTue.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -290,25 +504,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenWed,
-                child: Text(openWed.format(context)),
+                child: Text(openWed.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseWed,
-                child: Text(closeWed.format(context)),
+                child: Text(closeWed.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -327,25 +541,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenThu,
-                child: Text(openThu.format(context)),
+                child: Text(openThu.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseThu,
-                child: Text(closeThu.format(context)),
+                child: Text(closeThu.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -364,25 +578,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenFri,
-                child: Text(openFri.format(context)),
+                child: Text(openFri.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseFri,
-                child: Text(closeFri.format(context)),
+                child: Text(closeFri.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -401,25 +615,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenSat,
-                child: Text(openSat.format(context)),
+                child: Text(openSat.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseSat,
-                child: Text(closeSat.format(context)),
+                child: Text(closeSat.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -438,25 +652,25 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectOpenSun,
-                child: Text(openSun.format(context)),
+                child: Text(openSun.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColorLight, // background
                   onPrimary: kPrimaryLightColor, // foreground
                 ),
                 onPressed: _selectCloseSun,
-                child: Text(closeSun.format(context)),
+                child: Text(closeSun.format(context), style: TextStyle(fontSize: 18),),
               ),
             ),
           ]),
@@ -643,6 +857,32 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
     if (newTime != null) {
       setState(() {
         closeSun = newTime;
+      });
+    }
+  }
+
+  void _selectOpen() async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: open,
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+    if (newTime != null) {
+      setState(() {
+        open = newTime;
+      });
+    }
+  }
+
+  void _selectClose() async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: close,
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+    if (newTime != null) {
+      setState(() {
+        close = newTime;
       });
     }
   }
