@@ -121,11 +121,13 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
 
   Future<void> markerCreate(var lat, var lang) async {
     try {
-      _markers.add(Marker(
-        markerId: MarkerId('position'),
-        draggable: false,
-        position: LatLng(lat, lang),
-      ));
+      setState(() {
+        _markers.add(Marker(
+          markerId: MarkerId('position'),
+          draggable: false,
+          position: LatLng(lat, lang),
+        ));
+      });
       var latLngPosition = LatLng(lat, lang);
 
       var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);

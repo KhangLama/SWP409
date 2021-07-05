@@ -30,9 +30,11 @@ class ClinicService {
         "reply": reply,
       });
       print(formData.fields);
-      return response = await dio.post(url, data: {
-        "reply": reply,
-      }, options: options);
+      return response = await dio.post(url,
+          data: {
+            "reply": reply,
+          },
+          options: options);
     } on DioError catch (e) {
       print(e.response.data);
       return response = e.response;
@@ -51,18 +53,19 @@ class ClinicService {
         "review": review,
       });
       print(formData.fields);
-      return response = await dio.post(url, data: {
-        "rating": rating,
-        "review": review,
-      }, options: options);
+      return response = await dio.post(url,
+          data: {
+            "rating": rating,
+            "review": review,
+          },
+          options: options);
     } on DioError catch (e) {
       print(e.response.data);
       return response = e.response;
     }
   }
 
-  Future<Response> updateInfo(
-      url,  Clinic clinic, path, cookies) async {
+  Future<Response> updateInfo(url, Clinic clinic, path, cookies) async {
     String geo = jsonEncode(clinic.geometry);
     try {
       Map<String, dynamic> headers = new Map();
@@ -71,7 +74,7 @@ class ClinicService {
       print(token);
       headers['Cookie'] = token;
       Options options = new Options(headers: headers);
-      if(path != null) {
+      if (path != null) {
         var formData = new FormData.fromMap({
           "email": clinic.email,
           "phone": clinic.phone,
@@ -113,6 +116,7 @@ class ClinicService {
       return response = e.response;
     }
   }
+
   Future<Response> getClinics(url) async {
     try {
       return response = await dio.get(url);
@@ -131,6 +135,7 @@ class ClinicService {
         "phone": clinic.phone,
         "description": clinic.description,
         "name": clinic.name,
+        "address": clinic.address,
         "startTimeMonday": DateTime.parse(
             "2014-08-18T${(clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')}:00"),
         "endTimeMonday": DateTime.parse(

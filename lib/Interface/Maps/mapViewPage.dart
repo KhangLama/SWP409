@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:swp409/Interface/Home/clinicdetailView.dart';
@@ -21,7 +22,7 @@ class MapViewPage extends StatefulWidget {
 class _MapViewPageState extends State<MapViewPage> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController newGoogleMapController;
-  final Set<Marker> _markers = {};
+  final Map<String, Marker> _markers = {};
   var geoLocator = Geolocator();
   List<Clinic> _clinics = <Clinic>[];
   AutoCompleteTextField searchTextField;
@@ -46,6 +47,7 @@ class _MapViewPageState extends State<MapViewPage> {
 
   @override
   void initState() {
+    locatePosition();
     fetchClinics().then((value) {
       setState(() {
         print('value');
@@ -74,32 +76,33 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    markerCreate();
     newGoogleMapController = controller;
     _controllerGoogleMap.complete(controller);
-    markerCreate();
-
-    locatePosition();
   }
 
   Future<void> markerCreate() async {
     try {
-      for (var i = 0; i < _clinics.length; i++) {
-        _markers.add(Marker(
-            markerId: MarkerId(_clinics[i].id),
+      _markers.clear();
+      for (final clinic in _clinics) {
+        print('marker test: $clinic');
+        final marker = Marker(
+            markerId: MarkerId(clinic.name),
             draggable: false,
-            position: LatLng(_clinics[i].geometry.coordinates[1],
-                _clinics[i].geometry.coordinates[0]),
+            position: LatLng(
+                clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]),
             infoWindow: InfoWindow(
-                title: _clinics[i].name,
-                snippet: _clinics[i].address,
+                title: clinic.name,
+                snippet: clinic.address,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          ClinicPage.clinic(clinic: _clinics[i])));
+                      builder: (context) => ClinicPage.clinic(clinic: clinic)));
                 }),
-            onTap: () {}));
+            onTap: () {});
+        _markers[clinic.name] = marker;
       }
     } catch (e) {
+      print("marker + $e");
       rethrow;
     }
   }
@@ -109,15 +112,16 @@ class _MapViewPageState extends State<MapViewPage> {
       title: Text(clinic.name ?? "", style: TextStyle(fontSize: 16)),
       subtitle: Text(clinic.address ?? "", style: TextStyle(fontSize: 14)),
       onTap: () async {
-        setState(() {
-          _editingController.text = clinic.name;
-        });
+        print("map search: ${clinic.toJson()}");
+        print(_markers.values);
+        _editingController.text = clinic.name;
+
         KeyboardUtil.hideKeyboard(context);
-        _markers.forEach((element) async {
+        _markers.forEach((name, element) async {
           var _currentPosition = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.bestForNavigation);
           _addPolyLine() {
-            PolylineId id = PolylineId("poly");
+            PolylineId id = PolylineId(clinic.sId);
             Polyline polyline = Polyline(
                 visible: true,
                 polylineId: id,
@@ -150,7 +154,7 @@ class _MapViewPageState extends State<MapViewPage> {
         await newGoogleMapController
             .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
         PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-            FlutterConfig.get('GOOGLE_MAP_KEY'),
+            dotenv.env['GOOGLE_MAP_KEY'],
             PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
             PointLatLng(
                 clinic.geometry.coordinates[1], clinic.geometry.coordinates[0]),
@@ -214,7 +218,7 @@ class _MapViewPageState extends State<MapViewPage> {
                 initialCameraPosition:
                     CameraPosition(target: LatLng(10.03711, 105.78825)),
                 onMapCreated: _onMapCreated,
-                markers: _markers,
+                markers: _markers.values.toSet(),
                 myLocationButtonEnabled: true,
                 myLocationEnabled: true,
                 mapToolbarEnabled: true,

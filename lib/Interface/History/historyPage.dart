@@ -35,7 +35,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<List<Booking>> fetchBookings() async {
-    String url = '$ServerIP/api/v1/bookings/${_user.sId}';
+    String url = '$ServerIP/api/v1/bookings/users';
     var fetchdata = await _userService.getHistory(url, _cookies);
     var bookings = <Booking>[];
     var bookingsjson = fetchdata.data['data']['data'] as List;
@@ -94,7 +94,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  _bookings[index].clinic.name,
+                                  _bookings[index].clinic.name ?? '',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -112,9 +112,10 @@ class _HistoryPageState extends State<HistoryPage> {
                               Expanded(
                                 child: Text(
                                   DateTime.parse(_bookings[index]
-                                          .bookedDate
-                                          .toIso8601String())
-                                      .toString(),
+                                              .bookedDate
+                                              .toIso8601String())
+                                          .toString() ??
+                                      '',
                                   style: TextStyle(fontSize: 17),
                                 ),
                               )
@@ -128,7 +129,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  _bookings[index].clinic.address,
+                                  _bookings[index].clinic.address ?? '',
                                   style: TextStyle(fontSize: 17),
                                 ),
                               )
@@ -141,7 +142,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   color: Colors.black, size: 17),
                               SizedBox(width: 10),
                               Text(
-                                _bookings[index].clinic.phone,
+                                _bookings[index].clinic.phone ?? '',
                                 style: TextStyle(fontSize: 17),
                               )
                             ],
@@ -150,15 +151,16 @@ class _HistoryPageState extends State<HistoryPage> {
                           Row(
                             children: [
                               Text(
-                                _bookings[index].status,
+                                'Status: ',
                                 style: TextStyle(fontSize: 17),
                               ),
                               SizedBox(width: 10),
                               Text(
-                                status,
+                                _bookings[index].status ?? '',
                                 style: TextStyle(
                                   fontSize: 17,
-                                  color: getStatusColor(status),
+                                  color:
+                                      getStatusColor(_bookings[index].status),
                                 ),
                               ),
                             ],
@@ -175,7 +177,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Color getStatusColor(String statusColor) {
-    if (statusColor.compareTo("approve") == 0) {
+    if (statusColor.compareTo("approved") == 0) {
       return Colors.green;
     } else if (statusColor.compareTo("pending") == 0) {
       return Colors.lightBlue;
