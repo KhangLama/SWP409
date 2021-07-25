@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:swp409/Interface/Calender/calender.dart';
 import 'package:swp409/Interface/ChangePassword/change_password.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
@@ -120,9 +121,14 @@ class _ClinicListViewState extends State<ClinicListView> {
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
-            onTap: () => {Navigator.of(context).pop()},
+            leading: Icon(Icons.calendar_today_outlined),
+            title: Text('Calender'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CalendarScreen()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.border_color),
