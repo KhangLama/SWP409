@@ -35,8 +35,8 @@ class _MapViewPageState extends State<MapViewPage> {
   String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
   ClinicService _clinicService = new ClinicService();
 
-  Future<List<Clinic>> fetchClinics() async {
-    var fetchdata = await _clinicService.getClinics(urlGet);
+  Future<List<Clinic>> fetchClinics(var url) async {
+    var fetchdata = await _clinicService.getClinics(url);
     var clinics = <Clinic>[];
     var clinicsjson = fetchdata.data['data']['data'] as List;
     for (var clinic in clinicsjson) {
@@ -48,16 +48,8 @@ class _MapViewPageState extends State<MapViewPage> {
   @override
   void initState() {
     locatePosition();
-    fetchClinics().then((value) {
-      setState(() {
-        print('value');
-        print(value[0].toJson());
-        _clinics = value;
-        print('clinic');
-        print(_clinics[0].toJson());
-        loading = false;
-      });
-    });
+    markerCreate();
+
     super.initState();
   }
 
@@ -73,12 +65,25 @@ class _MapViewPageState extends State<MapViewPage> {
     var cameraPosition = CameraPosition(target: latLngPosition, zoom: 13);
     await newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    var url =
+        '$ServerIP/api/v1/clinics/nearest-clinics?lat=${_currentPosition.latitude}&lng=${_currentPosition.longitude}';
+    fetchClinics(url).then((value) {
+      setState(() {
+        print('value');
+        print(value[0].toJson());
+        _clinics = value;
+        print('clinic');
+        print(_clinics[0].toJson());
+        loading = false;
+      });
+    });
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    markerCreate();
-    newGoogleMapController = controller;
-    _controllerGoogleMap.complete(controller);
+    setState(() {
+      newGoogleMapController = controller;
+      _controllerGoogleMap.complete(controller);
+    });
   }
 
   Future<void> markerCreate() async {

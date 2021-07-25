@@ -64,7 +64,7 @@ class ChatCard extends StatelessWidget {
                 Text('Spider-man'),
                 SizedBox(height: 8),
                 Text('Hello neighbor'),
-              ],
+              ],                                        
             ),
           ),
         ),
