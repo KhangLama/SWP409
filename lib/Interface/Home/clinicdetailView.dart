@@ -38,9 +38,9 @@ class _ClinicPageState extends State<ClinicPage> {
 
   @override
   void initState() {
-      _clinic = widget.clinic;
-      _user = widget.user;
-      _cookies = widget.cookies;
+    _clinic = widget.clinic;
+    _user = widget.user;
+    _cookies = widget.cookies;
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -90,7 +90,8 @@ class _ClinicPageState extends State<ClinicPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Booking(clinic: _clinic, cookies: _cookies, user: _user)),
+                          builder: (context) => Booking(
+                              clinic: _clinic, cookies: _cookies, user: _user)),
                     );
                   },
                   child: Text('Book an appointment')),
@@ -279,86 +280,86 @@ class _ClinicPageState extends State<ClinicPage> {
                               ),
                             ],
                           ),
-                          Column(
-                            children: [
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                // width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                //width: 230,
-                                child: Text(
-                                  '${(_clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Column(
+                          //   children: [
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       // width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(height: 5),
+                          //     Container(
+                          //       //width: 230,
+                          //       child: Text(
+                          //         '${(_clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}',
+                          //         style: TextStyle(
+                          //           fontSize: 20,
+                          //           color: Colors.black,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -430,34 +431,43 @@ class _ClinicPageState extends State<ClinicPage> {
                                   ),
                                   onPressed: () {
                                     String review = cmtController.text;
-                                    String urlAddReview = '$ServerIP/api/v1/reviews/${_clinic.id}';
-                                    _clinicService.addReviewClinic(urlAddReview, _cookies, review, rating)
+                                    String urlAddReview =
+                                        '$ServerIP/api/v1/reviews/${_clinic.id}';
+                                    _clinicService
+                                        .addReviewClinic(urlAddReview, _cookies,
+                                            review, rating)
                                         .then((value) {
+                                      setState(() {
+                                        List<Clinic> clinics = <Clinic>[];
+                                        fetchClinics().then((value) {
                                           setState(() {
-                                            List<Clinic> clinics = <Clinic>[];
-                                            fetchClinics().then((value) {
-                                              setState(() {
-                                                clinics = value;
-                                                print("list clinic: ${clinics.toString()}");
-                                                for (Clinic getClinic in clinics){
-                                                  if (getClinic.id.compareTo(_clinic.id) == 0){
-                                                    _clinic = getClinic;
-                                                    print("clinicc: ${_clinic.toJson()}");
-                                                    break;
-                                                  }
-                                                }
-                                                Navigator.pop(context);
-                                                Navigator.of(context, rootNavigator: true)
-                                                    .push(MaterialPageRoute(
-                                                    builder: (context) => ClinicPage.clinic(
-                                                      clinic: _clinic, user: _user, cookies: _cookies,
-                                                    )));
-                                              });
-                                            });
+                                            clinics = value;
+                                            print(
+                                                "list clinic: ${clinics.toString()}");
+                                            for (Clinic getClinic in clinics) {
+                                              if (getClinic.id
+                                                      .compareTo(_clinic.id) ==
+                                                  0) {
+                                                _clinic = getClinic;
+                                                print(
+                                                    "clinicc: ${_clinic.toJson()}");
+                                                break;
+                                              }
+                                            }
+                                            Navigator.pop(context);
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ClinicPage.clinic(
+                                                          clinic: _clinic,
+                                                          user: _user,
+                                                          cookies: _cookies,
+                                                        )));
                                           });
+                                        });
+                                      });
                                     });
-
-
                                   },
                                   child: Text('Send')),
                             ],
@@ -694,31 +704,35 @@ class _ClinicPageState extends State<ClinicPage> {
                       icon: Icon(Feather.send),
                       onPressed: () {
                         String reply = cmtChild;
-                        String urlAddReview = '$ServerIP/api/v1/reviews/reply/${_clinic.reviews[i].id}';
-                        _clinicService.addReplyClinic(urlAddReview, _cookies, reply)
+                        String urlAddReview =
+                            '$ServerIP/api/v1/reviews/reply/${_clinic.reviews[i].id}';
+                        _clinicService
+                            .addReplyClinic(urlAddReview, _cookies, reply)
                             .then((value) {
+                          setState(() {
+                            List<Clinic> clinics = <Clinic>[];
+                            fetchClinics().then((value) {
                               setState(() {
-                                List<Clinic> clinics = <Clinic>[];
-                                fetchClinics().then((value) {
-                                  setState(() {
-                                    clinics = value;
-                                    print("list clinic: ${clinics.toString()}");
-                                    for (Clinic getClinic in clinics){
-                                      if (getClinic.id.compareTo(_clinic.id) == 0){
-                                        _clinic = getClinic;
-                                        print("clinicc: ${_clinic.toJson()}");
-                                        break;
-                                      }
-                                    }
-                                    Navigator.pop(context);
-                                    Navigator.of(context, rootNavigator: true)
-                                        .push(MaterialPageRoute(
+                                clinics = value;
+                                print("list clinic: ${clinics.toString()}");
+                                for (Clinic getClinic in clinics) {
+                                  if (getClinic.id.compareTo(_clinic.id) == 0) {
+                                    _clinic = getClinic;
+                                    print("clinicc: ${_clinic.toJson()}");
+                                    break;
+                                  }
+                                }
+                                Navigator.pop(context);
+                                Navigator.of(context, rootNavigator: true)
+                                    .push(MaterialPageRoute(
                                         builder: (context) => ClinicPage.clinic(
-                                          clinic: _clinic, user: _user, cookies: _cookies,
-                                        )));
-                                  });
-                                });
+                                              clinic: _clinic,
+                                              user: _user,
+                                              cookies: _cookies,
+                                            )));
                               });
+                            });
+                          });
                         });
                       },
                       color: kPrimaryColor,
