@@ -18,25 +18,19 @@ class ClinicDateScreen extends StatefulWidget {
 }
 
 class _ClinicDateScreenState extends State<ClinicDateScreen> {
-  TimeOfDay openMon = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openTue = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openWed = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openThu = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openFri = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openSat = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay openSun = TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay open = TimeOfDay(hour: 8, minute: 00);
-
-  TimeOfDay closeMon = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeTue = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeWed = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeThu = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeFri = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeSat = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay closeSun = TimeOfDay(hour: 17, minute: 00);
-  TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
-
   List<bool> isSelected = [false, false, false, false, false, false, false];
+
+  List<TimeWorking> listTime = [TimeWorking(open: 420, close: 600)];
+
+  List<TimeWorking> listTimeMon = [];
+  List<TimeWorking> listTimeTue = [];
+  List<TimeWorking> listTimeWed = [];
+  List<TimeWorking> listTimeThu = [];
+  List<TimeWorking> listTimeFri = [];
+  List<TimeWorking> listTimeSat = [];
+  List<TimeWorking> listTimeSun = [];
+
+  TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
 
   Clinic _clinic = new Clinic();
   ClinicService _clinicService = new ClinicService();
@@ -56,186 +50,321 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
+        return StatefulBuilder(builder: (context, setState) {
+          void _selectOpen(int index) async {
+            int hourInit = listTime[index].open ~/ 60;
+            int minInit = listTime[index].open % 60;
+            TimeOfDay openInit = TimeOfDay(hour: hourInit, minute: minInit);
+            final TimeOfDay newTime = await showTimePicker(
+              context: context,
+              initialTime: openInit,
+              initialEntryMode: TimePickerEntryMode.input,
+            );
+            if (newTime != null) {
+              setState(() {
+                openInit = newTime;
+                listTime[index].open = newTime.hour * 60 + newTime.minute;
+              });
+            }
+          }
+
+          void _selectClose(int index) async {
+            int hourInit = listTime[index].close ~/ 60;
+            int minInit = listTime[index].close % 60;
+            TimeOfDay closeInit = TimeOfDay(hour: hourInit, minute: minInit);
+            final TimeOfDay newTime = await showTimePicker(
+              context: context,
+              initialTime: closeInit,
+              initialEntryMode: TimePickerEntryMode.input,
+            );
+            if (newTime != null) {
+              setState(() {
+                closeInit = newTime;
+                listTime[index].close = newTime.hour * 60 + newTime.minute;
+              });
+            }
+          }
+
+          return AlertDialog(
             shape: RoundedRectangleBorder(
                 side: BorderSide(color: kPrimaryColor, width: 2)),
             content: Container(
               height: 365,
               width: 300,
-              child: Column(
-                children: [
-                  SizedBox(height: 15),
-                  Row(children: [
-                    Text(
-                      "QUICK SETTING OPEN TIME",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-                  SizedBox(height: 25),
-                  Row(
-                    children: [
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text(
-                        "OPEN AT",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(width: 12),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: kPrimaryColorLight, // background
-                            onPrimary: kPrimaryLightColor, // foreground
-                          ),
-                          onPressed: _selectOpen,
-                          child: Text(
-                            open.format(context),
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "CLOSE AT",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: kPrimaryColorLight, // background
-                            onPrimary: kPrimaryLightColor, // foreground
-                          ),
-                          onPressed: _selectClose,
-                          child: Text(
-                            close.format(context),
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text(
-                        "REPEAT AT",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    //color: Colors.white,
-                    child: ToggleButtons(
-                      constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-
-                      isSelected: isSelected,
-
-                      color: Colors.black, // mau cua chu khi k chon
-
-                      selectedColor:
-                          kPrimaryLightColor, // mau trang cua chu khi chon
-
-                      borderWidth: 2,
-
-                      borderColor: kPrimaryColorLight,
-
-                      selectedBorderColor: kPrimaryColor,
-
-                      fillColor: kPrimaryColorLight,
-
-                      children: <Widget>[
-                        Text('SU', style: TextStyle(fontSize: 18)),
-                        Text('MO', style: TextStyle(fontSize: 18)),
-                        Text('TU', style: TextStyle(fontSize: 18)),
-                        Text('WE', style: TextStyle(fontSize: 18)),
-                        Text('TH', style: TextStyle(fontSize: 18)),
-                        Text('FR', style: TextStyle(fontSize: 18)),
-                        Text('SA', style: TextStyle(fontSize: 18))
-                      ],
-                      onPressed: (int idx) {
-                        setState(() {
-                          isSelected[idx] = !isSelected[idx];
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    width: 250,
-                    height: 50,
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: kPrimaryColorLight,
-                      child: Text(
-                        "Setting",
+                        "OPEN HOUR",
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(18),
-                          color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      ),
+                    ]),
+                    SizedBox(height: 25),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('Choose day',
+                            style:
+                                TextStyle(color: kPrimaryColor, fontSize: 20)),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      //color: Colors.white,
+                      child: ToggleButtons(
+                        constraints:
+                            BoxConstraints(minHeight: 35, minWidth: 35),
+
+                        isSelected: isSelected,
+
+                        color: kPrimaryColor,
+                        // mau cua chu khi k chon
+
+                        selectedColor: kPrimaryLightColor,
+                        // mau trang cua chu khi chon
+
+                        borderWidth: 2,
+
+                        borderColor: kPrimaryColorLight,
+
+                        selectedBorderColor: kPrimaryColor,
+
+                        fillColor: kPrimaryColorLight,
+
+                        children: <Widget>[
+                          Text('MO', style: TextStyle(fontSize: 18)),
+                          Text('TU', style: TextStyle(fontSize: 18)),
+                          Text('WE', style: TextStyle(fontSize: 18)),
+                          Text('TH', style: TextStyle(fontSize: 18)),
+                          Text('FR', style: TextStyle(fontSize: 18)),
+                          Text('SA', style: TextStyle(fontSize: 18)),
+                          Text('SU', style: TextStyle(fontSize: 18)),
+                        ],
+                        onPressed: (int idx) {
+                          setState(() {
+                            isSelected[idx] = !isSelected[idx];
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: const TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              int openTemp =
+                                  (420 + 240 * listTime.length) < 1200
+                                      ? (420 + 240 * listTime.length)
+                                      : 1140;
+                              int closeTemp =
+                                  (600 + 240 * listTime.length) < 1440
+                                      ? (600 + 240 * listTime.length)
+                                      : 1380;
+                              listTime.add(TimeWorking(
+                                  open: openTemp, close: closeTemp));
+                            });
+                          },
+                          child: const Text(
+                            'Click here to add hours',
+                            style: TextStyle(color: kPrimaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 60 * listTime.length.toDouble(),
+                      width: 250,
+                      child: ListView.builder(
+                          itemCount: listTime.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 5, 10, 5),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                kPrimaryColorLight, // background
+                                            onPrimary:
+                                                kPrimaryLightColor, // foreground
+                                          ),
+                                          onPressed: () {
+                                            _selectOpen(index);
+                                          },
+                                          child: Text(
+                                            '${(listTime[index].open ~/ 60).toString().padLeft(2, '0')}:${(listTime[index].open % 60).toString().padLeft(2, '0')}',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        "-",
+                                        style: TextStyle(
+                                            fontSize: 30, color: kPrimaryColor),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 5, 10, 5),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                kPrimaryColorLight, // background
+                                            onPrimary:
+                                                kPrimaryLightColor, //// foreground
+                                          ),
+                                          onPressed: () {
+                                            _selectClose(index);
+                                          },
+                                          child: Text(
+                                            '${(listTime[index].close ~/ 60).toString().padLeft(2, '0')}:${(listTime[index].close % 60).toString().padLeft(2, '0')}',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.close),
+                                        color: kPrimaryColor,
+                                        onPressed: () {
+                                          setState(() {
+                                            listTime.removeAt(index);
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: kPrimaryColor),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  ),
-                ],
+                      SizedBox(
+                        width: 20,
+                      ),
+                      // ignore: deprecated_member_use
+                      FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        color: kPrimaryColorLight,
+                        child: Text(
+                          "Add",
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(18),
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ),
+                    ]),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        });
       },
     ).then((value) {
       if (value) {
+        List<TimeWorking> listTemp = [];
+
         if (isSelected[0]) {
           setState(() {
-            openSun = open;
-            closeSun = close;
+            listTimeMon = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeMon = listTemp;
           });
         }
+
         if (isSelected[1]) {
           setState(() {
-            openMon = open;
-            closeMon = close;
+            listTimeTue = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeTue = listTemp;
           });
         }
+
         if (isSelected[2]) {
           setState(() {
-            openTue = open;
-            closeTue = close;
+            listTimeWed = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeWed = listTemp;
           });
         }
+
         if (isSelected[3]) {
           setState(() {
-            openWed = open;
-            closeWed = close;
+            listTimeThu = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeThu = listTemp;
           });
         }
+
         if (isSelected[4]) {
           setState(() {
-            openThu = open;
-            closeThu = close;
+            listTimeFri = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeFri = listTemp;
           });
         }
+
         if (isSelected[5]) {
           setState(() {
-            openFri = open;
-            closeFri = close;
+            listTimeSat = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeSat = listTemp;
           });
         }
+
         if (isSelected[6]) {
           setState(() {
-            openSat = open;
-            closeSat = close;
+            listTimeSun = listTime;
+          });
+        } else {
+          setState(() {
+            listTimeSun = listTemp;
           });
         }
       }
@@ -259,7 +388,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
             width: 60,
             height: 60,
             child: Icon(
-              Icons.add,
+              Icons.edit,
               size: 30,
             ),
             decoration: BoxDecoration(
@@ -294,53 +423,110 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                     ),
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     buildForm(),
-                    SizedBox(height: SizeConfig.screenHeight * 0.04),
+                    SizedBox(height: SizeConfig.screenHeight * 0.06),
                     DefaultButton(
                       text: "Submit",
                       press: () {
                         List<Schedule> _schedule = <Schedule>[];
+                        //add monday working hour
+                        List<WorkingHours> _workingHoursMon = <WorkingHours>[];
+                        for (int i = 0; i < listTimeMon.length; i++) {
+                          _workingHoursMon.add(WorkingHours(
+                            startTime: listTimeMon[i].open,
+                            endTime: listTimeMon[i].close,
+                          ));
+                        }
+                        //add tuesday working hour
+                        List<WorkingHours> _workingHoursTue = <WorkingHours>[];
+                        for (int i = 0; i < listTimeTue.length; i++) {
+                          _workingHoursTue.add(WorkingHours(
+                            startTime: listTimeTue[i].open,
+                            endTime: listTimeTue[i].close,
+                          ));
+                        }
+                        //add wednesday working hour
+                        List<WorkingHours> _workingHoursWed = <WorkingHours>[];
+                        for (int i = 0; i < listTimeWed.length; i++) {
+                          _workingHoursWed.add(WorkingHours(
+                            startTime: listTimeWed[i].open,
+                            endTime: listTimeWed[i].close,
+                          ));
+                        }
+                        //add thursday working hour
+                        List<WorkingHours> _workingHoursThu = <WorkingHours>[];
+                        for (int i = 0; i < listTimeThu.length; i++) {
+                          _workingHoursThu.add(WorkingHours(
+                            startTime: listTimeThu[i].open,
+                            endTime: listTimeThu[i].close,
+                          ));
+                        }
+                        //add friday working hour
+                        List<WorkingHours> _workingHoursFri = <WorkingHours>[];
+                        for (int i = 0; i < listTimeFri.length; i++) {
+                          _workingHoursFri.add(WorkingHours(
+                            startTime: listTimeFri[i].open,
+                            endTime: listTimeFri[i].close,
+                          ));
+                        }
+                        //add saturday working hour
+                        List<WorkingHours> _workingHoursSat = <WorkingHours>[];
+                        for (int i = 0; i < listTimeSat.length; i++) {
+                          _workingHoursSat.add(WorkingHours(
+                            startTime: listTimeSat[i].open,
+                            endTime: listTimeSat[i].close,
+                          ));
+                        }
+                        //add sunday working hour
+                        List<WorkingHours> _workingHoursSun = <WorkingHours>[];
+                        for (int i = 0; i < listTimeSun.length; i++) {
+                          _workingHoursSun.add(WorkingHours(
+                            startTime: listTimeSun[i].open,
+                            endTime: listTimeSun[i].close,
+                          ));
+                        }
                         _schedule.add(Schedule(
-                            dayOfWeek: 1,
-                            startTime: openMon.hour * 60 + openMon.minute,
-                            endTime: closeMon.hour * 60 + closeMon.minute));
+                          dayOfWeek: 1,
+                          workingHours: _workingHoursMon,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 2,
-                            startTime: openTue.hour * 60 + openTue.minute,
-                            endTime: closeTue.hour * 60 + closeTue.minute));
+                          dayOfWeek: 2,
+                          workingHours: _workingHoursTue,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 3,
-                            startTime: openWed.hour * 60 + openWed.minute,
-                            endTime: closeWed.hour * 60 + closeWed.minute));
+                          dayOfWeek: 3,
+                          workingHours: _workingHoursWed,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 4,
-                            startTime: openThu.hour * 60 + openThu.minute,
-                            endTime: closeThu.hour * 60 + closeThu.minute));
+                          dayOfWeek: 4,
+                          workingHours: _workingHoursThu,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 5,
-                            startTime: openFri.hour * 60 + openFri.minute,
-                            endTime: closeFri.hour * 60 + closeFri.minute));
+                          dayOfWeek: 5,
+                          workingHours: _workingHoursFri,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 6,
-                            startTime: openSat.hour * 60 + openSat.minute,
-                            endTime: closeSat.hour * 60 + closeSat.minute));
+                          dayOfWeek: 6,
+                          workingHours: _workingHoursSat,
+                        ));
                         _schedule.add(Schedule(
-                            dayOfWeek: 0,
-                            startTime: openSun.hour * 60 + openSun.minute,
-                            endTime: closeSun.hour * 60 + closeSun.minute));
+                          dayOfWeek: 0,
+                          workingHours: _workingHoursSun,
+                        ));
                         _clinic.schedule = _schedule;
-                        _clinicService
-                            .register(
-                                url: url,
-                                clinic: _clinic,
-                                path: widget.imageFile)
-                            .then((value) {
-                          if (value.data['status'] == 'success') {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SignInScreen()));
-                          } else {
-                            print(value.data);
-                          }
-                        });
+
+                        // _clinicService
+                        //     .register(
+                        //         url: url,
+                        //         clinic: _clinic,
+                        //         path: widget.imageFile)
+                        //     .then((value) {
+                        //   if (value.data['status'] == 'success') {
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) => SignInScreen()));
+                        //   } else {
+                        //     print(value.data);
+                        //   }
+                        // });
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -390,476 +576,370 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   Widget buildForm() {
     return Container(
       alignment: Alignment.center,
-      child: Table(
+      child: Column(
         children: [
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
-              child: Text(
-                'DAY',
+          Row(
+            children: [
+              SizedBox(
+                width: 150,
+                child: Text(
+                  'DAY',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text(
+                'TIME',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
-              child: Text(
-                'OPEN',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 15),
-              child: Text(
-                'CLOSE',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Monday
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Monday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Monday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenMon,
-                child: Text(openMon.format(context), style: TextStyle(fontSize: 18.0),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseMon,
-                child: Text(closeMon.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeMon.length == 0
+                    ? 30
+                    : (listTimeMon.length * 30).toDouble(),
+                child: listTimeMon.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeMon.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeMon[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeMon[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeMon[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeMon[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Tuesday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Tuesday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Tuesday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenTue,
-                child: Text(openTue.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseTue,
-                child: Text(closeTue.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeTue.length == 0
+                    ? 30
+                    : (listTimeTue.length * 30).toDouble(),
+                child: listTimeTue.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeTue.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeTue[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeTue[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeTue[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeTue[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Wednesday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Wednesday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Wednesday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenWed,
-                child: Text(openWed.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseWed,
-                child: Text(closeWed.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeWed.length == 0
+                    ? 30
+                    : (listTimeWed.length * 30).toDouble(),
+                child: listTimeWed.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeWed.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeWed[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeWed[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeWed[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeWed[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Thursday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Thursday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Thursday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenThu,
-                child: Text(openThu.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseThu,
-                child: Text(closeThu.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeThu.length == 0
+                    ? 30
+                    : (listTimeThu.length * 30).toDouble(),
+                child: listTimeThu.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeThu.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeThu[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeThu[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeThu[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeThu[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Friday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Friday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Friday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenFri,
-                child: Text(openFri.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseFri,
-                child: Text(closeFri.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeFri.length == 0
+                    ? 30
+                    : (listTimeFri.length * 30).toDouble(),
+                child: listTimeFri.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeFri.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeFri[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeFri[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeFri[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeFri[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Saturday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Saturday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Saturday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenSat,
-                child: Text(openSat.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
-                ),
-                onPressed: _selectCloseSat,
-                child: Text(closeSat.format(context), style: TextStyle(fontSize: 18),),
+              Container(
+                width: 150,
+                height: listTimeSat.length == 0
+                    ? 30
+                    : (listTimeSat.length * 30).toDouble(),
+                child: listTimeSat.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeSat.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeSat[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeSat[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeSat[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeSat[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
               ),
-            ),
-          ]),
-          TableRow(children: [
-            Text(""),
-            Text(""),
-            Text(""),
-          ]),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           //Sunday
-          TableRow(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 6),
-              child: Text(
-                'Sunday',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 150,
+                child: Text(
+                  'Sunday',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: _selectOpenSun,
-                child: Text(openSun.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColorLight, // background
-                  onPrimary: kPrimaryLightColor, // foreground
+              Container(
+                width: 150,
+                height: listTimeSun.length == 0
+                    ? 30
+                    : (listTimeSun.length * 30).toDouble(),
+                child: listTimeSun.length == 0
+                    ? Text(
+                        "Closed",
+                        style: TextStyle(fontSize: 20.0),
+                      )
+                    : ListView.builder(
+                        itemCount: listTimeSun.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(2, 0, 0, 10),
+                            child: Text(
+                              '${(listTimeSun[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeSun[index].open % 60).toString().padLeft(2, '0')} - '
+                              '${(listTimeSun[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                              '${(listTimeSun[index].close % 60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TimeWidget extends StatefulWidget {
+  @override
+  _TimeWidgetState createState() => _TimeWidgetState();
+}
+
+class _TimeWidgetState extends State<TimeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColorLight, // background
+                    onPrimary: kPrimaryLightColor, // foreground
+                  ),
+                  onPressed: _selectOpen,
+                  child: Text(
+                    open.format(context),
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
-                onPressed: _selectCloseSun,
-                child: Text(closeSun.format(context), style: TextStyle(fontSize: 18),),
               ),
-            ),
-          ]),
+              Text(
+                "-",
+                style: TextStyle(fontSize: 30),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColorLight, // background
+                    onPrimary: kPrimaryLightColor, //// foreground
+                  ),
+                  onPressed: _selectClose,
+                  child: Text(
+                    close.format(context),
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  void _selectOpenMon() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openMon,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openMon = newTime;
-      });
-    }
-  }
-
-  void _selectCloseMon() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeMon,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeMon = newTime;
-      });
-    }
-  }
-
-  void _selectOpenTue() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openTue,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openTue = newTime;
-      });
-    }
-  }
-
-  void _selectCloseTue() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeTue,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeTue = newTime;
-      });
-    }
-  }
-
-  void _selectOpenWed() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openWed,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openWed = newTime;
-      });
-    }
-  }
-
-  void _selectCloseWed() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeWed,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeWed = newTime;
-      });
-    }
-  }
-
-  void _selectOpenThu() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openThu,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openThu = newTime;
-      });
-    }
-  }
-
-  void _selectCloseThu() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeThu,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeThu = newTime;
-      });
-    }
-  }
-
-  void _selectOpenFri() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openFri,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openFri = newTime;
-      });
-    }
-  }
-
-  void _selectCloseFri() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeFri,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeFri = newTime;
-      });
-    }
-  }
-
-  void _selectOpenSat() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openSat,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openSat = newTime;
-      });
-    }
-  }
-
-  void _selectCloseSat() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeSat,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeSat = newTime;
-      });
-    }
-  }
-
-  void _selectOpenSun() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: openSun,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        openSun = newTime;
-      });
-    }
-  }
-
-  void _selectCloseSun() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: closeSun,
-      initialEntryMode: TimePickerEntryMode.input,
-    );
-    if (newTime != null) {
-      setState(() {
-        closeSun = newTime;
-      });
-    }
-  }
+  TimeOfDay open = TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
 
   void _selectOpen() async {
     final TimeOfDay newTime = await showTimePicker(
@@ -886,4 +966,11 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
       });
     }
   }
+}
+
+class TimeWorking {
+  int open;
+  int close;
+
+  TimeWorking({this.open, this.close});
 }

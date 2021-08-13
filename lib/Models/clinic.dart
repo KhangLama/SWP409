@@ -6,6 +6,7 @@ part 'clinic.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Clinic {
   Geometry geometry;
+  List<Specialists> specialists;
   List<Reviews> reviews;
   String status;
   String sId;
@@ -23,6 +24,7 @@ class Clinic {
 
   Clinic(
       {this.geometry,
+      this.specialists,
       this.reviews,
       this.status,
       this.sId,
@@ -86,23 +88,13 @@ class Reviews {
 @JsonSerializable(explicitToJson: true)
 class Replies {
   String sId;
-  //double rating;
-  //String review;
   String reply;
   User user;
-  // String createdAt;
-  // String updatedAt;
-  // int iV;
 
   Replies({
     this.sId,
-    //this.rating,
-    //this.review,
     this.reply,
     this.user,
-    // this.createdAt,
-    // this.updatedAt,
-    // this.iV
   });
 
   factory Replies.fromJson(Map<String, dynamic> json) =>
@@ -114,15 +106,40 @@ class Replies {
 @JsonSerializable(explicitToJson: true)
 class Schedule {
   int dayOfWeek;
-  int startTime;
-  int endTime;
+  List<WorkingHours> workingHours;
 
-  Schedule({this.dayOfWeek, this.startTime, this.endTime});
+  Schedule({this.dayOfWeek, this.workingHours});
 
   factory Schedule.fromJson(Map<String, dynamic> json) =>
       _$ScheduleFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScheduleToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class WorkingHours {
+  int startTime;
+  int endTime;
+
+  WorkingHours({this.startTime, this.endTime});
+
+  factory WorkingHours.fromJson(Map<String, dynamic> json) =>
+      _$WorkingHoursFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WorkingHoursToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class Specialists {
+  int id;
+  int name;
+
+  Specialists({this.id, this.name});
+
+  factory Specialists.fromJson(Map<String, dynamic> json) =>
+      _$SpecialistsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SpecialistsToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)

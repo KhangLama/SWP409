@@ -11,6 +11,10 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
     geometry: json['geometry'] == null
         ? null
         : Geometry.fromJson(json['geometry'] as Map<String, dynamic>),
+    specialists: (json['specialists'] as List)
+        ?.map((e) =>
+            e == null ? null : Specialists.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     reviews: (json['reviews'] as List)
         ?.map((e) =>
             e == null ? null : Reviews.fromJson(e as Map<String, dynamic>))
@@ -38,6 +42,7 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
       'geometry': instance.geometry?.toJson(),
+      'specialists': instance.specialists?.map((e) => e?.toJson())?.toList(),
       'reviews': instance.reviews?.map((e) => e?.toJson())?.toList(),
       'status': instance.status,
       'sId': instance.sId,
@@ -99,7 +104,7 @@ Map<String, dynamic> _$ReviewsToJson(Reviews instance) => <String, dynamic>{
 
 Replies _$RepliesFromJson(Map<String, dynamic> json) {
   return Replies(
-    sId: json['sId'] as String,
+    sId: json['_id'] as String,
     reply: json['reply'] as String,
     user: json['user'] == null
         ? null
@@ -116,15 +121,42 @@ Map<String, dynamic> _$RepliesToJson(Replies instance) => <String, dynamic>{
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) {
   return Schedule(
     dayOfWeek: json['dayOfWeek'] as int,
-    startTime: json['startTime'] as int,
-    endTime: json['endTime'] as int,
+    workingHours: (json['workingHours'] as List)
+        ?.map((e) =>
+            e == null ? null : WorkingHours.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
 Map<String, dynamic> _$ScheduleToJson(Schedule instance) => <String, dynamic>{
       'dayOfWeek': instance.dayOfWeek,
+      'workingHours': instance.workingHours?.map((e) => e?.toJson())?.toList(),
+    };
+
+WorkingHours _$WorkingHoursFromJson(Map<String, dynamic> json) {
+  return WorkingHours(
+    startTime: json['startTime'] as int,
+    endTime: json['endTime'] as int,
+  );
+}
+
+Map<String, dynamic> _$WorkingHoursToJson(WorkingHours instance) =>
+    <String, dynamic>{
       'startTime': instance.startTime,
       'endTime': instance.endTime,
+    };
+
+Specialists _$SpecialistsFromJson(Map<String, dynamic> json) {
+  return Specialists(
+    id: json['id'] as int,
+    name: json['name'] as int,
+  );
+}
+
+Map<String, dynamic> _$SpecialistsToJson(Specialists instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
     };
 
 CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {
