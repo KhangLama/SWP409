@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/clinic.dart';
@@ -5,6 +9,9 @@ import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:googleapis/calendar/v3.dart' as prefix;
+import "package:googleapis_auth/auth_io.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 class Booking extends StatefulWidget {
   List<String> cookies;
@@ -20,13 +27,26 @@ int checkedIndex = 0;
 class _BookingState extends State<Booking> {
   var gridviewcontroller;
   UserService _userService = new UserService();
-  DateTime _selectedDay, _focusDay;
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   User _user = new User();
   Clinic _clinic = new Clinic();
   List<String> _cookies;
+  Dio dio = new Dio();
+
+  static const _scopes = const [prefix.CalendarApi.calendarScope];
+
+  prefix.Event _event = prefix.Event();
+
+  var _clientID = new ClientId(
+      "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
+      "");
+
   @override
   void initState() {
     super.initState();
+
     setState(() {
       _user = widget.user;
       _clinic = widget.clinic;
@@ -57,15 +77,36 @@ class _BookingState extends State<Booking> {
                 padding: const EdgeInsets.all(14.0),
                 child: TableCalendar(
                   firstDay: DateTime.now(),
-                  focusedDay: DateTime.now(),
+                  focusedDay: _focusDay,
                   lastDay: DateTime.utc(2040),
                   startingDayOfWeek: StartingDayOfWeek.monday,
+                  daysOfWeekVisible: true,
+                  calendarFormat: _calendarFormat,
+
+                  //day changed
+                  selectedDayPredicate: (DateTime date) {
+                    return isSameDay(_selectedDay, date);
+                  },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
                       _selectedDay = selectedDay;
                       _focusDay = focusedDay;
                     });
                   },
+
+                  //Styling
+                  onFormatChanged: (CalendarFormat format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  },
+                  calendarStyle: CalendarStyle(
+                      todayDecoration: BoxDecoration(
+                          color: Colors.purpleAccent, shape: BoxShape.circle),
+                      isTodayHighlighted: true,
+                      selectedDecoration: BoxDecoration(
+                          color: Colors.blue, shape: BoxShape.circle),
+                      selectedTextStyle: TextStyle(color: Colors.white)),
                 ),
               ),
               Padding(
@@ -79,24 +120,6 @@ class _BookingState extends State<Booking> {
                   child: Text(select_time.format(context)),
                 ),
               ),
-              // Expanded(
-              //   flex: 1,
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(14.0),
-              //     child: Card(
-              // child: GridView.builder(
-              //     itemCount: hours.length,
-              //     controller: gridviewcontroller,
-              //     gridDelegate:
-              //         new SliverGridDelegateWithFixedCrossAxisCount(
-              //             crossAxisCount: 5),
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return _buildGridItem(index);
-              //     }),
-
-              //),
-              //   ),
-              // ),
               Expanded(
                 flex: 0,
                 child: SizedBox(
@@ -109,16 +132,13 @@ class _BookingState extends State<Booking> {
                     child: Text('Continue',
                         style: TextStyle(color: kPrimaryLightColor)),
                     onPressed: () {
-                      print('booking');
-                      print(_cookies);
                       var time = select_time.hour * 60 + select_time.minute;
+
                       String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
-                
+
                       _userService
-                          .booking(url, time,
-                              _selectedDay, _cookies)
+                          .booking(url, time, _selectedDay, _cookies)
                           .then((value) {
-                        
                         if (value.data['status'] == 'success') {
                           print(value.data);
                           Navigator.of(context).push(MaterialPageRoute(

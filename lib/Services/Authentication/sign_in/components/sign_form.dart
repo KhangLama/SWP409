@@ -90,6 +90,7 @@ class _SignFormState extends State<SignForm> {
               DefaultButton(
                 text: "Continue",
                 press: () async {
+                  KeyboardUtil.hideKeyboard(context);
                   String url = '$ServerIP/api/v1/users/login';
                   if (_formKey.currentState.validate()) {
                     authService.login(url, email, password).then((val) async {
@@ -108,8 +109,10 @@ class _SignFormState extends State<SignForm> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomeScreenDoctor.user(user: _user, cookies: cookies,)));
+                                  builder: (context) => HomeScreenDoctor.user(
+                                        user: _user,
+                                        cookies: cookies,
+                                      )));
                         }
                       } else if (val.data["status"] == "error") {
                         addError(error: "Incorrect email or password");

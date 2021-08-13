@@ -171,9 +171,7 @@ class _ClinicListViewState extends State<ClinicListView> {
 
   // List view of clinic card
   buildListView() {
-    return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 1)),
-      builder: (c, s) => s.connectionState == ConnectionState.done ? NotificationListener<ScrollNotification>(
+    return NotificationListener<ScrollNotification>(
         // ignore: missing_return
         onNotification: (scrollNotification) {
           assert(scrollNotification != null);
@@ -270,8 +268,8 @@ class _ClinicListViewState extends State<ClinicListView> {
                 ),
               );
             }),
-      ) : CircularProgressIndicator(),
-    );
+      );
+    
   }
 }
 

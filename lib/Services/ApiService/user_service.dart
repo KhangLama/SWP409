@@ -30,10 +30,10 @@ class UserService {
       DateTime date = _bookDate;
       return response = await dio.post(url,
           data: {
-            "bookedDate":
-                DateTime.parse("2014-08-18T08:00:00").toIso8601String(),
-            "bookedTime":
-                DateTime.parse("2014-08-18T08:00:00").toIso8601String(),
+            "bookedDate": date.toIso8601String(),
+            "bookedTime": DateTime(date.year, date.month, date.day)
+                .add(Duration(minutes: time))
+                .toIso8601String(),
           },
           options: options);
     } on DioError catch (e) {

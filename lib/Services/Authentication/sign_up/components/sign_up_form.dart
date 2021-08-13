@@ -60,14 +60,15 @@ class _SignUpFormState extends State<SignUpForm> {
           buildFirstNameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPhoneNumberFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildAddressFormField(),
+          // SizedBox(height: getProportionateScreenHeight(30)),
+          // buildAddressFormField(),
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           //SizedBox(height: SizeConfig.screenHeight * 0.08),
           DefaultButton(
               text: "Continue",
               press: () async {
+                KeyboardUtil.hideKeyboard(context);
                 String url = '$ServerIP/api/v1/users/signup';
                 if (_formKey.currentState.validate()) {
                   authService
@@ -82,15 +83,19 @@ class _SignUpFormState extends State<SignUpForm> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    MainScreen.user(user: _user, cookies: cookies,)));
+                                builder: (context) => MainScreen.user(
+                                      user: _user,
+                                      cookies: cookies,
+                                    )));
                       }
                       if (_user.role == 'doctor') {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    HomeScreenDoctor.user(user: _user, cookies: cookies,)));
+                                builder: (context) => HomeScreenDoctor.user(
+                                      user: _user,
+                                      cookies: cookies,
+                                    )));
                       }
                     }
                     if (val.statusCode == 400) {
@@ -220,7 +225,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-  
+
         email = value;
         return null;
       },
@@ -233,7 +238,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kInvalidEmailError);
           return kInvalidEmailError;
         }
-       
+
         return null;
       },
       decoration: InputDecoration(

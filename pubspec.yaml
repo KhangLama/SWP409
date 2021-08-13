@@ -42,6 +42,9 @@ dependencies:
   geocoding:
   flutter_google_places:
   address_search_field: ^4.0.1
+  url_launcher: ^6.0.9
+  googleapis_auth: ^1.1.0
+  googleapis: ^4.0.0
 
 dev_dependencies:
   json_serializable: ^3.5.1

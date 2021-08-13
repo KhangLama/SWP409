@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -9,6 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 
 import '../../../constants.dart';
+import 'package:googleapis/calendar/v3.dart' as prefix;
+import "package:googleapis_auth/auth_io.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 class ListCustomerAppointment extends StatefulWidget {
   User user;
@@ -24,6 +29,13 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   Clinic _clinic = new Clinic();
   User _user = new User();
   List<String> _cookies;
+  static const _scopes = const [prefix.CalendarApi.calendarScope];
+
+  prefix.Event _event = prefix.Event();
+
+  var _clientID = new ClientId(
+      "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
+      "");
 
   @override
   void initState() {
@@ -111,8 +123,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                         color: Colors.black, size: 17),
                                     SizedBox(width: 10),
                                     Text(
-                                      '${DateFormat('yyyy-MM-dd')
-                                          .format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
+                                      '${DateFormat('yyyy-MM-dd').format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
                                       style: TextStyle(fontSize: 17),
                                     ),
                                     SizedBox(width: 5),
@@ -166,7 +177,55 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                               actions: [
                                                 // ignore: deprecated_member_use
                                                 new FlatButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      //works with google calendar
+                                                      _event.summary =
+                                                          "Appointment at ${_clinic.name}";
+
+                                                      //apointment start time
+                                                      _event.attendees = [
+                                                        prefix.EventAttendee
+                                                            .fromJson({
+                                                          'email':
+                                                              '${_booking[index].user.email}'
+                                                        })
+                                                      ];
+
+                                                      prefix.EventDateTime
+                                                          start = new prefix
+                                                              .EventDateTime();
+                                                      DateTime _bookday =
+                                                          DateTime(
+                                                              _booking[index]
+                                                                  .bookedDate
+                                                                  .year,
+                                                              _booking[index]
+                                                                  .bookedDate
+                                                                  .month,
+                                                              _booking[index]
+                                                                  .bookedDate
+                                                                  .day);
+                                                      start.dateTime =
+                                                          _bookday.add(Duration(
+                                                              minutes: _booking[
+                                                                      index]
+                                                                  .bookedTime));
+                                                      start.timeZone =
+                                                          "GTM+07:00";
+                                                      _event.start = start;
+                                                      //appointment end time
+                                                      prefix.EventDateTime end =
+                                                          new prefix
+                                                              .EventDateTime();
+                                                      end.dateTime = start
+                                                          .dateTime
+                                                          .add(Duration(
+                                                              minutes: 15));
+                                                      end.timeZone =
+                                                          "GTM+07:00";
+                                                      _event.end = end;
+                                                      insertEvent(_event);
+                                                    },
                                                     child: Text(
                                                       "Yes",
                                                       style: TextStyle(
@@ -259,5 +318,39 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
       list.add(new Booking.fromJson(booking));
     }
     return list;
+  }
+
+  insertEvent(event) {
+    try {
+      clientViaUserConsent(_clientID, _scopes, prompt)
+          .then((AuthClient client) {
+        var calendar = prefix.CalendarApi(client);
+        String calendarId = "primary";
+        calendar.events
+            .insert(event, calendarId, sendNotifications: true)
+            .then((value) {
+          print("ADDEDDD_________________${value.status}");
+          if (value.status == "confirmed") {
+            log('Event added in google calendar');
+          } else {
+            log("Unable to add event in google calendar");
+          }
+        });
+      });
+    } catch (e) {
+      log('Error creating event $e');
+    }
+  }
+
+  void prompt(String url) async {
+    print("Please go to the following URL and grant access:");
+    print("  => $url");
+    print("");
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
