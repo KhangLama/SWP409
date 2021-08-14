@@ -11,9 +11,9 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
     geometry: json['geometry'] == null
         ? null
         : Geometry.fromJson(json['geometry'] as Map<String, dynamic>),
-    specialists: (json['specialists'] as List)
+    specialists: (json['specialist'] as List)
         ?.map((e) =>
-            e == null ? null : Specialists.fromJson(e as Map<String, dynamic>))
+            e == null ? null : Specialist.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     reviews: (json['reviews'] as List)
         ?.map((e) =>
@@ -41,19 +41,19 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
+      'coverImage': instance.coverImage?.toJson(),
+      'name': instance.name,
+      'email': instance.email,
+      'address': instance.address,
+      'phone': instance.phone,
+      'specialist': instance.specialists?.map((e) => e?.toJson())?.toList(),
       'geometry': instance.geometry?.toJson(),
-      'specialists': instance.specialists?.map((e) => e?.toJson())?.toList(),
+      'description': instance.description,
+      'schedule': instance.schedule?.map((e) => e?.toJson())?.toList(),
       'reviews': instance.reviews?.map((e) => e?.toJson())?.toList(),
       'status': instance.status,
       'sId': instance.sId,
-      'email': instance.email,
-      'phone': instance.phone,
-      'description': instance.description,
-      'name': instance.name,
-      'schedule': instance.schedule?.map((e) => e?.toJson())?.toList(),
-      'coverImage': instance.coverImage?.toJson(),
       'iV': instance.iV,
-      'address': instance.address,
       'reviewCount': instance.reviewCount,
       'ratingAvg': instance.ratingAvg,
       'id': instance.id,
@@ -146,17 +146,19 @@ Map<String, dynamic> _$WorkingHoursToJson(WorkingHours instance) =>
       'endTime': instance.endTime,
     };
 
-Specialists _$SpecialistsFromJson(Map<String, dynamic> json) {
-  return Specialists(
-    id: json['id'] as int,
-    name: json['name'] as int,
+Specialist _$SpecialistFromJson(Map<String, dynamic> json) {
+  return Specialist(
+    id: json['_id'] as String,
+    name: json['name'] as String,
+    symptoms: (json['symptoms'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
-Map<String, dynamic> _$SpecialistsToJson(Specialists instance) =>
+Map<String, dynamic> _$SpecialistToJson(Specialist instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'symptoms': instance.symptoms,
     };
 
 CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {

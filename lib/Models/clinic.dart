@@ -5,19 +5,19 @@ part 'clinic.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Clinic {
+  CoverImage coverImage;
+  String name;
+  String email;
+  String address;
+  String phone;
+  List<Specialist> specialists;
   Geometry geometry;
-  List<Specialists> specialists;
+  String description;
+  List<Schedule> schedule;
   List<Reviews> reviews;
   String status;
   String sId;
-  String email;
-  String phone;
-  String description;
-  String name;
-  List<Schedule> schedule;
-  CoverImage coverImage;
   int iV;
-  String address;
   int reviewCount;
   double ratingAvg;
   String id;
@@ -130,16 +130,17 @@ class WorkingHours {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Specialists {
-  int id;
-  int name;
+class Specialist {
+  String id;
+  String name;
+  List<String> symptoms;
 
-  Specialists({this.id, this.name});
+  Specialist({this.id, this.name, this.symptoms});
 
-  factory Specialists.fromJson(Map<String, dynamic> json) =>
-      _$SpecialistsFromJson(json);
+  factory Specialist.fromJson(Map<String, dynamic> json) =>
+      _$SpecialistFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SpecialistsToJson(this);
+  Map<String, dynamic> toJson() => _$SpecialistToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)

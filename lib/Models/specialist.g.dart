@@ -8,8 +8,8 @@ part of 'specialist.dart';
 
 Specialists _$SpecialistsFromJson(Map<String, dynamic> json) {
   return Specialists(
-    id: json['_id'] as int,
-    name: json['name'] as int,
+    id: json['_id'] as String,
+    name: json['name'] as String,
   );
 }
 
