@@ -35,7 +35,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<List<Booking>> fetchBookings() async {
-    String url = '$ServerIP/api/v1/bookings/${_user.sId}';
+    String url = '$ServerIP/api/v1/bookings/users';
     var fetchdata = await _userService.getHistory(url, _cookies);
     var bookings = <Booking>[];
     var bookingsjson = fetchdata.data['data']['data'] as List;

@@ -484,6 +484,11 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                             endTime: listTimeSun[i].close,
                           ));
                         }
+
+                        _schedule.add(Schedule(
+                          dayOfWeek: 0,
+                          workingHours: _workingHoursSun,
+                        ));
                         _schedule.add(Schedule(
                           dayOfWeek: 1,
                           workingHours: _workingHoursMon,
@@ -508,10 +513,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                           dayOfWeek: 6,
                           workingHours: _workingHoursSat,
                         ));
-                        _schedule.add(Schedule(
-                          dayOfWeek: 0,
-                          workingHours: _workingHoursSun,
-                        ));
+
                         _clinic.schedule = _schedule;
 
                         // _clinicService

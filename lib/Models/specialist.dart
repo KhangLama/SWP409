@@ -4,8 +4,8 @@ part 'specialist.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Specialists {
-  int id;
-  int name;
+  String id;
+  String name;
 
   Specialists({this.id, this.name});
 
