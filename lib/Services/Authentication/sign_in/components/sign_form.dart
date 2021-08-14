@@ -93,8 +93,10 @@ class _SignFormState extends State<SignForm> {
                   KeyboardUtil.hideKeyboard(context);
                   String url = '$ServerIP/api/v1/users/login';
                   if (_formKey.currentState.validate()) {
+                    print(url);
+                    print("${email} ${password}");
                     authService.login(url, email, password).then((val) async {
-                      if (val.data["status"] == "success") {
+                      if (val.data['status'] == "success") {
                         _user = new User.fromJson(val.data['data']['user']);
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
