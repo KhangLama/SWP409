@@ -11,7 +11,6 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class ClinicProfile extends StatefulWidget {
-  Clinic clinic;
   User user;
   List<String> cookies;
   ClinicProfile({Key key, this.user, this.cookies}) : super(key: key);
@@ -68,10 +67,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
       for (var clinic in clinicsjson) {
         clinics.add(Clinic.fromJson(clinic));
       }
-      print('abcde');
-      print(clinics.length);
       return clinics;
     }
+    
     @override
     void initState() {
       // TODO: implement initState

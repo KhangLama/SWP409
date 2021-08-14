@@ -80,12 +80,12 @@ class _HistoryPageState extends State<HistoryPage> {
                     top: 15, bottom: 10, left: 0, right: 16),
                 child: Row(
                   children: [
-                    Image(
-                      image:
-                          NetworkImage(_bookings[index].clinic.coverImage.url),
-                      width: 150,
-                      height: 100,
-                    ),
+                    // Image(
+                    //   image:
+                    //       NetworkImage(_bookings[index].clinic.coverImage.url),
+                    //   width: 150,
+                    //   height: 100,
+                    // ),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
