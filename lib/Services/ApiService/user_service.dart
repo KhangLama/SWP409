@@ -30,10 +30,10 @@ class UserService {
       DateTime date = _bookDate;
       return response = await dio.post(url,
           data: {
-            "bookedDate":
-                DateTime.parse("2014-08-18T08:00:00").toIso8601String(),
-            "bookedTime":
-                DateTime.parse("2014-08-18T08:00:00").toIso8601String(),
+            "bookedDate": date.toIso8601String(),
+            "bookedTime": DateTime(date.year, date.month, date.day)
+                .add(Duration(minutes: time))
+                .toIso8601String(),
           },
           options: options);
     } on DioError catch (e) {
@@ -43,7 +43,7 @@ class UserService {
   }
 
   Future<Response> updateInfo(
-      url, _name, _phone, _address, _avatar, email, cookies) async {
+      url, _name, _phone, _avatar, email, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();
       print('cook update');
@@ -56,11 +56,19 @@ class UserService {
         String _filename = _avatar.path.split('/').last;
         String _filepath = _avatar.path;
         var formData = new FormData.fromMap({
+          "email": email,
           "name": _name,
           "phone": _phone,
-          "address": _address,
           "avatar":
               await MultipartFile.fromFile(_filepath, filename: _filename),
+          "filename": _filename,
+        });
+        response = await dio.put(url, data: formData, options: options);
+      } else {
+        var formData = new FormData.fromMap({
+          "email": email,
+          "name": _name,
+          "phone": _phone,
         });
         response = await dio.put(url, data: formData, options: options);
       }

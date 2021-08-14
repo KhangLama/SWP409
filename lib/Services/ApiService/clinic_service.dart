@@ -74,18 +74,30 @@ class ClinicService {
       print(token);
       headers['Cookie'] = token;
       Options options = new Options(headers: headers);
-
-      var formData = new FormData.fromMap({
-        "email": clinic.email,
-        "phone": clinic.phone,
-        "description": clinic.description,
-        "name": clinic.name,
-        "geometry": geo,
-        "address": clinic.address,
-        "coverImage": await MultipartFile.fromFile(path.path),
-      });
-      print(formData.fields);
-      response = await dio.patch(url, data: formData, options: options);
+      if (path != null) {
+        var formData = new FormData.fromMap({
+          "email": clinic.email,
+          "phone": clinic.phone,
+          "description": clinic.description,
+          "name": clinic.name,
+          "geometry": geo,
+          "address": clinic.address,
+          "coverImage": await MultipartFile.fromFile(path.path),
+        });
+        print(formData.fields);
+        response = await dio.patch(url, data: formData, options: options);
+      } else {
+        var formData = new FormData.fromMap({
+          "email": clinic.email,
+          "phone": clinic.phone,
+          "description": clinic.description,
+          "name": clinic.name,
+          "geometry": geo,
+          "address": clinic.address,
+        });
+        print(formData.fields);
+        response = await dio.patch(url, data: formData, options: options);
+      }
     } on DioError catch (e) {
       print(e..response);
       return response = e.response;

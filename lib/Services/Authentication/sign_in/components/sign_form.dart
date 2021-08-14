@@ -90,14 +90,11 @@ class _SignFormState extends State<SignForm> {
               DefaultButton(
                 text: "Continue",
                 press: () async {
+                  KeyboardUtil.hideKeyboard(context);
                   String url = '$ServerIP/api/v1/users/login';
                   if (_formKey.currentState.validate()) {
-                    print(url);
-                    print("${email} ${password}");
                     authService.login(url, email, password).then((val) async {
                       if (val.data["status"] == "success") {
-                        print('login');
-                        print(val.data['data']);
                         _user = new User.fromJson(val.data['data']['user']);
                         KeyboardUtil.hideKeyboard(context);
                         final cookies = val.headers.map['set-cookie'];
@@ -112,8 +109,10 @@ class _SignFormState extends State<SignForm> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomeScreenDoctor.user(user: _user, cookies: cookies,)));
+                                  builder: (context) => HomeScreenDoctor.user(
+                                        user: _user,
+                                        cookies: cookies,
+                                      )));
                         }
                       } else if (val.data["status"] == "error") {
                         addError(error: "Incorrect email or password");

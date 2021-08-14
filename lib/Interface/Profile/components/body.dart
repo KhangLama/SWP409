@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
@@ -8,7 +7,6 @@ import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/helper/keyboard.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
@@ -301,7 +299,7 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.sId}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(url, name, phoneNumber, address,
+                                .updateInfo(url, name, phoneNumber,
                                     _imageFile, _user.email, cookies)
                                 .then((res) {
                               KeyboardUtil.hideKeyboard(context);
@@ -328,10 +326,6 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
-  }
-
-  Future<String> getToken(FlutterSecureStorage _st) async {
-    return await _st.read(key: 'token');
   }
 
   void takePhoto(ImageSource source) async {

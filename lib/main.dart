@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/theme.dart';
 
-void main() {
+Future<void> main() async {
   runApp(MyApp());
+  await dotenv.load(fileName: '.env');
 }
 
 class MyApp extends StatefulWidget {

@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/ClinicRegistration/Date/clinic_date.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/suggestion.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,7 +33,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   GoogleMapController newGoogleMapController;
   final Set<Marker> _markers = {};
   GlobalKey<AutoCompleteTextFieldState<Clinic>> key = GlobalKey();
-  List<Clinic> _suggest = <Clinic>[];
+  List<Suggestion> _suggest = <Suggestion>[];
   Clinic _clinic = new Clinic();
   Map<String, double> geo;
   double lat, lng;
@@ -65,12 +66,12 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   Future<List<String>> getSuggest(String query) async {
     List<String> matches = [];
     for (int i = 0; i < _suggest.length; i++) {
-      matches.add(_suggest[i].address);
+      matches.add(_suggest[i].description);
     }
     return matches;
   }
 
-  Future<List<Clinic>> getLocationResult(String txt) async {
+  Future<List<Suggestion>> getLocationResult(String txt) async {
     await dotenv.load(fileName: '.env');
     if (txt.isEmpty) {
       return null;
@@ -82,17 +83,20 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
         '$url?input=$txt&key=$ggmapkey&type=$types&components=country:vn&language:vi';
 
     Response response = await Dio().get(request);
+    print(response);
     List predictions = response.data['predictions'] as List;
-    List<Clinic> addresses = [];
+    List<Suggestion> addresses = [];
     for (var p = 0; p < predictions.length; p++) {
       String addr = predictions[p]['description'];
-      addresses.add(Clinic(address: addr));
+      String placeId = predictions[p]['placeId'];
+
+      addresses.add(Suggestion(description: addr, placeId: placeId));
     }
     print(predictions);
     setState(() {
       _suggest = addresses;
     });
-    getCoor(predictions.last, ggmapkey);
+    getCoor(predictions.first, ggmapkey);
 
     return addresses;
   }
@@ -101,6 +105,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     String request2 = '$url2?place_id=${predictions['place_id']}&key=$ggmapkey';
 
     Response response2 = await Dio().get(request2);
+    print(response2);
     lat = response2.data['result']['geometry']['location']['lat'];
     lng = response2.data['result']['geometry']['location']['lng'];
     markerCreate(lat, lng);
@@ -116,18 +121,18 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
 
   Future<void> markerCreate(var lat, var lang) async {
     try {
-      setState(() async {
+      setState(() {
         _markers.add(Marker(
           markerId: MarkerId('position'),
           draggable: false,
           position: LatLng(lat, lang),
         ));
-        var latLngPosition = LatLng(lat, lang);
-
-        var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
-        await newGoogleMapController
-            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       });
+      var latLngPosition = LatLng(lat, lang);
+
+      var cameraPosition = CameraPosition(target: latLngPosition, zoom: 18);
+      await newGoogleMapController
+          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     } catch (e) {
       rethrow;
     }
@@ -230,12 +235,18 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
     );
   }
 
-  row(Clinic suggestion) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(suggestion.address, style: TextStyle(fontSize: 16))
-      ],
+  row(String suggestion) {
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 1)),
+      builder: (c, s) => s.connectionState == ConnectionState.done
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                    child: Text(suggestion, style: TextStyle(fontSize: 16)))
+              ],
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Models/booking.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:intl/intl.dart';
-
 import '../../../constants.dart';
 
 // ignore: must_be_immutable
@@ -18,7 +17,8 @@ class Appointment extends StatefulWidget {
 class _AppointmentState extends State<Appointment> {
 
   List<String> _cookies;
-
+  
+      
   @override
   void initState() {
     _cookies = widget.cookies;
