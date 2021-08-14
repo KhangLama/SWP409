@@ -26,16 +26,40 @@ class ListCustomerAppointment extends StatefulWidget {
 }
 
 class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
-  Clinic _clinic = new Clinic();
   User _user = new User();
+  Clinic _clinic = new Clinic();
   List<String> _cookies;
-  static const _scopes = const [prefix.CalendarApi.calendarScope];
+  String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
 
+  //variable for google calendar
+  static const _scopes = const [prefix.CalendarApi.calendarScope];
   prefix.Event _event = prefix.Event();
 
   var _clientID = new ClientId(
       "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
       "");
+  Clinic getClinicId(List<Clinic> list, User user) {
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].email == user.email) {
+          print('abv');
+          print(list[i].toJson());
+          return list[i];
+        }
+      }
+    }
+    return null;
+  }
+
+  Future<List<Clinic>> fetchClinics() async {
+    var fetchdata = await _clinicService.getClinics(urlGet);
+    var clinics = <Clinic>[];
+    var clinicsjson = fetchdata.data['data']['data'] as List;
+    for (var clinic in clinicsjson) {
+      clinics.add(Clinic.fromJson(clinic));
+    }
+    return clinics;
+  }
 
   @override
   void initState() {
@@ -45,7 +69,16 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
         _booking = value;
       });
     });
-    print(_booking.length);
+    fetchClinics().then((value) {
+      setState(() {
+        _user = widget.user;
+        _clinic = getClinicId(value, _user);
+        print('testing');
+        print(_clinic.email);
+        print(_clinic.name);
+      });
+    });
+
     super.initState();
   }
 
@@ -135,9 +168,13 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                     Icon(Feather.mail,
                                         color: Colors.black, size: 17),
                                     SizedBox(width: 10),
-                                    Text(
-                                      _booking[index].user.email,
-                                      style: TextStyle(fontSize: 17),
+                                    Expanded(
+                                      child: Text(
+                                        _booking[index].user.email,
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                        ),
+                                      ),
                                     )
                                   ],
                                 ),
@@ -225,6 +262,15 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                           "GTM+07:00";
                                                       _event.end = end;
                                                       insertEvent(_event);
+                                                      fetchBookings()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          _booking = value;
+                                                          print(_booking);
+                                                        });
+                                                      });
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                     child: Text(
                                                       "Yes",
@@ -306,6 +352,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   List<Booking> _booking = <Booking>[];
   String urlGetBooking = "$ServerIP/api/v1/bookings/users";
   ClinicService _clinicService = new ClinicService();
+
   Future<List<Booking>> fetchBookings() async {
     var fetchdata =
         await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);

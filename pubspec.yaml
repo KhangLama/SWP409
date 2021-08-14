@@ -28,7 +28,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   flutter_local_notifications:
   rxdart:
-  dio: ^4.0.0
+  dio:
   fluttertoast: ^8.0.6
   multi_image_picker: ^4.8.0
   flutter_secure_storage: ^4.2.0
@@ -45,7 +45,8 @@ dependencies:
   url_launcher: ^6.0.9
   googleapis_auth: ^1.1.0
   googleapis: ^4.0.0
-
+  permission_handler: ^8.1.4+2
+  location:
 dev_dependencies:
   json_serializable: ^3.5.1
   pedantic:

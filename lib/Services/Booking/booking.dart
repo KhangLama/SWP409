@@ -9,9 +9,6 @@ import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:googleapis/calendar/v3.dart' as prefix;
-import "package:googleapis_auth/auth_io.dart";
-import 'package:url_launcher/url_launcher.dart';
 
 class Booking extends StatefulWidget {
   List<String> cookies;
@@ -34,14 +31,6 @@ class _BookingState extends State<Booking> {
   Clinic _clinic = new Clinic();
   List<String> _cookies;
   Dio dio = new Dio();
-
-  static const _scopes = const [prefix.CalendarApi.calendarScope];
-
-  prefix.Event _event = prefix.Event();
-
-  var _clientID = new ClientId(
-      "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
-      "");
 
   @override
   void initState() {
