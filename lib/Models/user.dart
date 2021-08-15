@@ -7,16 +7,16 @@ part 'user.g.dart';
 class User {
   Avatar avatar;
   String role;
-  String sId;
+  String id;
   String name;
   String email;
   String phone;
   int iV;
 
   User(
-  {this.avatar,
+      {this.avatar,
       this.role,
-      this.sId,
+      this.id,
       this.name,
       this.email,
       this.phone,
@@ -29,11 +29,11 @@ class User {
 
 @JsonSerializable(explicitToJson: true)
 class Avatar {
-  String sId;
+  String id;
   String url;
   String filename;
 
-  Avatar({this.sId, this.url, this.filename});
+  Avatar({this.id, this.url, this.filename});
 
   factory Avatar.fromJson(Map<String, dynamic> json) => _$AvatarFromJson(json);
   Map<String, dynamic> toJson() => _$AvatarToJson(this);
