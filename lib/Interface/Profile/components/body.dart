@@ -296,11 +296,11 @@ class _BodyState extends State<Body> {
                       DefaultButton(
                         text: "Save change",
                         press: () {
-                          String url = '$ServerIP/api/v1/users/${_user.sId}';
+                          String url = '$ServerIP/api/v1/users/${_user.id}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(url, name, phoneNumber,
-                                    _imageFile, _user.email, cookies)
+                                .updateInfo(url, name, phoneNumber, _imageFile,
+                                    _user.email, cookies)
                                 .then((res) {
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {

@@ -16,7 +16,6 @@ class Clinic {
   List<Schedule> schedule;
   List<Reviews> reviews;
   String status;
-  String sId;
   int iV;
   int reviewCount;
   double ratingAvg;
@@ -27,7 +26,6 @@ class Clinic {
       this.specialists,
       this.reviews,
       this.status,
-      this.sId,
       this.email,
       this.phone,
       this.description,
@@ -87,12 +85,12 @@ class Reviews {
 
 @JsonSerializable(explicitToJson: true)
 class Replies {
-  String sId;
+  String id;
   String reply;
   User user;
 
   Replies({
-    this.sId,
+    this.id,
     this.reply,
     this.user,
   });
@@ -105,10 +103,10 @@ class Replies {
 
 @JsonSerializable(explicitToJson: true)
 class Schedule {
-  int dayOfWeek;
   List<WorkingHours> workingHours;
+  int dayOfWeek;
 
-  Schedule({this.dayOfWeek, this.workingHours});
+  Schedule({this.workingHours, this.dayOfWeek});
 
   factory Schedule.fromJson(Map<String, dynamic> json) =>
       _$ScheduleFromJson(json);
@@ -145,11 +143,11 @@ class Specialist {
 
 @JsonSerializable(explicitToJson: true)
 class CoverImage {
-  String sId;
+  String id;
   String url;
   String filename;
 
-  CoverImage({this.sId, this.url, this.filename});
+  CoverImage({this.id, this.url, this.filename});
 
   factory CoverImage.fromJson(Map<String, dynamic> json) =>
       _$CoverImageFromJson(json);

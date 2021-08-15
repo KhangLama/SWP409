@@ -8,7 +8,7 @@ part of 'booking.dart';
 
 Booking _$BookingFromJson(Map<String, dynamic> json) {
   return Booking(
-    iId: json['iId'] as String,
+    id: json['_id'] as String,
     status: json['status'] as String,
     bookedDate: json['bookedDate'] == null
         ? null
@@ -30,7 +30,7 @@ Booking _$BookingFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$BookingToJson(Booking instance) => <String, dynamic>{
-      'iId': instance.iId,
+      'id': instance.id,
       'status': instance.status,
       'bookedDate': instance.bookedDate?.toIso8601String(),
       'bookedTime': instance.bookedTime,

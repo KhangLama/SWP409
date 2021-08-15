@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/ClinicRegistration/Specialist/clinic_specialist.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
@@ -35,7 +38,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   Clinic _clinic = new Clinic();
   ClinicService _clinicService = new ClinicService();
   String url = "$ServerIP/api/v1/clinics";
-  final now = new DateTime.now();
 
   @override
   void initState() {
@@ -425,7 +427,7 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                     buildForm(),
                     SizedBox(height: SizeConfig.screenHeight * 0.06),
                     DefaultButton(
-                      text: "Submit",
+                      text: "Countinue",
                       press: () {
                         List<Schedule> _schedule = <Schedule>[];
                         //add monday working hour
@@ -486,49 +488,39 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
                         }
 
                         _schedule.add(Schedule(
-                          dayOfWeek: 0,
                           workingHours: _workingHoursSun,
+                          dayOfWeek: 0,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 1,
                           workingHours: _workingHoursMon,
+                          dayOfWeek: 1,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 2,
                           workingHours: _workingHoursTue,
+                          dayOfWeek: 2,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 3,
                           workingHours: _workingHoursWed,
+                          dayOfWeek: 3,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 4,
                           workingHours: _workingHoursThu,
+                          dayOfWeek: 4,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 5,
                           workingHours: _workingHoursFri,
+                          dayOfWeek: 5,
                         ));
                         _schedule.add(Schedule(
-                          dayOfWeek: 6,
                           workingHours: _workingHoursSat,
+                          dayOfWeek: 6,
                         ));
 
                         _clinic.schedule = _schedule;
 
-                        // _clinicService
-                        //     .register(
-                        //         url: url,
-                        //         clinic: _clinic,
-                        //         path: widget.imageFile)
-                        //     .then((value) {
-                        //   if (value.data['status'] == 'success') {
-                        //     Navigator.of(context).push(MaterialPageRoute(
-                        //         builder: (context) => SignInScreen()));
-                        //   } else {
-                        //     print(value.data);
-                        //   }
-                        // });
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SpecialistChooseScreen(
+                                clinic: _clinic, imageFile: widget.imageFile)));
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -539,39 +531,6 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget titleHeaderBuild() {
-    return Row(
-      children: [
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'DAY',
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth * 0.25),
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'OPEN',
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(width: 100),
-        new Container(
-          //padding: const EdgeInsets.all(5.0),
-          margin: const EdgeInsets.only(left: 5.0),
-          child: Text(
-            'CLOSE',
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
     );
   }
 

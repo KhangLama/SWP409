@@ -7,7 +7,7 @@ part 'booking.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Booking {
-  String iId;
+  String id;
   String status;
   DateTime bookedDate;
   int bookedTime;
@@ -17,7 +17,7 @@ class Booking {
   DateTime updatedAt;
 
   Booking({
-    this.iId,
+    this.id,
     this.status,
     this.bookedDate,
     this.bookedTime,
@@ -27,8 +27,8 @@ class Booking {
     this.updatedAt,
   });
 
-  factory Booking.fromJson(Map<String, dynamic> json) => _$BookingFromJson(json);
+  factory Booking.fromJson(Map<String, dynamic> json) =>
+      _$BookingFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookingToJson(this);
 }
-

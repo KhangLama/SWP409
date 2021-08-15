@@ -11,7 +11,7 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
     geometry: json['geometry'] == null
         ? null
         : Geometry.fromJson(json['geometry'] as Map<String, dynamic>),
-    specialists: (json['specialist'] as List)
+    specialists: (json['specialists'] as List)
         ?.map((e) =>
             e == null ? null : Specialist.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -20,7 +20,6 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
             e == null ? null : Reviews.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     status: json['status'] as String,
-    sId: json['sId'] as String,
     email: json['email'] as String,
     phone: json['phone'] as String,
     description: json['description'] as String,
@@ -36,7 +35,7 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
     address: json['address'] as String,
     reviewCount: json['reviewCount'] as int,
     ratingAvg: (json['ratingAvg'] as num)?.toDouble(),
-    id: json['id'] as String,
+    id: json['_id'] as String,
   );
 }
 
@@ -46,13 +45,12 @@ Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
       'email': instance.email,
       'address': instance.address,
       'phone': instance.phone,
-      'specialist': instance.specialists?.map((e) => e?.toJson())?.toList(),
+      'specialists': instance.specialists?.map((e) => e?.toJson())?.toList(),
       'geometry': instance.geometry?.toJson(),
       'description': instance.description,
       'schedule': instance.schedule?.map((e) => e?.toJson())?.toList(),
       'reviews': instance.reviews?.map((e) => e?.toJson())?.toList(),
       'status': instance.status,
-      'sId': instance.sId,
       'iV': instance.iV,
       'reviewCount': instance.reviewCount,
       'ratingAvg': instance.ratingAvg,
@@ -104,7 +102,7 @@ Map<String, dynamic> _$ReviewsToJson(Reviews instance) => <String, dynamic>{
 
 Replies _$RepliesFromJson(Map<String, dynamic> json) {
   return Replies(
-    sId: json['_id'] as String,
+    id: json['_id'] as String,
     reply: json['reply'] as String,
     user: json['user'] == null
         ? null
@@ -113,24 +111,24 @@ Replies _$RepliesFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$RepliesToJson(Replies instance) => <String, dynamic>{
-      'sId': instance.sId,
+      'id': instance.id,
       'reply': instance.reply,
       'user': instance.user?.toJson(),
     };
 
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) {
   return Schedule(
-    dayOfWeek: json['dayOfWeek'] as int,
     workingHours: (json['workingHours'] as List)
         ?.map((e) =>
             e == null ? null : WorkingHours.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    dayOfWeek: json['dayOfWeek'] as int,
   );
 }
 
 Map<String, dynamic> _$ScheduleToJson(Schedule instance) => <String, dynamic>{
-      'dayOfWeek': instance.dayOfWeek,
       'workingHours': instance.workingHours?.map((e) => e?.toJson())?.toList(),
+      'dayOfWeek': instance.dayOfWeek,
     };
 
 WorkingHours _$WorkingHoursFromJson(Map<String, dynamic> json) {
@@ -163,7 +161,7 @@ Map<String, dynamic> _$SpecialistToJson(Specialist instance) =>
 
 CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {
   return CoverImage(
-    sId: json['sId'] as String,
+    id: json['_id'] as String,
     url: json['url'] as String,
     filename: json['filename'] as String,
   );
@@ -171,7 +169,7 @@ CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$CoverImageToJson(CoverImage instance) =>
     <String, dynamic>{
-      'sId': instance.sId,
+      'id': instance.id,
       'url': instance.url,
       'filename': instance.filename,
     };
