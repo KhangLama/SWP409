@@ -50,6 +50,7 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   Widget build(BuildContext context) {
     AuthService authService = new AuthService();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           leading: BackButton(

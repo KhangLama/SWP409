@@ -58,7 +58,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
 
   _onSearchChanged() {
     if (_timer?.isActive ?? false) _timer.cancel();
-    _timer = Timer(const Duration(milliseconds: 600), () {
+    _timer = Timer(const Duration(milliseconds: 2000), () {
       getLocationResult(_searchController.text);
     });
   }
@@ -72,7 +72,6 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   }
 
   Future<List<Suggestion>> getLocationResult(String txt) async {
-    await dotenv.load(fileName: '.env');
     if (txt.isEmpty) {
       return null;
     }
