@@ -101,14 +101,24 @@ class _ClinicListViewState extends State<ClinicListView> {
                     // ),
                   ),
                   onChanged: (text) {
-                    setState(() {
-                      _filteredclinic = _clinics
-                          .where((c) => (c.name
-                                  .toLowerCase()
-                                  .contains(text.toLowerCase()) ||
-                              c.id.toLowerCase().contains(text.toLowerCase())))
-                          .toList();
-                    });
+                    if (searchBy.compareTo('name') == 0) {
+                      setState(() {
+                        _filteredclinic = _clinics
+                            .where((c) => (c.name
+                                .toLowerCase()
+                                .contains(text.toLowerCase())))
+                            .toList();
+                      });
+                    } else if (searchBy.compareTo('address') == 0) {
+                      print("Check search address");
+                      setState(() {
+                        _filteredclinic = _clinics
+                            .where((c) => (c.address
+                                .toLowerCase()
+                                .contains(text.toLowerCase())))
+                            .toList();
+                      });
+                    } else {}
                   },
                 ),
               ),
@@ -139,19 +149,19 @@ class _ClinicListViewState extends State<ClinicListView> {
             title: Text('Home'),
             onTap: () => {},
           ),
-          ListTile(
-            leading: Icon(Icons.calendar_today_outlined),
-            title: Text('Calender'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CalendarScreen()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.calendar_today_outlined),
+          //   title: Text('Calender'),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => CalendarScreen()));
+          //   },
+          // ),
+          // ListTile(
+          //   leading: Icon(Icons.border_color),
+          //   title: Text('Feedback'),
+          //   onTap: () => {Navigator.of(context).pop()},
+          // ),
           ListTile(
             leading: Icon(Icons.person_rounded),
             title: Text('Profile'),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,8 +9,8 @@ import 'package:swp409/Services/ApiService/specialist_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/constants.dart';
-
 import '../../../size_config.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SpecialistChooseScreen extends StatefulWidget {
   Clinic clinic;
@@ -24,6 +23,18 @@ class SpecialistChooseScreen extends StatefulWidget {
 }
 
 class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
+  Future<bool> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 22.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -90,6 +101,7 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
                           path: widget.imageFile,
                           specId: _spec)
                       .then((value) {
+                    print(value.data);
                     if (value.data['status'] == 'success') {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => SignInScreen()));
@@ -97,8 +109,9 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
                       print(value.data);
                     }
                   });
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => SplashScreen()));
+                  toast("Successfully");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SplashScreen()));
                 },
               ),
             ),
