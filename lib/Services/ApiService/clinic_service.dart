@@ -67,6 +67,9 @@ class ClinicService {
 
   Future<Response> updateInfo(url, Clinic clinic, path, cookies) async {
     String geo = jsonEncode(clinic.geometry);
+    print(path.path);
+    String _filename = path.path.split('/').last;
+    String _filepath = path.path;
     try {
       Map<String, dynamic> headers = new Map();
       print('cook update');
@@ -82,7 +85,9 @@ class ClinicService {
           "name": clinic.name,
           "geometry": geo,
           "address": clinic.address,
-          "coverImage": await MultipartFile.fromFile(path.path),
+          "coverImage":
+              await MultipartFile.fromFile(_filepath, filename: _filename),
+          "filename": _filename
         });
         print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);
@@ -95,7 +100,7 @@ class ClinicService {
           "geometry": geo,
           "address": clinic.address,
         });
-        print(formData.fields);
+        //print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);
       }
     } on DioError catch (e) {
@@ -129,6 +134,8 @@ class ClinicService {
   Future<Response> register({url, Clinic clinic, path, specId}) async {
     String geo = jsonEncode(clinic.geometry);
     String _schedule = jsonEncode(clinic.schedule);
+    String _filename = path.path.split('/').last;
+    String _filepath = path.path;
     try {
       var data = new FormData.fromMap({
         "email": clinic.email,
@@ -138,12 +145,16 @@ class ClinicService {
         "schedule": _schedule,
         "specialists": specId,
         "geometry": geo,
-        "coverImage": await MultipartFile.fromFile(path.path),
+        "coverImage":
+            await MultipartFile.fromFile(_filepath, filename: _filename),
       });
       print(data.fields);
       response = await dio.post(url,
           data: data,
-          options: Options(headers: {"content-type": "application/json"}));
+          options: Options(headers: {
+            "content-type": "application/json",
+            'Accept': 'application/json'
+          }));
       return response;
     } on DioError catch (e) {
       print('error');

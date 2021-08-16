@@ -5,6 +5,7 @@ import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 class HistoryPage extends StatefulWidget {
   User user;
@@ -111,11 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  DateTime.parse(_bookings[index]
-                                              .bookedDate
-                                              .toIso8601String())
-                                          .toString() ??
-                                      '',
+                                  '${DateFormat('yyyy-MM-dd').format(_bookings[index].bookedDate)}, ${(_bookings[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_bookings[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
                                   style: TextStyle(fontSize: 17),
                                 ),
                               )
