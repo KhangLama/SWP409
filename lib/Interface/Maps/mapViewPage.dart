@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:googleapis/sheets/v4.dart';
 import 'package:location/location.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:swp409/helper/keyboard.dart';
 import '../../constants.dart';
+import '../../size_config.dart';
 
 class MapViewPage extends StatefulWidget {
   const MapViewPage({Key key}) : super(key: key);
@@ -33,7 +36,7 @@ class _MapViewPageState extends State<MapViewPage> {
   List<LatLng> polylineCoordinates = [];
   // Map storing polylines created by connecting two points
   Map<PolylineId, Polyline> polylines = {};
-
+  static String _displayStringForOption(Clinic option) => option.name;
   //get data of clinic from database
   Future<List<Clinic>> fetchClinics() async {
     var fetchdata = await _clinicService.getClinics(urlGet);
@@ -52,7 +55,7 @@ class _MapViewPageState extends State<MapViewPage> {
       setState(() {
         _clinics = value;
         _markers.clear();
-        polylines.clear();
+
         for (final clinic in _clinics) {
           final marker = Marker(
               markerId: MarkerId(clinic.name),
@@ -68,6 +71,144 @@ class _MapViewPageState extends State<MapViewPage> {
                     _locationData.longitude,
                     clinic.geometry.coordinates[1],
                     clinic.geometry.coordinates[0]);
+                List<WorkingHours> list = getDayOfWeek(clinic);
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => Wrap(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    clinic.name,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.location_on_outlined,
+                                    color: Colors.orange),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "${clinic.address}",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
+                                )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.star_border_outlined,
+                                    color: Colors.orange),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "${clinic.ratingAvg}",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
+                                )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.access_time_outlined,
+                                    color: Colors.orange),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  width: 150,
+                                  height: list.length == 0
+                                      ? 30
+                                      : (list.length * 30).toDouble(),
+                                  child: list.length == 0
+                                      ? Text(
+                                          "Closed",
+                                          style: TextStyle(fontSize: 20.0),
+                                        )
+                                      : ListView.builder(
+                                          itemCount: list.length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  2, 0, 0, 10),
+                                              child: Text(
+                                                '${(list[index].startTime ~/ 60).toString().padLeft(2, '0')}:'
+                                                '${(list[index].startTime % 60).toString().padLeft(2, '0')} - '
+                                                '${(list[index].endTime ~/ 60).toString().padLeft(2, '0')}:'
+                                                '${(list[index].endTime % 60).toString().padLeft(2, '0')}',
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            );
+                                          }),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: kPrimaryColor, // background
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                      minimumSize: Size(200, 40),
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius: new BorderRadius.all(
+                                              Radius.circular(
+                                                  15))), // foreground
+                                    ),
+                                    onPressed: () {},
+                                    // => Navigator.of(context,
+                                    //         rootNavigator: true)
+                                    //     .push(MaterialPageRoute(
+                                    //         builder: (context) => ClinicPage.clinic(
+                                    //               clinic: clinic,
+                                    //               user: _user,
+                                    //               cookies: _cookies,
+                                    //             ))),
+                                    child: Text('View Detail')),
+                              ],
+                            )
+                          ],
+                        ));
               });
           _markers[clinic.name] = marker;
         }
@@ -81,6 +222,17 @@ class _MapViewPageState extends State<MapViewPage> {
     });
   }
 
+  List<WorkingHours> getDayOfWeek(Clinic clinic) {
+    var now = new DateTime.now();
+    int checkDate = 0;
+    if (now.weekday == 7) {
+      checkDate = 0;
+    } else {
+      checkDate = now.weekday;
+    }
+    return clinic.schedule[checkDate].workingHours;
+  }
+
   _createPolylines(
       double startLat, double startLng, double destLat, double destLng) async {
     polylinePoints = PolylinePoints();
@@ -89,14 +241,17 @@ class _MapViewPageState extends State<MapViewPage> {
         dotenv.env['GOOGLE_MAP_KEY'], // Google Maps API Key
         PointLatLng(startLat, startLng),
         PointLatLng(destLat, destLng),
-        travelMode: TravelMode.driving,
-        optimizeWaypoints: true);
-    print(result.points);
+        travelMode: TravelMode.driving);
+    print(result.points.toString());
+    polylines.clear();
+    polylineCoordinates.clear();
     // Adding the coordinates to the list
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
+    } else {
+      print(result.errorMessage);
     }
 
     // Defining an ID
@@ -113,7 +268,7 @@ class _MapViewPageState extends State<MapViewPage> {
 
     // Adding the polyline to the map
     polylines[id] = polyline;
-    // print(polylines[id].toJson());
+    setState(() {});
   }
 
   @override
@@ -141,7 +296,45 @@ class _MapViewPageState extends State<MapViewPage> {
                 ),
               ),
             ),
-            TextField(),
+            Autocomplete<Clinic>(
+              displayStringForOption: _displayStringForOption,
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text.isEmpty) {
+                  return const Iterable<Clinic>.empty();
+                } else {
+                  return _clinics.where((element) => element.name
+                      .toLowerCase()
+                      .contains(textEditingValue.text.toLowerCase()));
+                }
+              },
+              fieldViewBuilder:
+                  (context, controller, focusNode, onEditingComplete) {
+                return TextField(
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: controller.clear,
+                            icon: Icon(Icons.clear)),
+                        fillColor: Colors.white,
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey[100]))),
+                    controller: controller,
+                    focusNode: focusNode,
+                    onEditingComplete: onEditingComplete);
+              },
+              onSelected: (Clinic selection) {
+                KeyboardUtil.hideKeyboard(context);
+                _markers.forEach((key, value) async {
+                  if (selection.name == value.mapsId.value)
+                    mapController.animateCamera(CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                            target: LatLng(value.position.latitude,
+                                value.position.longitude),
+                            zoom: 18)));
+                });
+              },
+            )
           ],
         ),
       ),
