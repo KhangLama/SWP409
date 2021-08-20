@@ -116,7 +116,7 @@ class _SignFormState extends State<SignForm> {
                                         cookies: cookies,
                                       )));
                         }
-                      } else if (val.data["status"] == "error") {
+                      } else if (val.data["status"] == "fail") {
                         addError(error: "Incorrect email or password");
                       }
                     });

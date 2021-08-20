@@ -33,74 +33,74 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
   Future loading;
   User _user = new User();
   List<String> _cookies;
-
-
+  ClinicService _clinicService = new ClinicService();
+  Clinic _clinic = new Clinic();
 
   @override
   void initState() {
     _cookies = widget.cookies;
     _user = widget.user;
-    print('init');
-    print(_user.toJson());
 
+    print("home");
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Feather.home, color: Colors.grey),
-                label: Text('Home').toString(),
-                activeIcon: Icon(
-                  Feather.home,
-                  color: Colors.orange,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(Feather.shopping_bag, color: Colors.grey),
-                label: Text('Appointment').toString(),
-                activeIcon: Icon(
-                  Feather.shopping_bag,
-                  color: Colors.orange,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(Feather.message_square, color: Colors.grey),
-                label: Text('Review  comment').toString(),
-                activeIcon: Icon(
-                  Feather.message_square,
-                  color: Colors.orange,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(Feather.user, color: Colors.grey),
-                label: Text('Profile').toString(),
-                activeIcon: Icon(
-                  Feather.user,
-                  color: Colors.orange,
-                )),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-        ),
-        body: CommonBottomNavigationBar(
-                selectedIndex: _selectedIndex,
-                navigatorKeys: _navigatorKeys,
-                pages: <Widget>[
-                  ListCustomerAppointment.user(user: _user, cookies: _cookies),
-                  Appointment(cookies: _cookies),
-                  ReviewCmtScreen(),
-                  ClinicProfile(user: _user, cookies: _cookies),
-                ],
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _selectedIndex,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Feather.home, color: Colors.grey),
+                  label: Text('Home').toString(),
+                  activeIcon: Icon(
+                    Feather.home,
+                    color: Colors.orange,
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(Feather.shopping_bag, color: Colors.grey),
+                  label: Text('Appointment').toString(),
+                  activeIcon: Icon(
+                    Feather.shopping_bag,
+                    color: Colors.orange,
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(Feather.message_square, color: Colors.grey),
+                  label: Text('Review  comment').toString(),
+                  activeIcon: Icon(
+                    Feather.message_square,
+                    color: Colors.orange,
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(Feather.user, color: Colors.grey),
+                  label: Text('Profile').toString(),
+                  activeIcon: Icon(
+                    Feather.user,
+                    color: Colors.orange,
+                  )),
+            ],
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
+          body: CommonBottomNavigationBar(
+            selectedIndex: _selectedIndex,
+            navigatorKeys: _navigatorKeys,
+            pages: <Widget>[
+              ListCustomerAppointment.user(user: _user, cookies: _cookies),
+              Appointment(cookies: _cookies),
+              ReviewCmtScreen(user: _user, cookies: _cookies),
+              ClinicProfile(user: _user, cookies: _cookies),
+            ],
           ),
         ));
   }

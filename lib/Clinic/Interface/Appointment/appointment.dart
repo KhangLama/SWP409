@@ -15,10 +15,8 @@ class Appointment extends StatefulWidget {
 }
 
 class _AppointmentState extends State<Appointment> {
-
   List<String> _cookies;
-  
-      
+
   @override
   void initState() {
     _cookies = widget.cookies;
@@ -42,20 +40,9 @@ class _AppointmentState extends State<Appointment> {
             style: TextStyle(color: kPrimaryLightColor),
           ),
           backgroundColor: kPrimaryAppbar,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                // do something
-              },
-            )
-          ],
         ),
         body: SafeArea(
-                child: buildList(),
+          child: buildList(),
         ),
       ),
     );
@@ -76,8 +63,7 @@ class _AppointmentState extends State<Appointment> {
                 child: Row(
                   children: [
                     Image(
-                      image:
-                      NetworkImage(_booking[index].user.avatar.url),
+                      image: NetworkImage(_booking[index].user.avatar.url),
                       width: 150,
                       height: 100,
                     ),
@@ -99,11 +85,11 @@ class _AppointmentState extends State<Appointment> {
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Icon(Feather.clock, color: Colors.black, size: 17),
+                              Icon(Feather.clock,
+                                  color: Colors.black, size: 17),
                               SizedBox(width: 10),
                               Text(
-                                '${DateFormat('yyyy-MM-dd')
-                                    .format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
+                                '${DateFormat('yyyy-MM-dd').format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
                                 style: TextStyle(fontSize: 17),
                               ),
                             ],
@@ -148,7 +134,7 @@ class _AppointmentState extends State<Appointment> {
   ClinicService _clinicService = new ClinicService();
   Future<List<Booking>> fetchBookingsStats() async {
     var fetched =
-    await _clinicService.getBookingsOfClinic(urlGetBookingStats, _cookies);
+        await _clinicService.getBookingsOfClinic(urlGetBookingStats, _cookies);
     var list = <Booking>[];
     print(urlGetBookingStats);
     var bookings = fetched.data['data']['data'] as List;
