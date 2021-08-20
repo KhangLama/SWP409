@@ -1,3 +1,4 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -319,145 +320,123 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FutureBuilder(
-        future: Future.delayed(Duration(seconds: 1)),
-        builder: (c, s) => s.connectionState == ConnectionState.done
-            ? Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    'Home',
-                    style: TextStyle(color: kPrimaryLightColor),
-                  ),
-                  backgroundColor: kPrimaryAppbar,
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        // do something
-                      },
-                    )
-                  ],
-                ),
-                body: SafeArea(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: getProportionateScreenWidth(20)),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(height: SizeConfig.screenHeight * 0.02),
-                            SizedBox(
-                              height: 250,
-                              width: 350,
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                fit: StackFit.expand,
-                                children: [
-                                  Image(
-                                    image: _imageFile == null
-                                        ? NetworkImage(_clinic.coverImage
-                                            .url) //AssetImage('images/0.jpg')
-                                        : FileImage(File(_imageFile.path)),
-                                  ),
-                                  Positioned(
-                                    right: 25,
-                                    bottom: 0,
-                                    child: SizedBox(
-                                      height: 45,
-                                      width: 45,
-                                      // ignore: deprecated_member_use
-                                      child: FlatButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          side: BorderSide(
-                                              color: Color(0xFFDFDFE3)),
-                                        ),
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Column(
-                                          // Replace with a Row for horizontal icon + text
-                                          children: <Widget>[
-                                            Icon(Icons.camera_alt),
-                                          ],
-                                        ),
-                                        color: Color(0xFFDFDFE3),
-                                        onPressed: () {
-                                          showModalBottomSheet(
-                                              context: context,
-                                              builder: ((builder) =>
-                                                  bottomSheet()));
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ],
+    return DelayedDisplay(
+      delay: Duration(seconds: 1),
+      child: MaterialApp(
+          home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Home',
+            style: TextStyle(color: kPrimaryLightColor),
+          ),
+          backgroundColor: kPrimaryAppbar,
+        ),
+        body: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(20)),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: SizeConfig.screenHeight * 0.02),
+                    SizedBox(
+                      height: 250,
+                      width: 350,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        fit: StackFit.expand,
+                        children: [
+                          Image(
+                            image: _imageFile == null
+                                ? NetworkImage(_clinic.coverImage
+                                    .url) //AssetImage('images/0.jpg')
+                                : FileImage(File(_imageFile.path)),
+                          ),
+                          Positioned(
+                            right: 25,
+                            bottom: 0,
+                            child: SizedBox(
+                              height: 45,
+                              width: 45,
+                              // ignore: deprecated_member_use
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: BorderSide(color: Color(0xFFDFDFE3)),
+                                ),
+                                padding: EdgeInsets.all(10.0),
+                                child: Column(
+                                  // Replace with a Row for horizontal icon + text
+                                  children: <Widget>[
+                                    Icon(Icons.camera_alt),
+                                  ],
+                                ),
+                                color: Color(0xFFDFDFE3),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: ((builder) => bottomSheet()));
+                                },
                               ),
                             ),
-                            SizedBox(height: SizeConfig.screenHeight * 0.03),
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                children: [
-                                  buildNameField(),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(30)),
-                                  buildEmailField(),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(30)),
-                                  buildPhoneField(),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(30)),
-                                  buildAddressField(),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(30)),
-                                  buildDescriptionField(),
-                                  //FormError(errors: errors),
-                                  SizedBox(
-                                      height: getProportionateScreenHeight(40)),
-                                  DefaultButton(
-                                    text: "Save change",
-                                    press: () {
-                                      if (_formKey.currentState.validate()) {
-                                        _clinic.name = name;
-                                        _clinic.phone = phoneNumber;
-                                        _clinic.address = address;
-                                        _clinic.description = description;
-                                        _clinicService
-                                            .updateInfo(url, _clinic,
-                                                _imageFile, _cookies)
-                                            .then((res) {
-                                          print('bodyyyyy');
-                                          print(_imageFile.path);
-                                          print(res.data);
-                                          KeyboardUtil.hideKeyboard(context);
-                                          if (res.data['status'] == "success") {
-                                            print('update success');
-                                          } else {
-                                            print('fail to update');
-                                          }
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(30)),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                  ),
+                    SizedBox(height: SizeConfig.screenHeight * 0.03),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          buildNameField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildEmailField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildPhoneField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildAddressField(),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                          buildDescriptionField(),
+                          //FormError(errors: errors),
+                          SizedBox(height: getProportionateScreenHeight(40)),
+                          DefaultButton(
+                            text: "Save change",
+                            press: () {
+                              if (_formKey.currentState.validate()) {
+                                _clinic.name = name;
+                                _clinic.phone = phoneNumber;
+                                _clinic.address = address;
+                                _clinic.description = description;
+                                _clinicService
+                                    .updateInfo(
+                                        url, _clinic, _imageFile, _cookies)
+                                    .then((res) {
+                                  print('bodyyyyy');
+                                  KeyboardUtil.hideKeyboard(context);
+                                  if (res.data['status'] == "success") {
+                                    _clinic = new Clinic.fromJson(
+                                        res.data['data']['data']);
+                                    print('update success');
+                                  } else {
+                                    print('fail to update');
+                                  }
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: getProportionateScreenHeight(30)),
+                  ],
                 ),
-              )
-            : Center(child: CircularProgressIndicator()),
-      ),
+              ),
+            ),
+          ),
+        ),
+      )),
     );
   }
 

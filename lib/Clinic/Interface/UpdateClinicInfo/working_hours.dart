@@ -1,26 +1,26 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/Components/default_button.dart';
-import 'package:swp409/Interface/ClinicRegistration/Specialist/clinic_specialist.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
-import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
-import '../../../size_config.dart';
-import '../../../constants.dart';
+import 'package:swp409/constants.dart';
+import 'package:swp409/helper/keyboard.dart';
 
-class ClinicDateScreen extends StatefulWidget {
+import '../../../size_config.dart';
+
+class ChangeWorkingHoursScreen extends StatefulWidget {
   Clinic clinic;
-  PickedFile imageFile;
-  ClinicDateScreen({Key key, this.clinic, this.imageFile}) : super(key: key);
+  List<String> cookies;
+  ChangeWorkingHoursScreen({Key key, this.clinic, this.cookies})
+      : super(key: key);
+
   @override
-  _ClinicDateScreenState createState() => _ClinicDateScreenState();
+  _ChangeWorkingHoursScreenState createState() =>
+      _ChangeWorkingHoursScreenState();
 }
 
-class _ClinicDateScreenState extends State<ClinicDateScreen> {
+class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
   List<bool> isSelected = [false, false, false, false, false, false, false];
 
   List<TimeWorking> listTime = [TimeWorking(open: 420, close: 600)];
@@ -36,13 +36,23 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
   TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
 
   Clinic _clinic = new Clinic();
-  String url = "$ServerIP/api/v1/clinics";
+  List<String> _cookies;
+  String urlUpdate = "$ServerIP/api/v1/clinics/detail/schedule";
+  ClinicService _clinicService = new ClinicService();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _clinic = widget.clinic;
+    _cookies = widget.cookies;
+    getTimeForList(listTimeSun, 0);
+    getTimeForList(listTimeMon, 1);
+    getTimeForList(listTimeTue, 2);
+    getTimeForList(listTimeWed, 3);
+    getTimeForList(listTimeThu, 4);
+    getTimeForList(listTimeFri, 5);
+    getTimeForList(listTimeSat, 6);
   }
 
   void _showDialog() {
@@ -517,9 +527,20 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
 
                         _clinic.schedule = _schedule;
 
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SpecialistChooseScreen(
-                                clinic: _clinic, imageFile: widget.imageFile)));
+                        _clinicService
+                            .updateSchedule(urlUpdate, _clinic, _cookies)
+                            .then((res) {
+                          print('bodyyyyy');
+                          KeyboardUtil.hideKeyboard(context);
+                          if (res.data['status'] == "success") {
+                            // _clinic =
+                            //     new Clinic.fromJson(res.data['data']['data']);
+                            print('update success');
+                          } else {
+                            print('fail to update');
+                          }
+                        });
+                        toast("Successfully");
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),
@@ -531,6 +552,18 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 22.0);
   }
 
   Widget buildForm() {
@@ -843,6 +876,14 @@ class _ClinicDateScreenState extends State<ClinicDateScreen> {
         ],
       ),
     );
+  }
+
+  void getTimeForList(List<TimeWorking> list, int dayNum) {
+    for (int i = 0; i < _clinic.schedule[dayNum].workingHours.length; i++) {
+      int open = _clinic.schedule[dayNum].workingHours[i].startTime;
+      int close = _clinic.schedule[dayNum].workingHours[i].endTime;
+      list.add(TimeWorking(open: open, close: close));
+    }
   }
 }
 

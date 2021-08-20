@@ -41,6 +41,9 @@ class _ClinicPageState extends State<ClinicPage> {
     _clinic = widget.clinic;
     _user = widget.user;
     _cookies = widget.cookies;
+    print('testing');
+    print(_clinic.email);
+    print(_clinic.name);
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }

@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:swp409/Clinic/Interface/UpdateClinicInfo/change_password.dart';
+import 'package:swp409/Clinic/Interface/UpdateClinicInfo/specialists.dart';
+import 'package:swp409/Clinic/Interface/UpdateClinicInfo/working_hours.dart';
 import 'package:swp409/Models/booking.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
@@ -84,30 +87,85 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     super.initState();
   }
 
+  Drawer buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          DrawerHeader(
+            child: Center(
+              child: Text(
+                'Hello, ${widget.user.name}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.access_time_rounded),
+            title: Text('Change Working hours'),
+            onTap: () => {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ChangeWorkingHoursScreen(
+                        clinic: _clinic,
+                        cookies: _cookies,
+                      )))
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.medical_services_rounded),
+            title: Text('Change Specialists'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ChangeSpecialistsScreen(
+                        clinic: _clinic,
+                        cookies: _cookies,
+                      )));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.lock_rounded),
+            title: Text('Change password'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ChangePassClinicScreen(
+                        user: _user,
+                        cookies: _cookies,
+                      )));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pushReplacement(
+                  MaterialPageRoute(builder: (context) => new SplashScreen()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: kPrimaryBackground,
+        drawer: buildDrawer(context),
         appBar: AppBar(
           title: Text(
             'Home',
             style: TextStyle(color: kPrimaryLightColor),
           ),
           backgroundColor: kPrimaryAppbar,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => new SplashScreen()));
-              },
-            )
-          ],
         ),
         body: SafeArea(
           child: buildList(),

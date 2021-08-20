@@ -1,28 +1,29 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/specialist.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:swp409/Services/ApiService/specialist_service.dart';
-import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
-import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/constants.dart';
-import '../../../size_config.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:swp409/helper/keyboard.dart';
 
-class SpecialistChooseScreen extends StatefulWidget {
+import '../../../size_config.dart';
+
+class ChangeSpecialistsScreen extends StatefulWidget {
   Clinic clinic;
-  PickedFile imageFile;
-  SpecialistChooseScreen({Key key, this.clinic, this.imageFile})
+  List<String> cookies;
+  ChangeSpecialistsScreen({Key key, this.clinic, this.cookies})
       : super(key: key);
 
   @override
-  _SpecialistChooseScreenState createState() => _SpecialistChooseScreenState();
+  _ChangeSpecialistsScreenState createState() =>
+      _ChangeSpecialistsScreenState();
 }
 
-class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
+class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
   Future<bool> toast(String message) {
     Fluttertoast.cancel();
     return Fluttertoast.showToast(
@@ -84,31 +85,29 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
                       fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  List<String> _specialists = <String>[];
+                  _clinic.specialists.clear();
                   for (int i = 0; i < listIsSelected.length; i++) {
                     if (listIsSelected[i]) {
-                      _specialists.add(listSpecialist[i].id);
+                      _clinic.specialists
+                          .add(new Specialist(id: listSpecialist[i].id));
                     }
                   }
 
-                  String _spec = jsonEncode(_specialists);
                   //print("toString: ${_spec}");
 
                   _clinicService
-                      .register(
-                          url: url,
-                          clinic: _clinic,
-                          path: widget.imageFile,
-                          specId: _spec)
-                      .then((value) {
-                    print(value.data);
-                    if (value.data['status'] == 'success') {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignInScreen()));
+                      .updateInfo(urlUpdate, _clinic, null, _cookies)
+                      .then((res) {
+                    print('bodyyyyy');
+                    KeyboardUtil.hideKeyboard(context);
+                    if (res.data['status'] == "success") {
+                      _clinic = new Clinic.fromJson(res.data['data']['data']);
+                      print('update success');
                     } else {
-                      print(value.data);
+                      print('fail to update');
                     }
                   });
+
                   toast("Successfully");
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SplashScreen()));
@@ -125,7 +124,8 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
   List<Specialists> listSpecialist = <Specialists>[];
   Clinic _clinic = new Clinic();
   ClinicService _clinicService = new ClinicService();
-  String url = "$ServerIP/api/v1/clinics";
+  String urlUpdate = "$ServerIP/api/v1/clinics/detail";
+  List<String> _cookies;
 
   @override
   void initState() {
@@ -136,6 +136,7 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
     });
     super.initState();
     _clinic = widget.clinic;
+    _cookies = widget.cookies;
   }
 
   Widget buildListSpecialist() {
@@ -179,8 +180,19 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
       list.add(new Specialists.fromJson(spec));
     }
 
+    int n = _clinic.specialists.length;
+
     for (int i = 0; i < list.length; i++) {
-      listIsSelected.add(false);
+      int j = 0;
+      for (j = 0; j < n; j++) {
+        if (list[i].id.compareTo(_clinic.specialists[j].id) == 0) {
+          listIsSelected.add(true);
+          break;
+        }
+      }
+      if (j == n) {
+        listIsSelected.add(false);
+      }
     }
     return list;
   }

@@ -67,9 +67,25 @@ class ClinicService {
 
   Future<Response> updateInfo(url, Clinic clinic, path, cookies) async {
     String geo = jsonEncode(clinic.geometry);
-    print(path.path);
-    String _filename = path.path.split('/').last;
-    String _filepath = path.path;
+    List<String> _specialists = <String>[];
+    for (int i = 0; i < clinic.specialists.length; i++) {
+      _specialists.add(clinic.specialists[i].id);
+    }
+    String _spec = jsonEncode(_specialists);
+    List<String> schedule = ["[]", "[]", "[]", "[]", "[]", "[]", "[]"];
+    for (int i = 0; i < 7; i++) {
+      if (clinic.schedule[i].workingHours.length != 0) {
+        schedule[i] = "[";
+        for (int j = 0; j < clinic.schedule[i].workingHours.length; j++) {
+          schedule[i] +=
+              "[${clinic.schedule[i].workingHours[j].startTime},${clinic.schedule[i].workingHours[j].endTime}]";
+          if (j < clinic.schedule[i].workingHours.length - 1) {
+            schedule[i] += ",";
+          }
+        }
+        schedule[i] += "]";
+      }
+    }
     try {
       Map<String, dynamic> headers = new Map();
       print('cook update');
@@ -78,31 +94,101 @@ class ClinicService {
       headers['Cookie'] = token;
       Options options = new Options(headers: headers);
       if (path != null) {
+        String _filename = path.path.split('/').last;
+        String _filepath = path.path;
         var formData = new FormData.fromMap({
+          "sunday": schedule[0],
+          "monday": schedule[1],
+          "tuesday": schedule[2],
+          "wednesday": schedule[3],
+          "thursday": schedule[4],
+          "friday": schedule[5],
+          "saturday": schedule[6],
+          "specialists": _spec,
           "email": clinic.email,
           "phone": clinic.phone,
+          "geometry": geo,
           "description": clinic.description,
           "name": clinic.name,
-          "geometry": geo,
           "address": clinic.address,
           "coverImage":
               await MultipartFile.fromFile(_filepath, filename: _filename),
-          "filename": _filename
+          "deleteCoverImage": clinic.coverImage.filename,
         });
         print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);
       } else {
         var formData = new FormData.fromMap({
+          "sunday": schedule[0],
+          "monday": schedule[1],
+          "tuesday": schedule[2],
+          "wednesday": schedule[3],
+          "thursday": schedule[4],
+          "friday": schedule[5],
+          "saturday": schedule[6],
+          "specialists": _spec,
           "email": clinic.email,
           "phone": clinic.phone,
+          "geometry": geo,
           "description": clinic.description,
           "name": clinic.name,
-          "geometry": geo,
           "address": clinic.address,
         });
-        //print(formData.fields);
+        print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);
       }
+    } on DioError catch (e) {
+      print(e..response);
+      return response = e.response;
+    }
+    return response;
+  }
+
+  Future<Response> updateSchedule(url, Clinic clinic, cookies) async {
+    String _schedule = jsonEncode(clinic.schedule);
+    List<String> schedule = ["[]", "[]", "[]", "[]", "[]", "[]", "[]"];
+    for (int i = 0; i < 7; i++) {
+      if (clinic.schedule[i].workingHours.length != 0) {
+        schedule[i] = "[";
+        for (int j = 0; j < clinic.schedule[i].workingHours.length; j++) {
+          schedule[i] +=
+              "[${clinic.schedule[i].workingHours[j].startTime},${clinic.schedule[i].workingHours[j].endTime}]";
+          if (j < clinic.schedule[i].workingHours.length - 1) {
+            schedule[i] += ",";
+          }
+        }
+        schedule[i] += "]";
+      }
+    }
+
+    try {
+      Map<String, dynamic> headers = new Map();
+      print('cook update');
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+      var formData = new FormData.fromMap({
+        "sunday": schedule[0],
+        "monday": schedule[1],
+        "tuesday": schedule[2],
+        "wednesday": schedule[3],
+        "thursday": schedule[4],
+        "friday": schedule[5],
+        "saturday": schedule[6],
+      });
+      print(formData.fields);
+      response = await dio.patch(url,
+          data: {
+            "sunday": schedule[0],
+            "monday": schedule[1],
+            "tuesday": schedule[2],
+            "wednesday": schedule[3],
+            "thursday": schedule[4],
+            "friday": schedule[5],
+            "saturday": schedule[6],
+          },
+          options: options);
     } on DioError catch (e) {
       print(e..response);
       return response = e.response;
@@ -133,18 +219,38 @@ class ClinicService {
 
   Future<Response> register({url, Clinic clinic, path, specId}) async {
     String geo = jsonEncode(clinic.geometry);
-    String _schedule = jsonEncode(clinic.schedule);
     String _filename = path.path.split('/').last;
     String _filepath = path.path;
+    List<String> schedule = ["[]", "[]", "[]", "[]", "[]", "[]", "[]"];
+    for (int i = 0; i < 7; i++) {
+      if (clinic.schedule[i].workingHours.length != 0) {
+        schedule[i] = "[";
+        for (int j = 0; j < clinic.schedule[i].workingHours.length; j++) {
+          schedule[i] +=
+              "[${clinic.schedule[i].workingHours[j].startTime},${clinic.schedule[i].workingHours[j].endTime}]";
+          if (j < clinic.schedule[i].workingHours.length - 1) {
+            schedule[i] += ",";
+          }
+        }
+        schedule[i] += "]";
+      }
+    }
     try {
       var data = new FormData.fromMap({
         "email": clinic.email,
         "phone": clinic.phone,
         "description": clinic.description,
         "name": clinic.name,
-        "schedule": _schedule,
+        "sunday": schedule[0],
+        "monday": schedule[1],
+        "tuesday": schedule[2],
+        "wednesday": schedule[3],
+        "thursday": schedule[4],
+        "friday": schedule[5],
+        "saturday": schedule[6],
         "specialists": specId,
         "geometry": geo,
+        "address": clinic.address,
         "coverImage":
             await MultipartFile.fromFile(_filepath, filename: _filename),
       });
