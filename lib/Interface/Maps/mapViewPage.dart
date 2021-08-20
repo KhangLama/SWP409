@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart' as dioo;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -29,6 +30,8 @@ class _MapViewPageState extends State<MapViewPage> {
   List<Clinic> _clinics = <Clinic>[];
   List<Clinic> _filteredclinic = <Clinic>[];
   String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
+  String distance = '';
+  String time = '';
   ClinicService _clinicService = new ClinicService();
   // Object for PolylinePoints
   PolylinePoints polylinePoints;
@@ -37,6 +40,8 @@ class _MapViewPageState extends State<MapViewPage> {
   // Map storing polylines created by connecting two points
   Map<PolylineId, Polyline> polylines = {};
   static String _displayStringForOption(Clinic option) => option.name;
+  dioo.Dio dio = new dioo.Dio();
+
   //get data of clinic from database
   Future<List<Clinic>> fetchClinics() async {
     var fetchdata = await _clinicService.getClinics(urlGet);
@@ -65,16 +70,36 @@ class _MapViewPageState extends State<MapViewPage> {
                   title: clinic.name,
                   anchor: Offset(0.5, 0.0),
                   snippet: clinic.address),
-              onTap: () {
+              onTap: () async {
                 _createPolylines(
                     _locationData.latitude,
                     _locationData.longitude,
                     clinic.geometry.coordinates[1],
                     clinic.geometry.coordinates[0]);
+                getDT(
+                        _locationData.latitude,
+                        _locationData.longitude,
+                        clinic.geometry.coordinates[1],
+                        clinic.geometry.coordinates[0])
+                    .then((value) {
+                  setState(() {
+                    distance = value[0];
+                    time = value[1];
+                    setState(() {
+                      distance = value[0];
+                      time = value[1];
+                    });
+                    print(distance);
+                    print(time);
+                  });
+                });
                 List<WorkingHours> list = getDayOfWeek(clinic);
+                await Future.delayed(Duration(milliseconds: 500));
                 showModalBottomSheet(
                     context: context,
+                    elevation: 10,
                     isScrollControlled: true,
+
                     builder: (context) => Wrap(
                           children: <Widget>[
                             Row(
@@ -178,6 +203,13 @@ class _MapViewPageState extends State<MapViewPage> {
                             SizedBox(
                               height: 20,
                             ),
+                            Row(children: [
+                              SizedBox(width: 10),
+                              Text('Distance: $distance'),
+                              SizedBox(width: 30),
+                              Text('Duration: $time'),
+                            ]),
+                            SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -216,7 +248,7 @@ class _MapViewPageState extends State<MapViewPage> {
     });
     mapController = controller;
     _completer.complete(controller);
-    location.onLocationChanged.listen((event) {
+    location.getLocation().then((event) {
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(event.latitude, event.longitude), zoom: 18)));
     });
@@ -233,16 +265,32 @@ class _MapViewPageState extends State<MapViewPage> {
     return clinic.schedule[checkDate].workingHours;
   }
 
+  Future<List<String>> getDT(
+      double startLat, double startLng, double destLat, double destLng) async {
+    String urlDist =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?origins=heading=90:$startLat,$startLng&destinations=$destLat,$destLng&key=${dotenv.env['GOOGLE_MAP_KEY']}";
+    dioo.Response resultz = await dio.get(urlDist);
+    // distance = resultz.data['rows'][0]['elements'][0]['distance']['text'];
+    // time = resultz.data['rows'][0]['elements'][0]['duration']['text'];
+    List<String> list = [];
+    list.add(
+        resultz.data['rows'][0]['elements'][0]['distance']['text'].toString());
+    list.add(
+        resultz.data['rows'][0]['elements'][0]['duration']['text'].toString());
+    return list;
+  }
+
   _createPolylines(
       double startLat, double startLng, double destLat, double destLng) async {
     polylinePoints = PolylinePoints();
+
     // drawing the polylines
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         dotenv.env['GOOGLE_MAP_KEY'], // Google Maps API Key
         PointLatLng(startLat, startLng),
         PointLatLng(destLat, destLng),
         travelMode: TravelMode.driving);
-    print(result.points.toString());
+
     polylines.clear();
     polylineCoordinates.clear();
     // Adding the coordinates to the list
@@ -275,27 +323,8 @@ class _MapViewPageState extends State<MapViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: <Widget>[
-            DelayedDisplay(
-              delay: Duration(seconds: 1),
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  myLocationButtonEnabled: false,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(37.4219999, -122.0862462),
-                  ),
-                  markers: _markers.values.toSet(),
-                  polylines: Set<Polyline>.of(polylines.values),
-                ),
-              ),
-            ),
             Autocomplete<Clinic>(
               displayStringForOption: _displayStringForOption,
               optionsBuilder: (TextEditingValue textEditingValue) {
@@ -312,7 +341,14 @@ class _MapViewPageState extends State<MapViewPage> {
                 return TextField(
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
-                            onPressed: controller.clear,
+                            onPressed: () {
+                              controller.clear();
+                              FocusScopeNode currentFocus =
+                                  FocusScope.of(context);
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
+                            },
                             icon: Icon(Icons.clear)),
                         fillColor: Colors.white,
                         focusColor: Colors.white,
@@ -334,7 +370,25 @@ class _MapViewPageState extends State<MapViewPage> {
                             zoom: 18)));
                 });
               },
-            )
+            ),
+            Expanded(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  mapType: MapType.normal,
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(37.4219999, -122.0862462),
+                  ),
+                  markers: _markers.values.toSet(),
+                  polylines: Set<Polyline>.of(polylines.values),
+                ),
+              ),
+            ),
           ],
         ),
       ),

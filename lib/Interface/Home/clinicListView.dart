@@ -212,6 +212,8 @@ class _ClinicListViewState extends State<ClinicListView> {
         }
       },
       child: ListView.builder(
+          shrinkWrap: true,
+          
           itemCount: _filteredclinic.length,
           itemBuilder: (context, index) {
             return Container(

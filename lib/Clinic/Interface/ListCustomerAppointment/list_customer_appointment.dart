@@ -39,16 +39,14 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
       "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
       "");
   Clinic getClinicId(List<Clinic> list, User user) {
-    if (list != null) {
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].email == user.email) {
-          print('abv');
-          print(list[i].toJson());
-          return list[i];
-        }
-      }
-    }
-    return null;
+    if (list.isNotEmpty) {
+      list.forEach((element) {
+        if (element.email == user.email) return element;
+        print('here');
+        print(element.email);
+      });
+    } else
+      return null;
   }
 
   Future<List<Clinic>> fetchClinics() async {
@@ -58,6 +56,8 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     for (var clinic in clinicsjson) {
       clinics.add(Clinic.fromJson(clinic));
     }
+    print('test 3');
+    print(clinics.length);
     return clinics;
   }
 
@@ -72,10 +72,12 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     fetchClinics().then((value) {
       setState(() {
         _user = widget.user;
+        print('test 4');
+        print(_user.toJson());
         _clinic = getClinicId(value, _user);
+
         print('testing');
-        print(_clinic.email);
-        print(_clinic.name);
+        print(_clinic.toJson());
       });
     });
 
