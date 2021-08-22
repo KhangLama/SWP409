@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
 import 'package:swp409/Models/user.dart';
@@ -8,6 +9,18 @@ import 'package:swp409/helper/keyboard.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:image_picker/image_picker.dart';
+
+Future<bool> toast(String message) {
+  Fluttertoast.cancel();
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 22.0);
+}
 
 // ignore: must_be_immutable
 class Body extends StatefulWidget {
@@ -298,6 +311,7 @@ class _BodyState extends State<Body> {
                         press: () {
                           String url = '$ServerIP/api/v1/users/${_user.id}';
                           if (_formKey.currentState.validate()) {
+                            toast("Update successfully");
                             _userService
                                 .updateInfo(url, name, phoneNumber, _imageFile,
                                     _user.email, cookies)

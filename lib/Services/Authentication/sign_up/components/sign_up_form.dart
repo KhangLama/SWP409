@@ -25,10 +25,30 @@ class _SignUpFormState extends State<SignUpForm> {
   final List<String> errors = [];
   String errorMsg;
   bool checkMailDup = false;
-  var emailController;
-  final myController = TextEditingController();
+
   final storage = new FlutterSecureStorage();
   User _user;
+
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(() => setState(() {}));
+    nameController.addListener(() => setState(() {}));
+    phoneController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
+
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
@@ -118,9 +138,11 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
+  bool isVisbleConfirm = true;
+
   TextFormField buildConfirmPassFormField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: isVisbleConfirm,
       onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -153,18 +175,26 @@ class _SignUpFormState extends State<SignUpForm> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.lock,
           size: 30,
           color: kPrimaryColor,
+        ),
+        suffixIcon: IconButton(
+          color: kPrimaryColor,
+          icon: isVisbleConfirm
+              ? Icon(Icons.visibility_off)
+              : Icon(Icons.visibility),
+          onPressed: () => setState(() => isVisbleConfirm = !isVisbleConfirm),
         ),
       ),
     );
   }
 
+  bool isPasswordVisible = true;
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: isPasswordVisible,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -199,10 +229,18 @@ class _SignUpFormState extends State<SignUpForm> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.lock,
           size: 30,
           color: kPrimaryColor,
+        ),
+        suffixIcon: IconButton(
+          color: kPrimaryColor,
+          icon: isPasswordVisible
+              ? Icon(Icons.visibility_off)
+              : Icon(Icons.visibility),
+          onPressed: () =>
+              setState(() => isPasswordVisible = !isPasswordVisible),
         ),
       ),
     );
@@ -212,7 +250,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       //onSaved: (newValue) => email = newValue,
-      controller: myController,
+      controller: emailController,
       onChanged: (value) {
         setState(() {
           checkMailDup = false;
@@ -257,11 +295,20 @@ class _SignUpFormState extends State<SignUpForm> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.mail_outline,
           size: 30,
           color: kPrimaryColor,
         ),
+        suffixIcon: emailController.text.isEmpty
+            ? Container(width: 0)
+            : IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () => emailController.clear(),
+              ),
       ),
     );
   }
@@ -310,6 +357,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
+      controller: phoneController,
       keyboardType: TextInputType.phone,
       onSaved: (newValue) => phoneNumber = newValue,
       onChanged: (value) {
@@ -341,17 +389,27 @@ class _SignUpFormState extends State<SignUpForm> {
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.phone,
           size: 30,
           color: kPrimaryColor,
         ),
+        suffixIcon: phoneController.text.isEmpty
+            ? Container(width: 0)
+            : IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () => phoneController.clear(),
+              ),
       ),
     );
   }
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
+      controller: nameController,
       onSaved: (newValue) => name = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -382,11 +440,20 @@ class _SignUpFormState extends State<SignUpForm> {
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.person_outline,
           size: 30,
           color: kPrimaryColor,
         ),
+        suffixIcon: nameController.text.isEmpty
+            ? Container(width: 0)
+            : IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () => nameController.clear(),
+              ),
       ),
     );
   }

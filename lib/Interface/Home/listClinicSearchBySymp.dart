@@ -97,8 +97,9 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
                     child: Row(
                       children: [
                         Image(
-                          //image: NetworkImage(_filteredclinic[index].coverImage.url),
-                          image: AssetImage("images/0-1.png"),
+                          image: NetworkImage(
+                              _filteredclinic[index].coverImage.url),
+                          //image: AssetImage("images/0-1.png"),
                           width: 150,
                           height: 100,
                         ),
