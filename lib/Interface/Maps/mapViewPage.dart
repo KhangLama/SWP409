@@ -56,7 +56,6 @@ class _MapViewPageState extends State<MapViewPage> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     _locationData = await location.getLocation();
     fetchClinics().then((value) {
-      print('Fetch clinic ... is done');
       setState(() {
         _clinics = value;
         _markers.clear();

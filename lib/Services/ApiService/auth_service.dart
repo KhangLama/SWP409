@@ -45,7 +45,6 @@ class AuthService {
           'Accept': 'application/json'
         }),
       );
-      
     } on DioError catch (e) {
       print(e);
       return response = e.response;
@@ -53,4 +52,18 @@ class AuthService {
     return response;
   }
 
+  Future<Response> forgotPassword(url, email) async {
+    try {
+      response = await dio.post(url,
+          data: {"email": email},
+          options: Options(headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }));
+    } on DioError catch (e) {
+      print(e);
+      return response = e.response;
+    }
+    return response;
+  }
 }
