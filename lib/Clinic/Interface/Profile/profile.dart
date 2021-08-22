@@ -76,7 +76,11 @@ class _ClinicProfileState extends State<ClinicProfile> {
     // TODO: implement initState
     super.initState();
     _user = widget.user;
+    print('test 1');
+    print(_user.email);
     fetchClinics().then((value) {
+      print('test 2');
+      print(value[0].toJson());
       setState(() {
         _clinic = getClinicId(value, _user);
         print(_clinic.coverImage.url);
