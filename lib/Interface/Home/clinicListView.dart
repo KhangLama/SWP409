@@ -4,10 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swp409/Interface/Calender/calender.dart';
 import 'package:swp409/Interface/ChangePassword/change_password.dart';
+import 'package:swp409/Interface/Home/searchBySymptom.dart';
 import 'package:swp409/Interface/Profile/profilePage.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
+import 'package:swp409/Services/ApiService/specialist_service.dart';
 import 'package:swp409/Services/Authentication/splash/splash_screen.dart';
 import 'package:swp409/Services/Booking/booking.dart';
 import 'package:swp409/constants.dart';
@@ -28,8 +30,9 @@ class _ClinicListViewState extends State<ClinicListView> {
   User _user = new User();
   int _clinicListlength;
   List<String> _cookies;
-  List listSearch = ['name', 'address', 'symptom'];
+  List listSearch = ['name', 'address'];
   String searchBy = 'name';
+
   @override
   void initState() {
     fetchClinics().then((value) {
@@ -110,7 +113,6 @@ class _ClinicListViewState extends State<ClinicListView> {
                             .toList();
                       });
                     } else if (searchBy.compareTo('address') == 0) {
-                      print("Check search address");
                       setState(() {
                         _filteredclinic = _clinics
                             .where((c) => (c.address
@@ -118,7 +120,7 @@ class _ClinicListViewState extends State<ClinicListView> {
                                 .contains(text.toLowerCase())))
                             .toList();
                       });
-                    } else {}
+                    }
                   },
                 ),
               ),
@@ -157,11 +159,17 @@ class _ClinicListViewState extends State<ClinicListView> {
           //         MaterialPageRoute(builder: (context) => CalendarScreen()));
           //   },
           // ),
-          // ListTile(
-          //   leading: Icon(Icons.border_color),
-          //   title: Text('Feedback'),
-          //   onTap: () => {Navigator.of(context).pop()},
-          // ),
+          ListTile(
+            leading: Icon(Icons.search_rounded),
+            title: Text('Search by symptoms'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => searchBySymptomScreen(
+                        user: _user,
+                        cookies: _cookies,
+                      )));
+            },
+          ),
           ListTile(
             leading: Icon(Icons.person_rounded),
             title: Text('Profile'),
@@ -180,11 +188,12 @@ class _ClinicListViewState extends State<ClinicListView> {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                   builder: (context) => ChangePasswordScreen.user(
                         user: _user,
+                        cookies: _cookies,
                       )));
             },
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
+            leading: Icon(Icons.exit_to_app_rounded),
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).pushReplacement(
@@ -306,9 +315,10 @@ List<Clinic> _clinics = <Clinic>[];
 List<Clinic> _filteredclinic = <Clinic>[];
 String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
 ClinicService _clinicService = new ClinicService();
+
 Future<List<Clinic>> fetchClinics() async {
   var fetchdata = await _clinicService.getClinics(urlGet);
-  var clinics = <Clinic>[];
+  List<Clinic> clinics = <Clinic>[];
   var clinicsjson = fetchdata.data['data']['data'] as List;
   for (var clinic in clinicsjson) {
     clinics.add(Clinic.fromJson(clinic));

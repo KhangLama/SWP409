@@ -16,4 +16,13 @@ class SpecialistService {
       return response = e.response;
     }
   }
+
+  Future<Response> getSpecialistBySymptom(url) async {
+    try {
+      return response = await dio.get(url);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
 }

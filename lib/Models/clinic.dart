@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:swp409/Models/user.dart';
 
@@ -131,7 +133,7 @@ class WorkingHours {
 class Specialist {
   String id;
   String name;
-  List<String> symptoms;
+  List symptoms;
 
   Specialist({this.id, this.name, this.symptoms});
 

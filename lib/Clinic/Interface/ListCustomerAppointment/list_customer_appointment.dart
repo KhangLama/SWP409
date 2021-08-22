@@ -6,6 +6,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/change_password.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/specialists.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/working_hours.dart';
+import 'package:swp409/Interface/ChangePassword/change_password.dart';
 import 'package:swp409/Models/booking.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
@@ -133,7 +134,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
             title: Text('Change password'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ChangePassClinicScreen(
+                  builder: (context) => ChangePasswordScreen.user(
                         user: _user,
                         cookies: _cookies,
                       )));

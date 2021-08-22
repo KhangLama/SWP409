@@ -148,7 +148,7 @@ Specialist _$SpecialistFromJson(Map<String, dynamic> json) {
   return Specialist(
     id: json['_id'] as String,
     name: json['name'] as String,
-    symptoms: (json['symptoms'] as List)?.map((e) => e as String)?.toList(),
+    symptoms: json['symptoms'] as List,
   );
 }
 

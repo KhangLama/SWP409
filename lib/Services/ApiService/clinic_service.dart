@@ -6,6 +6,33 @@ class ClinicService {
   Dio dio = new Dio();
   Response response;
 
+  Future<Response> getSymptomsByDiagnose(url) async {
+    try {
+      return response = await dio.get(url);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
+  Future<Response> getAllSymptom(url) async {
+    try {
+      return response = await dio.get(url);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
+  Future<Response> getClinicBySymmtoms(url) async {
+    try {
+      return response = await dio.get(url);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
+
   Future<Response> getBookingsOfClinic(url, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();

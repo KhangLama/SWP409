@@ -45,7 +45,6 @@ class AuthService {
           'Accept': 'application/json'
         }),
       );
-      
     } on DioError catch (e) {
       print(e);
       return response = e.response;
@@ -53,4 +52,24 @@ class AuthService {
     return response;
   }
 
+  Future<Response> changePassword(
+      url, currentPassword, newPassword, confirmPassword, cookies) async {
+    try {
+      Map<String, dynamic> headers = new Map();
+      var token = cookies[0].split(';')[0];
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+
+      return response = await dio.patch(url,
+          data: {
+            "passwordCurrent": currentPassword,
+            "password": newPassword,
+            "passwordConfirm": confirmPassword
+          },
+          options: options);
+    } on DioError catch (e) {
+      print(e.response.data);
+      return response = e.response;
+    }
+  }
 }

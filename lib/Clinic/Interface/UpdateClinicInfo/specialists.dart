@@ -103,12 +103,12 @@ class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
                     if (res.data['status'] == "success") {
                       _clinic = new Clinic.fromJson(res.data['data']['data']);
                       print('update success');
+                      toast("Successfully");
                     } else {
                       print('fail to update');
                     }
                   });
 
-                  toast("Successfully");
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SplashScreen()));
                 },

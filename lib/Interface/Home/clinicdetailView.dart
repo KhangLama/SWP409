@@ -29,6 +29,13 @@ class _ClinicPageState extends State<ClinicPage> {
   List<bool> name;
   User _user;
   ClinicService _clinicService = new ClinicService();
+  List<TimeWorking> listTimeMon = [];
+  List<TimeWorking> listTimeTue = [];
+  List<TimeWorking> listTimeWed = [];
+  List<TimeWorking> listTimeThu = [];
+  List<TimeWorking> listTimeFri = [];
+  List<TimeWorking> listTimeSat = [];
+  List<TimeWorking> listTimeSun = [];
 
   void changeVisible() {
     setState(() {
@@ -41,9 +48,13 @@ class _ClinicPageState extends State<ClinicPage> {
     _clinic = widget.clinic;
     _user = widget.user;
     _cookies = widget.cookies;
-    print('testing');
-    print(_clinic.email);
-    print(_clinic.name);
+    getTimeForList(listTimeSun, 0);
+    getTimeForList(listTimeMon, 1);
+    getTimeForList(listTimeTue, 2);
+    getTimeForList(listTimeWed, 3);
+    getTimeForList(listTimeThu, 4);
+    getTimeForList(listTimeFri, 5);
+    getTimeForList(listTimeSat, 6);
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -201,168 +212,344 @@ class _ClinicPageState extends State<ClinicPage> {
                       ),
                       SizedBox(height: 10),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Monday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Tuesday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Wednesday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Thursday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Friday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Saturday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: 130,
-                                child: Text(
-                                  'Sunday',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              'DAY',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                           ),
-                          // Column(
-                          //   children: [
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[0].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[0].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[0].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[1].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[1].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[1].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[2].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[2].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[2].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[3].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[3].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[3].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[4].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[4].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[4].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       // width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[5].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[5].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[5].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     SizedBox(height: 5),
-                          //     Container(
-                          //       //width: 230,
-                          //       child: Text(
-                          //         '${(_clinic.schedule[6].startTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].startTime % 60).toInt().toString().padLeft(2, '0')} - ${(_clinic.schedule[6].endTime ~/ 60).toString().padLeft(2, '0')}:${(_clinic.schedule[6].endTime % 60).toInt().toString().padLeft(2, '0')}',
-                          //         style: TextStyle(
-                          //           fontSize: 20,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          Text(
+                            'TIME',
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Monday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Monday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeMon.length == 0
+                                ? 30
+                                : (listTimeMon.length * 40).toDouble(),
+                            child: listTimeMon.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeMon.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeMon[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeMon[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeMon[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeMon[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Tuesday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Tuesday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeTue.length == 0
+                                ? 30
+                                : (listTimeTue.length * 40).toDouble(),
+                            child: listTimeTue.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeTue.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeTue[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeTue[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeTue[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeTue[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Wednesday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Wednesday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeWed.length == 0
+                                ? 30
+                                : (listTimeWed.length * 40).toDouble(),
+                            child: listTimeWed.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeWed.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeWed[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeWed[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeWed[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeWed[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Thursday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Thursday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeThu.length == 0
+                                ? 30
+                                : (listTimeThu.length * 40).toDouble(),
+                            child: listTimeThu.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeThu.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeThu[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeThu[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeThu[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeThu[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Friday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Friday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeFri.length == 0
+                                ? 30
+                                : (listTimeFri.length * 40).toDouble(),
+                            child: listTimeFri.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeFri.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeFri[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeFri[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeFri[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeFri[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Saturday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Saturday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeSat.length == 0
+                                ? 30
+                                : (listTimeSat.length * 40).toDouble(),
+                            child: listTimeSat.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeSat.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeSat[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeSat[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeSat[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeSat[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                      );
+                                    }),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //Sunday
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 150,
+                            child: Text(
+                              'Sunday',
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: listTimeSun.length == 0
+                                ? 30
+                                : (listTimeSun.length * 40).toDouble(),
+                            child: listTimeSun.length == 0
+                                ? Text(
+                                    "Closed",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.black),
+                                  )
+                                : ListView.builder(
+                                    itemCount: listTimeSun.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                        child: Text(
+                                          '${(listTimeSun[index].open ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeSun[index].open % 60).toString().padLeft(2, '0')} - '
+                                          '${(listTimeSun[index].close ~/ 60).toString().padLeft(2, '0')}:'
+                                          '${(listTimeSun[index].close % 60).toString().padLeft(2, '0')}',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      );
+                                    }),
+                          ),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -746,4 +933,19 @@ class _ClinicPageState extends State<ClinicPage> {
       ),
     );
   }
+
+  void getTimeForList(List<TimeWorking> list, int dayNum) {
+    for (int i = 0; i < _clinic.schedule[dayNum].workingHours.length; i++) {
+      int open = _clinic.schedule[dayNum].workingHours[i].startTime;
+      int close = _clinic.schedule[dayNum].workingHours[i].endTime;
+      list.add(TimeWorking(open: open, close: close));
+    }
+  }
+}
+
+class TimeWorking {
+  int open;
+  int close;
+
+  TimeWorking({this.open, this.close});
 }
