@@ -73,7 +73,6 @@ class _ClinicListViewState extends State<ClinicListView> {
               clinics.last.geometry.coordinates[0])
           .then((value) {
         listDistance.add(value);
-        
       });
     }
     await Future.delayed(Duration(seconds: 1));
@@ -83,7 +82,6 @@ class _ClinicListViewState extends State<ClinicListView> {
   }
 
   sorting(listDistance, clinics) {
-    
     print(listDistance);
     for (var i = 0; i < clinics.length - 1; i++) {
       for (var j = 0; j < clinics.length - i - 1; j++) {

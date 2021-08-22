@@ -71,6 +71,8 @@ class AuthService {
       print(e.response.data);
       return response = e.response;
     }
+  }
+
   Future<Response> forgotPassword(url, email) async {
     try {
       response = await dio.post(url,
