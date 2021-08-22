@@ -27,6 +27,20 @@ class _SignFormState extends State<SignForm> {
   final List<String> errors = [];
   bool loading = false;
   User _user = new User();
+  final emailController = TextEditingController();
+  bool isPasswordVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -116,6 +130,7 @@ class _SignFormState extends State<SignForm> {
                                         cookies: cookies,
                                       )));
                         }
+                        removeError(error: "Incorrect email or password");
                       } else if (val.data["status"] == "fail") {
                         addError(error: "Incorrect email or password");
                       }
@@ -132,25 +147,16 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length != 8) {
-          removeError(error: kShortPassError);
-        }
-        password = value;
+      obscureText: isPasswordVisible,
+      onSaved: (value) {
+        setState(() {
+          password = value;
+        });
       },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-          return kPassNullError;
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return kShortPassError;
-        }
-        return null;
+      onChanged: (value) {
+        setState(() {
+          password = value;
+        });
       },
       decoration: InputDecoration(
         labelText: "Password",
@@ -167,10 +173,18 @@ class _SignFormState extends State<SignForm> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.lock,
           size: 30,
           color: kPrimaryColor,
+        ),
+        suffixIcon: IconButton(
+          color: kPrimaryColor,
+          icon: isPasswordVisible
+              ? Icon(Icons.visibility_off)
+              : Icon(Icons.visibility),
+          onPressed: () =>
+              setState(() => isPasswordVisible = !isPasswordVisible),
         ),
       ),
     );
@@ -178,26 +192,17 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: emailController,
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        email = value;
-        return null;
+      onSaved: (value) {
+        setState(() {
+          email = value;
+        });
       },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return kEmailNullError;
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return kInvalidEmailError;
-        }
-        return null;
+      onChanged: (value) {
+        setState(() {
+          email = value;
+        });
       },
       decoration: InputDecoration(
         labelText: "Email",
@@ -214,11 +219,20 @@ class _SignFormState extends State<SignForm> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
-        suffixIcon: Icon(
+        prefixIcon: Icon(
           Icons.mail_outline,
           size: 30,
           color: kPrimaryColor,
         ),
+        suffixIcon: emailController.text.isEmpty
+            ? Container(width: 0)
+            : IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () => emailController.clear(),
+              ),
       ),
     );
   }
