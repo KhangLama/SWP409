@@ -56,9 +56,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
         reviewLength = _clinic.reviewCount;
       });
     });
-    for (int i = 0; i < _clinic.reviewCount; i++) {
-      isVisible.add(false);
-    }
+
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -88,12 +86,12 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
     );
   }
 
-  List<bool> isVisible = [];
+  bool viewVisible = false;
   List<bool> name;
 
-  void changeVisible(int i) {
+  void changeVisible() {
     setState(() {
-      isVisible[i] = !isVisible[i];
+      viewVisible = !viewVisible;
     });
   }
 
@@ -168,9 +166,8 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () {
-                        changeVisible(index);
-                      },
+                      onPressed:
+                          changeVisible, //() => setState(() => isVisible = !isVisible),
                       child: const Text(
                         'Replies',
                         style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -178,7 +175,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
                     ),
                   ]),
                   Visibility(
-                    visible: isVisible[index], //isVisible,
+                    visible: viewVisible, //isVisible,
                     child: buildViewCmtAndCmtChild(index),
                   ),
                   SizedBox(height: 5),

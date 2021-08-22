@@ -25,6 +25,7 @@ class _ClinicPageState extends State<ClinicPage> {
   Clinic _clinic;
   double rating = 0.0;
   List<String> _cookies;
+  bool viewVisible = false;
   List<bool> name;
   User _user;
   ClinicService _clinicService = new ClinicService();
@@ -35,11 +36,10 @@ class _ClinicPageState extends State<ClinicPage> {
   List<TimeWorking> listTimeFri = [];
   List<TimeWorking> listTimeSat = [];
   List<TimeWorking> listTimeSun = [];
-  List<bool> isVisible = [];
 
-  void changeVisible(int i) {
+  void changeVisible() {
     setState(() {
-      isVisible[i] = !isVisible[i];
+      viewVisible = !viewVisible;
     });
   }
 
@@ -55,10 +55,6 @@ class _ClinicPageState extends State<ClinicPage> {
     getTimeForList(listTimeThu, 4);
     getTimeForList(listTimeFri, 5);
     getTimeForList(listTimeSat, 6);
-    for (int i = 0; i < _clinic.reviewCount; i++) {
-      isVisible.add(false);
-    }
-    print("length: ${isVisible.length}");
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -756,9 +752,8 @@ class _ClinicPageState extends State<ClinicPage> {
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () {
-                        changeVisible(index);
-                      },
+                      onPressed:
+                          changeVisible, //() => setState(() => isVisible = !isVisible),
                       child: const Text(
                         'Replies',
                         style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -766,7 +761,7 @@ class _ClinicPageState extends State<ClinicPage> {
                     ),
                   ]),
                   Visibility(
-                    visible: isVisible[index],
+                    visible: viewVisible, //isVisible,
                     child: buildViewCmtAndCmtChild(index),
                   ),
                   SizedBox(height: 5),
@@ -858,23 +853,13 @@ class _ClinicPageState extends State<ClinicPage> {
 
   String cmtChild = "";
 
-  double getHeight(int i) {
-    if (_clinic.reviews[i].replies.length == 0) {
-      return 0;
-    } else if (_clinic.reviews[i].replies.length == 1) {
-      return (_clinic.reviews[i].replies.length * 80).toDouble();
-    } else {
-      return 160;
-    }
-  }
-
   Widget buildViewCmtAndCmtChild(int i) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40, 5, 5, 5),
       child: Column(
         children: [
           Container(
-            height: getHeight(i),
+            height: _clinic.reviews[i].replies.length == 0 ? 0 : 150,
             child: buildViewCmtChild(i),
           ),
           SizedBox(height: 10),

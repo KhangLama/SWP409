@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/Components/default_button.dart';
 import 'package:swp409/Components/no_account_text.dart';
-import 'package:swp409/Services/ApiService/auth_service.dart';
 import 'package:swp409/Services/Authentication/sign_in/sign_in_screen.dart';
 
 import '../../../../constants.dart';
@@ -49,22 +47,21 @@ class ForgotPassForm extends StatefulWidget {
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
-  AuthService _authService = new AuthService();
-  String email = "";
-  bool checkEmail = true;
-  String err = "";
-  Future<bool> toast(String message) {
-    Fluttertoast.cancel();
-    return Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 22.0);
+  List<String> errors = [];
+  String email;
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
   }
 
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -73,18 +70,26 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
         children: [
           TextFormField(
             keyboardType: TextInputType.emailAddress,
-            onSaved: (value) {
-              setState(() {
-                email = value;
-              });
-            },
+            onSaved: (newValue) => email = newValue,
             onChanged: (value) {
-              setState(() {
-                email = value;
-              });
+              if (value.isNotEmpty) {
+                removeError(error: kEmailNullError);
+              } else if (emailValidatorRegExp.hasMatch(value)) {
+                removeError(error: kInvalidEmailError);
+              }
+              return null;
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                addError(error: kEmailNullError);
+                return kEmailNullError;
+              } else if (!emailValidatorRegExp.hasMatch(value)) {
+                addError(error: kInvalidEmailError);
+                return kInvalidEmailError;
+              }
+              return null;
             },
             decoration: InputDecoration(
-              errorText: checkEmail ? err : "",
               labelText: "Email",
               labelStyle: TextStyle(color: kPrimaryColor),
               hintText: "Enter your email",
@@ -98,41 +103,28 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                 borderSide: BorderSide(color: kPrimaryColor),
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
+              //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
               suffixIcon: Icon(
-                Icons.email_outlined,
+                Icons.lock,
                 size: 30,
                 color: kPrimaryColor,
+
               ),
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
+          //FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           DefaultButton(
             text: "Continue",
             press: () {
-              if (!emailValidatorRegExp.hasMatch(email)) {
-                setState(() {
-                  err = "Email is not valid";
-                  checkEmail = true;
-                });
-              } else {
-                String url = "$ServerIP/api/v1/users/forgotPassword";
-                setState(() {
-                  checkEmail = false;
-                  _authService.forgotPassword(url, email).then((value) {
-                    if (value.data['message'] ==
-                        "There is no user with email address.") {
-                      setState(() {
-                        err = "There is no user with email address";
-                        checkEmail = true;
-                      });
-                    } else if (value.data['status'] == "success") {
-                      toast(
-                          "Successfully!! Please check mail to reset password");
-                    }
-                  });
-                });
-              }
+              // if (_formKey.currentState.validate()) {
+              //   // Do what you want to do
+              // }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SignInScreen()));
             },
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.1),
