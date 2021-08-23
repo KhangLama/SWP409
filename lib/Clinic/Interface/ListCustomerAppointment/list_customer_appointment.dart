@@ -34,7 +34,6 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   Clinic _clinic = new Clinic();
   List<String> _cookies;
   String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
-
   //variable for google calendar
   static const _scopes = const [prefix.CalendarApi.calendarScope];
   prefix.Event _event = prefix.Event();
@@ -276,6 +275,14 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                 // ignore: deprecated_member_use
                                                 new FlatButton(
                                                     onPressed: () {
+                                                      String url =
+                                                          "$ServerIP/api/v1/booking/${_booking[index].id}";
+                                                      String status =
+                                                          "approved";
+                                                      _clinicService
+                                                          .updateBookingStatus(
+                                                              url, status);
+
                                                       //works with google calendar
                                                       _event.summary =
                                                           "Appointment at ${_clinic.name}";
@@ -376,7 +383,16 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                               actions: [
                                                 // ignore: deprecated_member_use
                                                 new FlatButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      String url =
+                                                          "$ServerIP/api/v1/booking/${_booking[index].id}";
+                                                      String status = "denied";
+                                                      _clinicService
+                                                          .updateBookingStatus(
+                                                              url, status);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
                                                     child: Text(
                                                       "Yes",
                                                       style: TextStyle(

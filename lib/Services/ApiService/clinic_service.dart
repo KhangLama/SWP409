@@ -295,4 +295,20 @@ class ClinicService {
       return response = e.response;
     }
   }
+
+  Future<Response> updateBookingStatus(url, status) async {
+    try {
+      response = await dio.put(url,
+          data: {
+            "status": status,
+          },
+          options: Options(headers: {
+            "content-type": "application/json",
+            'Accept': 'application/json'
+          }));
+      return response;
+    } on DioError catch (e) {
+      return response = e.response;
+    }
+  }
 }

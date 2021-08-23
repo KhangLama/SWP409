@@ -7,7 +7,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:location/location.dart';
+import 'package:swp409/Interface/Home/clinicdetailView.dart';
 import 'package:swp409/Models/clinic.dart';
+import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:swp409/helper/keyboard.dart';
@@ -15,7 +17,9 @@ import '../../constants.dart';
 import '../../size_config.dart';
 
 class MapViewPage extends StatefulWidget {
-  const MapViewPage({Key key}) : super(key: key);
+  List<String> cookies;
+  User user;
+  MapViewPage({Key key, this.cookies, this.user}) : super(key: key);
 
   @override
   _MapViewPageState createState() => _MapViewPageState();
@@ -33,6 +37,8 @@ class _MapViewPageState extends State<MapViewPage> {
   String distance = '';
   String time = '';
   ClinicService _clinicService = new ClinicService();
+  List<String> _cookies;
+  User _user;
   // Object for PolylinePoints
   PolylinePoints polylinePoints;
   // List of coordinates to join
@@ -54,6 +60,8 @@ class _MapViewPageState extends State<MapViewPage> {
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    _user = widget.user;
+    _cookies = widget.cookies;
     _locationData = await location.getLocation();
     fetchClinics().then((value) {
       setState(() {
@@ -98,7 +106,6 @@ class _MapViewPageState extends State<MapViewPage> {
                     context: context,
                     elevation: 10,
                     isScrollControlled: true,
-
                     builder: (context) => Wrap(
                           children: <Widget>[
                             Row(
@@ -226,15 +233,15 @@ class _MapViewPageState extends State<MapViewPage> {
                                               Radius.circular(
                                                   15))), // foreground
                                     ),
-                                    onPressed: () {},
-                                    // => Navigator.of(context,
-                                    //         rootNavigator: true)
-                                    //     .push(MaterialPageRoute(
-                                    //         builder: (context) => ClinicPage.clinic(
-                                    //               clinic: clinic,
-                                    //               user: _user,
-                                    //               cookies: _cookies,
-                                    //             ))),
+                                    onPressed: () => Navigator.of(context,
+                                            rootNavigator: true)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClinicPage.clinic(
+                                                  clinic: clinic,
+                                                  user: _user,
+                                                  cookies: _cookies,
+                                                ))),
                                     child: Text('View Detail')),
                               ],
                             )
