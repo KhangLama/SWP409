@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:location/location.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
@@ -12,7 +15,10 @@ class ListClinicSearchBySymp extends StatefulWidget {
   List<String> cookies;
   User user;
   String urlSymptoms;
-  ListClinicSearchBySymp({Key key, this.cookies, this.user, this.urlSymptoms})
+  LocationData locationData;
+
+  ListClinicSearchBySymp(
+      {Key key, this.cookies, this.user, this.urlSymptoms, this.locationData})
       : super(key: key);
 
   @override
@@ -23,13 +29,16 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
   User _user = new User();
   List<String> _cookies;
   String urlSymp;
+  LocationData _locationData;
   List<Clinic> _clinics = <Clinic>[];
   List<Clinic> _filteredclinic = <Clinic>[];
   ClinicService _clinicService = new ClinicService();
-
+  Dio dio = new Dio();
+  List listDistance = [];
   @override
   void initState() {
     _cookies = widget.cookies;
+    _locationData = widget.locationData;
     _user = widget.user;
     urlSymp = widget.urlSymptoms;
     fetchClinics().then((value) {
@@ -39,6 +48,35 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
       });
     });
     super.initState();
+  }
+
+  sorting(listDistance, clinics) {
+    print(listDistance);
+    for (var i = 0; i < clinics.length - 1; i++) {
+      for (var j = 0; j < clinics.length - i - 1; j++) {
+        if (double.parse(listDistance[j].split(' ')[0]) >
+            double.parse(listDistance[j + 1].split(' ')[0])) {
+          var tmp = listDistance[j];
+          listDistance[j] = listDistance[j + 1];
+          listDistance[j + 1] = tmp;
+          var tmp1 = clinics[j];
+          clinics[j] = clinics[j + 1];
+          clinics[j + 1] = tmp1;
+        }
+      }
+    }
+  }
+
+  Future<String> getDT(
+      double startLat, double startLng, double destLat, double destLng) async {
+    String urlDist =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?origins=heading=90:$startLat,$startLng&destinations=$destLat,$destLng&key=${dotenv.env['GOOGLE_MAP_KEY']}";
+    Response resultz = await dio.get(urlDist);
+    print(resultz);
+    var rs =
+        resultz.data['rows'][0]['elements'][0]['distance']['text'].toString();
+
+    return rs;
   }
 
   @override
@@ -171,7 +209,18 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
     var clinicsjson = fetchdata.data['data']['data'] as List;
     for (var clinic in clinicsjson) {
       clinics.add(Clinic.fromJson(clinic));
+      getDT(
+              _locationData.latitude,
+              _locationData.longitude,
+              clinics.last.geometry.coordinates[1],
+              clinics.last.geometry.coordinates[0])
+          .then((value) {
+        listDistance.add(value);
+      });
     }
+    await Future.delayed(Duration(seconds: 1));
+    sorting(listDistance, clinics);
+    setState(() {});
     return clinics;
   }
 }

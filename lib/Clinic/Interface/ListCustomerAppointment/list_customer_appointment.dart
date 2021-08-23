@@ -287,75 +287,86 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                           .updateBookingStatus(
                                                               url,
                                                               status,
-                                                              _cookies);
+                                                              _cookies)
+                                                          .then((value) {
+                                                        if (value.data[
+                                                                'status'] ==
+                                                            'success') {
+                                                          //works with google calendar
+                                                          _event.summary =
+                                                              "Appointment at ${_clinic.name}";
 
-                                                      //works with google calendar
-                                                      _event.summary =
-                                                          "Appointment at ${_clinic.name}";
+                                                          //apointment start time
+                                                          _event.attendees = [
+                                                            prefix.EventAttendee
+                                                                .fromJson({
+                                                              'email':
+                                                                  '${_pendingBook[index].user.email}'
+                                                            })
+                                                          ];
 
-                                                      //apointment start time
-                                                      _event.attendees = [
-                                                        prefix.EventAttendee
-                                                            .fromJson({
-                                                          'email':
-                                                              '${_pendingBook[index].user.email}'
-                                                        })
-                                                      ];
+                                                          prefix.EventDateTime
+                                                              start = new prefix
+                                                                  .EventDateTime();
+                                                          DateTime _bookday =
+                                                              DateTime(
+                                                                  _pendingBook[
+                                                                          index]
+                                                                      .bookedDate
+                                                                      .year,
+                                                                  _pendingBook[
+                                                                          index]
+                                                                      .bookedDate
+                                                                      .month,
+                                                                  _pendingBook[
+                                                                          index]
+                                                                      .bookedDate
+                                                                      .day);
+                                                          start.dateTime = _bookday
+                                                              .add(Duration(
+                                                                  minutes: _pendingBook[
+                                                                          index]
+                                                                      .bookedTime));
+                                                          start.timeZone =
+                                                              "GTM+07:00";
+                                                          _event.start = start;
+                                                          //appointment end time
+                                                          prefix.EventDateTime
+                                                              end = new prefix
+                                                                  .EventDateTime();
+                                                          end.dateTime = start
+                                                              .dateTime
+                                                              .add(Duration(
+                                                                  minutes: 15));
+                                                          end.timeZone =
+                                                              "GTM+07:00";
+                                                          _event.end = end;
 
-                                                      prefix.EventDateTime
-                                                          start = new prefix
-                                                              .EventDateTime();
-                                                      DateTime _bookday =
-                                                          DateTime(
-                                                              _pendingBook[
-                                                                      index]
-                                                                  .bookedDate
-                                                                  .year,
-                                                              _pendingBook[
-                                                                      index]
-                                                                  .bookedDate
-                                                                  .month,
-                                                              _pendingBook[
-                                                                      index]
-                                                                  .bookedDate
-                                                                  .day);
-                                                      start.dateTime =
-                                                          _bookday.add(Duration(
-                                                              minutes: _pendingBook[
-                                                                      index]
-                                                                  .bookedTime));
-                                                      start.timeZone =
-                                                          "GTM+07:00";
-                                                      _event.start = start;
-                                                      //appointment end time
-                                                      prefix.EventDateTime end =
-                                                          new prefix
-                                                              .EventDateTime();
-                                                      end.dateTime = start
-                                                          .dateTime
-                                                          .add(Duration(
-                                                              minutes: 15));
-                                                      end.timeZone =
-                                                          "GTM+07:00";
-                                                      _event.end = end;
-
-                                                      if (insertEvent(_event) ==
-                                                          'confirmed') {
-                                                        fetchBookings()
-                                                            .then((value) {
-                                                          setState(() {
-                                                            _booking = value;
-                                                            _booking
-                                                                .forEach((b) {
-                                                              if (b.status ==
-                                                                  'pending') {
+                                                          if (insertEvent(
+                                                                  _event) ==
+                                                              'confirmed') {
+                                                            fetchBookings()
+                                                                .then((value) {
+                                                              setState(() {
+                                                                _booking =
+                                                                    value;
                                                                 _pendingBook
-                                                                    .add(b);
-                                                              }
+                                                                    .clear();
+                                                                _booking
+                                                                    .forEach(
+                                                                        (b) {
+                                                                  if (b.status ==
+                                                                      'pending') {
+                                                                    _pendingBook
+                                                                        .add(b);
+                                                                  }
+                                                                });
+                                                              });
                                                             });
-                                                          });
-                                                        });
-                                                      }
+                                                          }
+                                                        }
+                                                      });
+
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
@@ -404,8 +415,9 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                 new FlatButton(
                                                     onPressed: () {
                                                       String url =
-                                                          "$ServerIP/api/v1/bookings/${_booking[index].id}";
+                                                          "$ServerIP/api/v1/bookings/${_pendingBook[index].id}";
                                                       String status = "denied";
+
                                                       _clinicService
                                                           .updateBookingStatus(
                                                               url,
@@ -413,6 +425,28 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                               _cookies)
                                                           .then((value) {
                                                         print(value);
+                                                        if (value.data[
+                                                                'status'] ==
+                                                            'success') {
+                                                          setState(() {
+                                                            _booking.removeWhere(
+                                                                (r) =>
+                                                                    r.id ==
+                                                                    _pendingBook[
+                                                                            index]
+                                                                        .id);
+                                                            _pendingBook
+                                                                .clear();
+                                                            _booking
+                                                                .forEach((b) {
+                                                              if (b.status ==
+                                                                  'pending') {
+                                                                _pendingBook
+                                                                    .add(b);
+                                                              }
+                                                            });
+                                                          });
+                                                        }
                                                       });
                                                       Navigator.of(context)
                                                           .pop();
@@ -455,6 +489,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   ClinicService _clinicService = new ClinicService();
 
   Future<List<Booking>> fetchBookings() async {
+    _booking.clear();
     var fetchdata =
         await _clinicService.getBookingsOfClinic(urlGetBooking, _cookies);
     var list = <Booking>[];
