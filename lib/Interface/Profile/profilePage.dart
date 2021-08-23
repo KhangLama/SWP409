@@ -19,10 +19,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-      print('profile');
-      _user = widget.user;
-      _cookies = widget.cookies;
-      print(_cookies);
+    print('profile');
+    _user = widget.user;
+    _cookies = widget.cookies;
+    print(_cookies);
   }
 
   @override

@@ -324,6 +324,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     return DelayedDisplay(
       delay: Duration(seconds: 1),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
           home: Scaffold(
         appBar: AppBar(
           title: Text(

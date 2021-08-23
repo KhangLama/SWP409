@@ -211,16 +211,10 @@ class _ClinicListViewState extends State<ClinicListView> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => {},
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.calendar_today_outlined),
-          //   title: Text('Calender'),
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => CalendarScreen()));
-          //   },
-          // ),
           ListTile(
             leading: Icon(Icons.search_rounded),
             title: Text('Search by symptoms'),

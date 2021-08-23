@@ -385,6 +385,7 @@ class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           leading: BackButton(

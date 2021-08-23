@@ -38,6 +38,7 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           leading: BackButton(

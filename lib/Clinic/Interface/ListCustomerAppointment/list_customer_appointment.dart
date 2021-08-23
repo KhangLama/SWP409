@@ -110,7 +110,9 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => {},
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
           ListTile(
             leading: Icon(Icons.access_time_rounded),
@@ -161,6 +163,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: kPrimaryBackground,
         drawer: buildDrawer(context),
