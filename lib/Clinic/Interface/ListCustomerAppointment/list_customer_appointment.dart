@@ -34,23 +34,24 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
   Clinic _clinic = new Clinic();
   List<String> _cookies;
   String urlGet = "$ServerIP/api/v1/clinics/approved-clinics";
-
   //variable for google calendar
   static const _scopes = const [prefix.CalendarApi.calendarScope];
   prefix.Event _event = prefix.Event();
-
+  List<Booking> _pendingBook = <Booking>[];
   var _clientID = new ClientId(
       "627402697996-vh1fp5j16jtvqt0jerb9hnebunfjb0fl.apps.googleusercontent.com",
       "");
   Clinic getClinicId(List<Clinic> list, User user) {
-    if (list.isNotEmpty) {
-      list.forEach((element) {
-        if (element.email == user.email) return element;
-        print('here');
-        print(element.email);
-      });
-    } else
-      return null;
+    if (list != null) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].email == user.email) {
+          print('abv');
+          print(list[i].toJson());
+          return list[i];
+        }
+      }
+    }
+    return null;
   }
 
   Future<List<Clinic>> fetchClinics() async {
@@ -71,16 +72,18 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     fetchBookings().then((value) {
       setState(() {
         _booking = value;
+        _booking.forEach((b) {
+          if (b.status == 'pending') {
+            _pendingBook.add(b);
+          }
+        });
       });
     });
     fetchClinics().then((value) {
       setState(() {
         _user = widget.user;
-        print('test 4');
-        print(_user.toJson());
         _clinic = getClinicId(value, _user);
-
-        print('testing');
+        print('day ne');
         print(_clinic.toJson());
       });
     });
@@ -177,7 +180,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
 
   ListView buildList() {
     return ListView.builder(
-        itemCount: _booking.length,
+        itemCount: _pendingBook.length,
         itemBuilder: (context, index) => Container(
               width: MediaQuery.of(context).size.width,
               child: GestureDetector(
@@ -190,8 +193,8 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                       child: Row(
                         children: [
                           Image(
-                            image:
-                                NetworkImage(_booking[index].user.avatar.url),
+                            image: NetworkImage(
+                                _pendingBook[index].user.avatar.url),
                             width: 150,
                             height: 100,
                           ),
@@ -202,7 +205,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                 Row(
                                   children: [
                                     Text(
-                                      _booking[index].user.name,
+                                      _pendingBook[index].user.name,
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -217,7 +220,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                         color: Colors.black, size: 17),
                                     SizedBox(width: 10),
                                     Text(
-                                      '${DateFormat('yyyy-MM-dd').format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
+                                      '${DateFormat('yyyy-MM-dd').format(_pendingBook[index].bookedDate)}, ${(_pendingBook[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_pendingBook[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
                                       style: TextStyle(fontSize: 17),
                                     ),
                                     SizedBox(width: 5),
@@ -231,7 +234,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                     SizedBox(width: 10),
                                     Expanded(
                                       child: Text(
-                                        _booking[index].user.email,
+                                        _pendingBook[index].user.email,
                                         style: TextStyle(
                                           fontSize: 17,
                                         ),
@@ -246,7 +249,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                         color: Colors.black, size: 17),
                                     SizedBox(width: 10),
                                     Text(
-                                      _booking[index].user.phone,
+                                      _pendingBook[index].user.phone,
                                       style: TextStyle(fontSize: 17),
                                     )
                                   ],
@@ -276,6 +279,16 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                 // ignore: deprecated_member_use
                                                 new FlatButton(
                                                     onPressed: () {
+                                                      String url =
+                                                          "$ServerIP/api/v1/bookings/${_pendingBook[index].id}";
+                                                      String status =
+                                                          "approved";
+                                                      _clinicService
+                                                          .updateBookingStatus(
+                                                              url,
+                                                              status,
+                                                              _cookies);
+
                                                       //works with google calendar
                                                       _event.summary =
                                                           "Appointment at ${_clinic.name}";
@@ -285,7 +298,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                         prefix.EventAttendee
                                                             .fromJson({
                                                           'email':
-                                                              '${_booking[index].user.email}'
+                                                              '${_pendingBook[index].user.email}'
                                                         })
                                                       ];
 
@@ -294,18 +307,21 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                               .EventDateTime();
                                                       DateTime _bookday =
                                                           DateTime(
-                                                              _booking[index]
+                                                              _pendingBook[
+                                                                      index]
                                                                   .bookedDate
                                                                   .year,
-                                                              _booking[index]
+                                                              _pendingBook[
+                                                                      index]
                                                                   .bookedDate
                                                                   .month,
-                                                              _booking[index]
+                                                              _pendingBook[
+                                                                      index]
                                                                   .bookedDate
                                                                   .day);
                                                       start.dateTime =
                                                           _bookday.add(Duration(
-                                                              minutes: _booking[
+                                                              minutes: _pendingBook[
                                                                       index]
                                                                   .bookedTime));
                                                       start.timeZone =
@@ -322,16 +338,26 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                       end.timeZone =
                                                           "GTM+07:00";
                                                       _event.end = end;
-                                                      insertEvent(_event);
-                                                      fetchBookings()
-                                                          .then((value) {
-                                                        setState(() {
-                                                          _booking = value;
-                                                          print(_booking);
+
+                                                      if (insertEvent(_event) ==
+                                                          'confirmed') {
+                                                        fetchBookings()
+                                                            .then((value) {
+                                                          setState(() {
+                                                            _booking = value;
+                                                            _booking
+                                                                .forEach((b) {
+                                                              if (b.status ==
+                                                                  'pending') {
+                                                                _pendingBook
+                                                                    .add(b);
+                                                              }
+                                                            });
+                                                          });
                                                         });
-                                                      });
+                                                      }
                                                       Navigator.of(context)
-                                                          .pop();
+                                                            .pop();
                                                     },
                                                     child: Text(
                                                       "Yes",
@@ -376,7 +402,21 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                               actions: [
                                                 // ignore: deprecated_member_use
                                                 new FlatButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      String url =
+                                                          "$ServerIP/api/v1/bookings/${_booking[index].id}";
+                                                      String status = "denied";
+                                                      _clinicService
+                                                          .updateBookingStatus(
+                                                              url,
+                                                              status,
+                                                              _cookies)
+                                                          .then((value) {
+                                                        print(value);
+                                                      });
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
                                                     child: Text(
                                                       "Yes",
                                                       style: TextStyle(
@@ -428,7 +468,8 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
     return list;
   }
 
-  insertEvent(event) {
+  String insertEvent(event) {
+    var status;
     try {
       clientViaUserConsent(_clientID, _scopes, prompt)
           .then((AuthClient client) {
@@ -439,15 +480,19 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
             .then((value) {
           print("ADDEDDD_________________${value.status}");
           if (value.status == "confirmed") {
+            status = value.status;
             log('Event added in google calendar');
           } else {
+            status = 'fail';
             log("Unable to add event in google calendar");
           }
         });
       });
     } catch (e) {
+      status = 'fail';
       log('Error creating event $e');
     }
+    return status;
   }
 
   void prompt(String url) async {

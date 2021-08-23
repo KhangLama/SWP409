@@ -295,4 +295,21 @@ class ClinicService {
       return response = e.response;
     }
   }
+
+  Future<Response> updateBookingStatus(url, status, cookies) async {
+    try {
+      Map<String, dynamic> headers = new Map();
+      var token = cookies[0].split(';')[0];
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+      response = await dio.put(url,
+          data: {
+            "status": status,
+          },
+          options: options);
+      return response;
+    } on DioError catch (e) {
+      return response = e.response;
+    }
+  }
 }
