@@ -23,10 +23,12 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   String errorName = "";
   String errorPhone = "";
   String errorDes = "";
+  String errImg = "";
   bool checkEmailErr = false;
   bool checkNameErr = false;
   bool checkPhoneErr = false;
   bool checkDesErr = false;
+
   ClinicService _clinicService = new ClinicService();
   @override
   void initState() {
@@ -59,6 +61,89 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
           title: Text('Clinic Registration'),
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () async {
+                      var email = emailController.text;
+                      var name = nameController.text;
+                      var phone = phoneController.text;
+                      var description = descriptionController.text;
+
+                      setState(() {
+                        errImg = "Please pick image";
+                      });
+                      if (email.isEmpty) {
+                        setState(() {
+                          errorEmail = "Please enter email";
+                          checkEmailErr = true;
+                        });
+                      } else if (!emailValidatorRegExp.hasMatch(email)) {
+                        setState(() {
+                          errorEmail = "Please enter valid email";
+                          checkEmailErr = true;
+                        });
+                      }
+                      if (name.isEmpty) {
+                        setState(() {
+                          errorName = "Please enter name";
+                          checkNameErr = true;
+                        });
+                      }
+
+                      if (phone.isEmpty) {
+                        setState(() {
+                          errorPhone = "Please enter phone";
+                          checkPhoneErr = true;
+                        });
+                      }
+
+                      if (description.isEmpty) {
+                        setState(() {
+                          errorDes = "Please enter description";
+                          checkDesErr = true;
+                        });
+                      }
+
+                      if (!checkEmailErr &&
+                          !checkNameErr &&
+                          !checkPhoneErr &&
+                          !checkDesErr &&
+                          _imageFile != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClinicLocationScreen(
+                                    email,
+                                    name,
+                                    phone,
+                                    description,
+                                    _imageFile)));
+                      }
+                    },
+                    child: Text('Continue')),
+              ],
+            ),
+          ),
         ),
         body: SafeArea(
           child: SizedBox(
@@ -94,63 +179,6 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
                     buildUploadImg(),
                     SizedBox(height: getProportionateScreenHeight(5)),
                     uploadClinicImg(),
-                    SizedBox(height: SizeConfig.screenHeight * 0.04),
-                    DefaultButton(
-                      text: "Continue",
-                      press: () async {
-                        var email = emailController.text;
-                        var name = nameController.text;
-                        var phone = phoneController.text;
-                        var description = descriptionController.text;
-
-                        if (email.isEmpty) {
-                          setState(() {
-                            errorEmail = "Please enter email";
-                            checkEmailErr = true;
-                          });
-                        } else if (!emailValidatorRegExp.hasMatch(email)) {
-                          setState(() {
-                            errorEmail = "Please enter valid email";
-                            checkEmailErr = true;
-                          });
-                        }
-                        if (name.isEmpty) {
-                          setState(() {
-                            errorName = "Please enter name";
-                            checkNameErr = true;
-                          });
-                        }
-
-                        if (phone.isEmpty) {
-                          setState(() {
-                            errorPhone = "Please enter phone";
-                            checkPhoneErr = true;
-                          });
-                        }
-
-                        if (description.isEmpty) {
-                          setState(() {
-                            errorDes = "Please enter description";
-                            checkDesErr = true;
-                          });
-                        }
-
-                        if (!checkEmailErr &&
-                            !checkNameErr &&
-                            !checkPhoneErr &&
-                            !checkDesErr) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ClinicLocationScreen(
-                                      email,
-                                      name,
-                                      phone,
-                                      description,
-                                      _imageFile)));
-                        }
-                      },
-                    ),
                     SizedBox(height: getProportionateScreenHeight(5)),
                   ],
                 ),
@@ -191,7 +219,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         suffixIcon: emailController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
                 onPressed: () => emailController.clear(),
               ),
       ),
@@ -229,7 +260,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         suffixIcon: nameController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
                 onPressed: () => nameController.clear(),
               ),
       ),
@@ -267,7 +301,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         suffixIcon: phoneController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
                 onPressed: () => phoneController.clear(),
               ),
       ),
@@ -305,7 +342,10 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
         suffixIcon: descriptionController.text.isEmpty
             ? Container(width: 0)
             : IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: kPrimaryColor,
+                ),
                 onPressed: () => descriptionController.clear(),
               ),
       ),
@@ -318,18 +358,33 @@ class _ClinicInfoScreenState extends State<ClinicInfoScreen> {
   final ImagePicker _picker = ImagePicker();
   Widget uploadClinicImg() {
     return SizedBox(
-      height: 250,
+      height: _imageFile == null ? 20 : 250,
       width: 450,
       child: Stack(
         clipBehavior: Clip.none,
         fit: StackFit.expand,
         children: [
           Container(
-              child: Image(
-            image: _imageFile == null
-                ? AssetImage('images/0.jpg')
-                : FileImage(File(_imageFile.path)),
-          )),
+            child: _imageFile == null
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    child: Text(
+                      errImg,
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  )
+                : Container(
+                    width: 0,
+                  ),
+          ),
+          Container(
+              child: _imageFile == null
+                  ? Container(
+                      width: 0,
+                    )
+                  : Image(
+                      image: FileImage(File(_imageFile.path)),
+                    )),
         ],
       ),
     );

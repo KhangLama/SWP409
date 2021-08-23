@@ -46,11 +46,66 @@ class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Choose Specialists',
+            'Update Specialists',
             style: TextStyle(color: kPrimaryLightColor),
           ),
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      _clinic.specialists.clear();
+                      for (int i = 0; i < listIsSelected.length; i++) {
+                        if (listIsSelected[i]) {
+                          _clinic.specialists
+                              .add(new Specialist(id: listSpecialist[i].id));
+                        }
+                      }
+
+                      if (_clinic.specialists.length == 0) {
+                        toastFail("Please choose at least 1");
+                      } else {
+                        _clinicService
+                            .updateSpecialists(urlUpdate, _clinic, _cookies)
+                            .then((res) {
+                          print('bodyyyyy');
+                          KeyboardUtil.hideKeyboard(context);
+                          if (res.data['status'] == "success") {
+                            toast("Successfully");
+                            print('update success');
+                          } else {
+                            print('fail to update');
+                          }
+                        });
+                      }
+
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => SplashScreen()));
+                    },
+                    child: Text('Submit')),
+              ],
+            ),
+          ),
         ),
         body: SafeArea(
             child: Column(
@@ -69,51 +124,6 @@ class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
             ),
             SizedBox(height: SizeConfig.screenHeight * 0.04),
             Expanded(child: buildListSpecialist()),
-            Container(
-              padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-              color: kPrimaryColorLight,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  minimumSize: Size.fromHeight(40),
-                  primary: kPrimaryLightColor,
-                ),
-                child: Text(
-                  "Submit",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  _clinic.specialists.clear();
-                  for (int i = 0; i < listIsSelected.length; i++) {
-                    if (listIsSelected[i]) {
-                      _clinic.specialists
-                          .add(new Specialist(id: listSpecialist[i].id));
-                    }
-                  }
-
-                  //print("toString: ${_spec}");
-
-                  _clinicService
-                      .updateSpecialists(urlUpdate, _clinic, _cookies)
-                      .then((res) {
-                    print('bodyyyyy');
-                    KeyboardUtil.hideKeyboard(context);
-                    if (res.data['status'] == "success") {
-                      toast("Successfully");
-                      print('update success');
-                    } else {
-                      print('fail to update');
-                    }
-                  });
-
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => SplashScreen()));
-                },
-              ),
-            ),
           ],
         )),
       ),
