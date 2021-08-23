@@ -61,6 +61,58 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      String urlSymptoms = "";
+                      bool check = true;
+                      for (int i = 0; i < listSymptoms.length; i++) {
+                        if (listSymptoms[i].status) {
+                          if (check) {
+                            urlSymptoms += listSymptoms[i].name;
+                            check = false;
+                          } else {
+                            urlSymptoms += ",";
+                            urlSymptoms += listSymptoms[i].name;
+                          }
+                        }
+                      }
+                      if (urlSymptoms == "") {
+                        toastFail("Please choose at least 1");
+                      } else {
+                        print("check: $urlSymptoms");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ListClinicSearchBySymp(
+                                  user: _user,
+                                  cookies: _cookies,
+                                  urlSymptoms: urlSymptoms,
+                                )));
+                      }
+                    },
+                    child: Text('Submit')),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(
             child: Column(
           children: [
@@ -113,46 +165,6 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
               ),
             ),
             Expanded(child: buildListSymptoms()),
-            Container(
-              padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-              color: kPrimaryColorLight,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  minimumSize: Size.fromHeight(40),
-                  primary: kPrimaryLightColor,
-                ),
-                child: Text(
-                  "Submit",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  String urlSymptoms = "";
-                  bool check = true;
-                  for (int i = 0; i < filter.length; i++) {
-                    if (filter[i].status) {
-                      if (check) {
-                        urlSymptoms += filter[i].name;
-                        check = false;
-                      } else {
-                        urlSymptoms += ",";
-                        urlSymptoms += filter[i].name;
-                      }
-                    }
-                  }
-                  print("check: $urlSymptoms");
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ListClinicSearchBySymp(
-                            user: _user,
-                            cookies: _cookies,
-                            urlSymptoms: urlSymptoms,
-                          )));
-                },
-              ),
-            ),
           ],
         )),
       ),

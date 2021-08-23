@@ -11,6 +11,8 @@ import 'package:swp409/Services/ApiService/user_service.dart';
 import 'package:swp409/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../size_config.dart';
+
 class Booking extends StatefulWidget {
   List<String> cookies;
   Clinic clinic;
@@ -59,6 +61,69 @@ class _BookingState extends State<Booking> {
         ),
         backgroundColor: kPrimaryAppbar,
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColor,
+                    // background
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.all(
+                            Radius.circular(10))), // foreground
+                  ),
+                  onPressed: () {
+                    var time = select_time.hour * 60 + select_time.minute;
+                    List<WorkingHours> list = getDayOfWeek(_clinic);
+                    bool check = list.length == 0 ? true : false;
+                    for (int i = 0; i < list.length; i++) {
+                      if (list[i].startTime < time && list[i].endTime > time) {
+                        break;
+                      } else {
+                        check = true;
+                      }
+                    }
+
+                    if (check) {
+                      toastFail(
+                          "Your picking time is not in working hours to day!");
+                    } else {
+                      String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
+
+                      _userService
+                          .booking(url, time, _selectedDay, _cookies)
+                          .then((value) {
+                        if (value.data['status'] == 'success') {
+                          toast("Successfully");
+                          print(value.data);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MainScreen.user(
+                                    user: _user,
+                                    cookies: _cookies,
+                                  )));
+                        } else if (value.data['message'] ==
+                            "Unable to book an appointment. You have a pending request.") {
+                          toastFail(
+                              "Unable to book an appointment. You have a pending request.");
+                        }
+                      });
+                    }
+                  },
+                  child: Text('Book apointment now')),
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Container(
           child: Column(
@@ -99,54 +164,28 @@ class _BookingState extends State<Booking> {
                       selectedTextStyle: TextStyle(color: Colors.white)),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 30, 6),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: kPrimaryColorLight, // background
-                    onPrimary: kPrimaryLightColor, // foreground
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
+                    child: Text(
+                      "Pick a time:",
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                    ),
                   ),
-                  onPressed: _selectTime,
-                  child: Text(select_time.format(context)),
-                ),
-              ),
-              Expanded(
-                flex: 0,
-                child: SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(kPrimaryColor)),
-                    child: Text('Continue',
-                        style: TextStyle(color: kPrimaryLightColor)),
-                    onPressed: () {
-                      var time = select_time.hour * 60 + select_time.minute;
-
-                      String url = "$ServerIP/api/v1/bookings/${_clinic.id}";
-
-                      _userService
-                          .booking(url, time, _selectedDay, _cookies)
-                          .then((value) {
-                        if (value.data['status'] == 'success') {
-                          toast("Successfully");
-                          print(value.data);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MainScreen.user(
-                                    user: _user,
-                                    cookies: _cookies,
-                                  )));
-                        } else if (value.data['message'] ==
-                            "Unable to book an appointment. You have a pending request.") {
-                          toastFail(
-                              "Unable to book an appointment. You have a pending request.");
-                        }
-                      });
-                    },
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: kPrimaryColorLight, // background
+                        onPrimary: kPrimaryLightColor, // foreground
+                      ),
+                      onPressed: _selectTime,
+                      child: Text(select_time.format(context)),
+                    ),
                   ),
-                ),
-              ),
+                ],
+              )
             ],
           ),
         ),
@@ -169,28 +208,14 @@ class _BookingState extends State<Booking> {
     }
   }
 
-//   Widget _buildGridItem(int index) {
-//     bool checked = index == checkedIndex;
-//     return new GestureDetector(
-//         onTap: () {
-//           setState(() {
-//             checkedIndex = index;
-//           });
-//         },
-//         child: Center(
-//             child: SizedBox(
-//           height: 40,
-//           width: 120,
-//           child: Card(
-//             elevation: 5.0,
-//             color: checked ? Colors.orange : Colors.white,
-//             child: Center(
-//               child: new Text(
-//                 hours[index],
-//                 style: TextStyle(fontSize: 18),
-//               ),
-//             ),
-//           ),
-//         )));
-//   }
+  List<WorkingHours> getDayOfWeek(Clinic clinic) {
+    var now = new DateTime.now();
+    int checkDate = 0;
+    if (now.weekday == 7) {
+      checkDate = 0;
+    } else {
+      checkDate = now.weekday;
+    }
+    return clinic.schedule[checkDate].workingHours;
+  }
 }

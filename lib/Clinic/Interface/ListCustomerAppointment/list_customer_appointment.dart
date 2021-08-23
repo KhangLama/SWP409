@@ -390,7 +390,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                             ),
                                           );
                                         },
-                                        child: Text('Accept')),
+                                        child: Text('Approve')),
                                     SizedBox(width: 20),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -448,6 +448,21 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                           });
                                                         }
                                                       });
+                                                      fetchBookings()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          _booking = value;
+                                                          _booking.forEach((b) {
+                                                            if (b.status ==
+                                                                'pending') {
+                                                              _pendingBook
+                                                                  .clear();
+                                                              _pendingBook
+                                                                  .add(b);
+                                                            }
+                                                          });
+                                                        });
+                                                      });
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
@@ -471,7 +486,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                             ),
                                           );
                                         },
-                                        child: Text('Cancel')),
+                                        child: Text('Deny')),
                                   ],
                                 ),
                               ],
