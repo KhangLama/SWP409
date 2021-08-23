@@ -12,7 +12,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ? null
         : Avatar.fromJson(json['avatar'] as Map<String, dynamic>),
     role: json['role'] as String,
-    id: json['id'] as String,
+    id: json['_id'] as String,
     name: json['name'] as String,
     email: json['email'] as String,
     phone: json['phone'] as String,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
 
 Avatar _$AvatarFromJson(Map<String, dynamic> json) {
   return Avatar(
-    id: json['id'] as String,
+    id: json['_id'] as String,
     url: json['url'] as String,
     filename: json['filename'] as String,
   );

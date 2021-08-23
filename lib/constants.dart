@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/size_config.dart';
 
 // const kPrimaryColor = Color(0xFF00BF6D);
@@ -56,6 +57,18 @@ final otpInputDecoration = InputDecoration(
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),
 );
+
+Future<bool> toastFail(String message) {
+  Fluttertoast.cancel();
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 22.0);
+}
 
 OutlineInputBorder outlineInputBorder() {
   return OutlineInputBorder(

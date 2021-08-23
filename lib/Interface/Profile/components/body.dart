@@ -309,13 +309,14 @@ class _BodyState extends State<Body> {
                       DefaultButton(
                         text: "Save change",
                         press: () {
+                          print("usID: ${_user.id}");
                           String url = '$ServerIP/api/v1/users/${_user.id}';
                           if (_formKey.currentState.validate()) {
-                            toast("Update successfully");
                             _userService
                                 .updateInfo(url, name, phoneNumber, _imageFile,
                                     _user.email, cookies)
                                 .then((res) {
+                              toast("Update successfully");
                               KeyboardUtil.hideKeyboard(context);
                               if (res.data['status'] == "success") {
                                 _user =

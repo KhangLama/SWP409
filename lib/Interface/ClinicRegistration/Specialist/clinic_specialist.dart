@@ -109,7 +109,8 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
                       print(value.data);
                     }
                   });
-                  toast("Successfully");
+                  toast(
+                      "Successfully, Please wait admin to approve your request");
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SplashScreen()));
                 },

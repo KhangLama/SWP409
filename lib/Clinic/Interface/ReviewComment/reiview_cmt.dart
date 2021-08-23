@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swp409/Interface/Home/clinicListView.dart';
+import 'package:swp409/Interface/Profile/components/body.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
@@ -343,6 +344,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
                                     break;
                                   }
                                 }
+                                toast("Successfully");
                                 Navigator.pop(context);
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ReviewCmtScreen(

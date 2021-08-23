@@ -96,14 +96,13 @@ class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
                   //print("toString: ${_spec}");
 
                   _clinicService
-                      .updateInfo(urlUpdate, _clinic, null, _cookies)
+                      .updateSpecialists(urlUpdate, _clinic, _cookies)
                       .then((res) {
                     print('bodyyyyy');
                     KeyboardUtil.hideKeyboard(context);
                     if (res.data['status'] == "success") {
-                      _clinic = new Clinic.fromJson(res.data['data']['data']);
-                      print('update success');
                       toast("Successfully");
+                      print('update success');
                     } else {
                       print('fail to update');
                     }
