@@ -150,6 +150,51 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      _clinic.address = _searchController.text;
+                      print(lat);
+                      print(lng);
+                      if (lat == null) {
+                        toastFail("Please pick address");
+                      } else {
+                        List<Geometry> list = <Geometry>[];
+                        list.add(
+                            Geometry(coordinates: [lng, lat], type: "Point"));
+                        print(list.length);
+                        _clinic.geometry = list[0];
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ClinicDateScreen(
+                                clinic: _clinic,
+                                imageFile: widget._imageFile)));
+                      }
+                    },
+                    child: Text('Continue')),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(
           child: ListView(
             physics: NeverScrollableScrollPhysics(),
@@ -204,29 +249,6 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
                 ),
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.01),
-              Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Container(
-                  margin: const EdgeInsets.only(left: 1, right: 1, bottom: 5),
-                  child: DefaultButton(
-                    text: "Continue",
-                    press: () {
-                      _clinic.address = _searchController.text;
-                      print(lat);
-                      print(lng);
-                      List<Geometry> list = <Geometry>[];
-                      list.add(
-                          Geometry(coordinates: [lng, lat], type: "Point"));
-                      print(list.length);
-                      _clinic.geometry = list[0];
-
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ClinicDateScreen(
-                              clinic: _clinic, imageFile: widget._imageFile)));
-                    },
-                  ),
-                ),
-              ),
             ],
           ),
         ),

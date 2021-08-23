@@ -390,7 +390,7 @@ class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
           leading: BackButton(
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text('Clinic Registration'),
+          title: Text('Update Open hours'),
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
@@ -410,6 +410,135 @@ class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
           onPressed: () {
             _showDialog();
           },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      List<Schedule> _schedule = <Schedule>[];
+                      //add monday working hour
+                      List<WorkingHours> _workingHoursMon = <WorkingHours>[];
+                      for (int i = 0; i < listTimeMon.length; i++) {
+                        _workingHoursMon.add(WorkingHours(
+                          startTime: listTimeMon[i].open,
+                          endTime: listTimeMon[i].close,
+                        ));
+                      }
+                      //add tuesday working hour
+                      List<WorkingHours> _workingHoursTue = <WorkingHours>[];
+                      for (int i = 0; i < listTimeTue.length; i++) {
+                        _workingHoursTue.add(WorkingHours(
+                          startTime: listTimeTue[i].open,
+                          endTime: listTimeTue[i].close,
+                        ));
+                      }
+                      //add wednesday working hour
+                      List<WorkingHours> _workingHoursWed = <WorkingHours>[];
+                      for (int i = 0; i < listTimeWed.length; i++) {
+                        _workingHoursWed.add(WorkingHours(
+                          startTime: listTimeWed[i].open,
+                          endTime: listTimeWed[i].close,
+                        ));
+                      }
+                      //add thursday working hour
+                      List<WorkingHours> _workingHoursThu = <WorkingHours>[];
+                      for (int i = 0; i < listTimeThu.length; i++) {
+                        _workingHoursThu.add(WorkingHours(
+                          startTime: listTimeThu[i].open,
+                          endTime: listTimeThu[i].close,
+                        ));
+                      }
+                      //add friday working hour
+                      List<WorkingHours> _workingHoursFri = <WorkingHours>[];
+                      for (int i = 0; i < listTimeFri.length; i++) {
+                        _workingHoursFri.add(WorkingHours(
+                          startTime: listTimeFri[i].open,
+                          endTime: listTimeFri[i].close,
+                        ));
+                      }
+                      //add saturday working hour
+                      List<WorkingHours> _workingHoursSat = <WorkingHours>[];
+                      for (int i = 0; i < listTimeSat.length; i++) {
+                        _workingHoursSat.add(WorkingHours(
+                          startTime: listTimeSat[i].open,
+                          endTime: listTimeSat[i].close,
+                        ));
+                      }
+                      //add sunday working hour
+                      List<WorkingHours> _workingHoursSun = <WorkingHours>[];
+                      for (int i = 0; i < listTimeSun.length; i++) {
+                        _workingHoursSun.add(WorkingHours(
+                          startTime: listTimeSun[i].open,
+                          endTime: listTimeSun[i].close,
+                        ));
+                      }
+
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursSun,
+                        dayOfWeek: 0,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursMon,
+                        dayOfWeek: 1,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursTue,
+                        dayOfWeek: 2,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursWed,
+                        dayOfWeek: 3,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursThu,
+                        dayOfWeek: 4,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursFri,
+                        dayOfWeek: 5,
+                      ));
+                      _schedule.add(Schedule(
+                        workingHours: _workingHoursSat,
+                        dayOfWeek: 6,
+                      ));
+
+                      _clinic.schedule = _schedule;
+
+                      _clinicService
+                          .updateSchedule(urlUpdate, _clinic, _cookies)
+                          .then((res) {
+                        print('bodyyyyy');
+                        KeyboardUtil.hideKeyboard(context);
+                        if (res.data['status'] == "success") {
+                          toast("Successfully");
+                          print('update success');
+                        } else {
+                          print('fail to update');
+                        }
+                      });
+                    },
+                    child: Text('Submit')),
+              ],
+            ),
+          ),
         ),
         body: SafeArea(
           child: SizedBox(
@@ -435,112 +564,6 @@ class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
                     SizedBox(height: SizeConfig.screenHeight * 0.04),
                     buildForm(),
                     SizedBox(height: SizeConfig.screenHeight * 0.06),
-                    DefaultButton(
-                      text: "Countinue",
-                      press: () {
-                        List<Schedule> _schedule = <Schedule>[];
-                        //add monday working hour
-                        List<WorkingHours> _workingHoursMon = <WorkingHours>[];
-                        for (int i = 0; i < listTimeMon.length; i++) {
-                          _workingHoursMon.add(WorkingHours(
-                            startTime: listTimeMon[i].open,
-                            endTime: listTimeMon[i].close,
-                          ));
-                        }
-                        //add tuesday working hour
-                        List<WorkingHours> _workingHoursTue = <WorkingHours>[];
-                        for (int i = 0; i < listTimeTue.length; i++) {
-                          _workingHoursTue.add(WorkingHours(
-                            startTime: listTimeTue[i].open,
-                            endTime: listTimeTue[i].close,
-                          ));
-                        }
-                        //add wednesday working hour
-                        List<WorkingHours> _workingHoursWed = <WorkingHours>[];
-                        for (int i = 0; i < listTimeWed.length; i++) {
-                          _workingHoursWed.add(WorkingHours(
-                            startTime: listTimeWed[i].open,
-                            endTime: listTimeWed[i].close,
-                          ));
-                        }
-                        //add thursday working hour
-                        List<WorkingHours> _workingHoursThu = <WorkingHours>[];
-                        for (int i = 0; i < listTimeThu.length; i++) {
-                          _workingHoursThu.add(WorkingHours(
-                            startTime: listTimeThu[i].open,
-                            endTime: listTimeThu[i].close,
-                          ));
-                        }
-                        //add friday working hour
-                        List<WorkingHours> _workingHoursFri = <WorkingHours>[];
-                        for (int i = 0; i < listTimeFri.length; i++) {
-                          _workingHoursFri.add(WorkingHours(
-                            startTime: listTimeFri[i].open,
-                            endTime: listTimeFri[i].close,
-                          ));
-                        }
-                        //add saturday working hour
-                        List<WorkingHours> _workingHoursSat = <WorkingHours>[];
-                        for (int i = 0; i < listTimeSat.length; i++) {
-                          _workingHoursSat.add(WorkingHours(
-                            startTime: listTimeSat[i].open,
-                            endTime: listTimeSat[i].close,
-                          ));
-                        }
-                        //add sunday working hour
-                        List<WorkingHours> _workingHoursSun = <WorkingHours>[];
-                        for (int i = 0; i < listTimeSun.length; i++) {
-                          _workingHoursSun.add(WorkingHours(
-                            startTime: listTimeSun[i].open,
-                            endTime: listTimeSun[i].close,
-                          ));
-                        }
-
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursSun,
-                          dayOfWeek: 0,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursMon,
-                          dayOfWeek: 1,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursTue,
-                          dayOfWeek: 2,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursWed,
-                          dayOfWeek: 3,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursThu,
-                          dayOfWeek: 4,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursFri,
-                          dayOfWeek: 5,
-                        ));
-                        _schedule.add(Schedule(
-                          workingHours: _workingHoursSat,
-                          dayOfWeek: 6,
-                        ));
-
-                        _clinic.schedule = _schedule;
-
-                        _clinicService
-                            .updateSchedule(urlUpdate, _clinic, _cookies)
-                            .then((res) {
-                          print('bodyyyyy');
-                          KeyboardUtil.hideKeyboard(context);
-                          if (res.data['status'] == "success") {
-                            toast("Successfully");
-                            print('update success');
-                          } else {
-                            print('fail to update');
-                          }
-                        });
-                      },
-                    ),
                     SizedBox(height: getProportionateScreenHeight(5)),
                   ],
                 ),

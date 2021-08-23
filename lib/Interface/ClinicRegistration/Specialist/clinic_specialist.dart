@@ -50,6 +50,65 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
           centerTitle: true,
           backgroundColor: kPrimaryAppbar,
         ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      List<String> _specialists = <String>[];
+                      for (int i = 0; i < listIsSelected.length; i++) {
+                        if (listIsSelected[i]) {
+                          _specialists.add(listSpecialist[i].id);
+                        }
+                      }
+
+                      if (_specialists.length == 0) {
+                        toastFail("Please choose at least 1");
+                      } else {
+                        String _spec = jsonEncode(_specialists);
+                        //print("toString: ${_spec}");
+
+                        _clinicService
+                            .register(
+                                url: url,
+                                clinic: _clinic,
+                                path: widget.imageFile,
+                                specId: _spec)
+                            .then((value) {
+                          print(value.data);
+                          if (value.data['status'] == 'success') {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SignInScreen()));
+                          } else {
+                            print(value.data);
+                          }
+                        });
+                        toast(
+                            "Successfully, Please wait admin to approve your request");
+                      }
+                    },
+                    child: Text('Submit')),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(
             child: Column(
           children: [
@@ -67,55 +126,6 @@ class _SpecialistChooseScreenState extends State<SpecialistChooseScreen> {
             ),
             SizedBox(height: SizeConfig.screenHeight * 0.04),
             Expanded(child: buildListSpecialist()),
-            Container(
-              padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-              color: kPrimaryColorLight,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  minimumSize: Size.fromHeight(40),
-                  primary: kPrimaryLightColor,
-                ),
-                child: Text(
-                  "Submit",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  List<String> _specialists = <String>[];
-                  for (int i = 0; i < listIsSelected.length; i++) {
-                    if (listIsSelected[i]) {
-                      _specialists.add(listSpecialist[i].id);
-                    }
-                  }
-
-                  String _spec = jsonEncode(_specialists);
-                  //print("toString: ${_spec}");
-
-                  _clinicService
-                      .register(
-                          url: url,
-                          clinic: _clinic,
-                          path: widget.imageFile,
-                          specId: _spec)
-                      .then((value) {
-                    print(value.data);
-                    if (value.data['status'] == 'success') {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignInScreen()));
-                    } else {
-                      print(value.data);
-                    }
-                  });
-                  toast(
-                      "Successfully, Please wait admin to approve your request");
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => SplashScreen()));
-                },
-              ),
-            ),
           ],
         )),
       ),
