@@ -54,11 +54,11 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
       setState(() {
         _clinic = getClinicId(value, _user);
         reviewLength = _clinic.reviewCount;
+        for (int i = 0; i < _clinic.reviewCount; i++) {
+          isVisible.add(false);
+        }
       });
     });
-    for (int i = 0; i < _clinic.reviewCount; i++) {
-      isVisible.add(false);
-    }
     super.initState();
     cmtController.addListener(() => setState(() {}));
   }
@@ -82,7 +82,12 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
           backgroundColor: kPrimaryAppbar,
         ),
         body: SafeArea(
-          child: buildListCmt(),
+          child: Container(
+            height: (_clinic.reviewCount == 0)
+                ? 0
+                : MediaQuery.of(context).size.height,
+            child: buildListCmt(),
+          ),
         ),
       ),
     );

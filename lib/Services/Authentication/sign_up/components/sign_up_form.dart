@@ -249,7 +249,7 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      //onSaved: (newValue) => email = newValue,
+      onSaved: (newValue) => email = newValue,
       controller: emailController,
       onChanged: (value) {
         setState(() {
