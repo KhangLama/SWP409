@@ -65,12 +65,14 @@ class UserService {
         });
         response = await dio.put(url, data: formData, options: options);
       } else {
-        var formData = new FormData.fromMap({
-          "email": email,
-          "name": _name,
-          "phone": _phone,
-        });
-        response = await dio.put(url, data: formData, options: options);
+        var formData = new FormData.fromMap({});
+        response = await dio.put(url,
+            data: {
+              "email": email,
+              "name": _name,
+              "phone": _phone,
+            },
+            options: options);
       }
     } on DioError catch (e) {
       return response = e.response;

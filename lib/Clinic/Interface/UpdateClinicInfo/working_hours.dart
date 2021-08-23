@@ -533,14 +533,12 @@ class _ChangeWorkingHoursScreenState extends State<ChangeWorkingHoursScreen> {
                           print('bodyyyyy');
                           KeyboardUtil.hideKeyboard(context);
                           if (res.data['status'] == "success") {
-                            // _clinic =
-                            //     new Clinic.fromJson(res.data['data']['data']);
+                            toast("Successfully");
                             print('update success');
                           } else {
                             print('fail to update');
                           }
                         });
-                        toast("Successfully");
                       },
                     ),
                     SizedBox(height: getProportionateScreenHeight(5)),

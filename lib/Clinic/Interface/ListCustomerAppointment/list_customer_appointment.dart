@@ -146,7 +146,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
+            leading: Icon(Icons.exit_to_app_rounded),
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context, rootNavigator: true).pushReplacement(
@@ -357,7 +357,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                         });
                                                       }
                                                       Navigator.of(context)
-                                                            .pop();
+                                                          .pop();
                                                     },
                                                     child: Text(
                                                       "Yes",

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swp409/Interface/Home/clinicListView.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
@@ -648,6 +649,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                                 break;
                                               }
                                             }
+                                            toast("Successfully");
                                             Navigator.pop(context);
                                             Navigator.of(context,
                                                     rootNavigator: true)
@@ -927,6 +929,7 @@ class _ClinicPageState extends State<ClinicPage> {
                                     break;
                                   }
                                 }
+                                toast("Successfully");
                                 Navigator.pop(context);
                                 Navigator.of(context, rootNavigator: true)
                                     .push(MaterialPageRoute(
@@ -955,6 +958,18 @@ class _ClinicPageState extends State<ClinicPage> {
       int close = _clinic.schedule[dayNum].workingHours[i].endTime;
       list.add(TimeWorking(open: open, close: close));
     }
+  }
+
+  Future<bool> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 22.0);
   }
 }
 

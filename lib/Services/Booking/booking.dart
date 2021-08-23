@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
+import 'package:swp409/Interface/Profile/components/body.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/user_service.dart';
@@ -129,12 +130,17 @@ class _BookingState extends State<Booking> {
                           .booking(url, time, _selectedDay, _cookies)
                           .then((value) {
                         if (value.data['status'] == 'success') {
+                          toast("Successfully");
                           print(value.data);
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MainScreen.user(
                                     user: _user,
                                     cookies: _cookies,
                                   )));
+                        } else if (value.data['message'] ==
+                            "Unable to book an appointment. You have a pending request.") {
+                          toastFail(
+                              "Unable to book an appointment. You have a pending request.");
                         }
                       });
                     },

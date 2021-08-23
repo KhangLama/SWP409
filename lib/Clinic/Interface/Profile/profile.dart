@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swp409/Components/default_button.dart';
+import 'package:swp409/Interface/Profile/components/body.dart';
 import 'package:swp409/Models/clinic.dart';
 import 'package:swp409/Models/user.dart';
 import 'package:swp409/Services/ApiService/clinic_service.dart';
@@ -331,6 +332,55 @@ class _ClinicProfileState extends State<ClinicProfile> {
           ),
           backgroundColor: kPrimaryAppbar,
         ),
+        bottomNavigationBar: BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      // background
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.all(
+                              Radius.circular(10))), // foreground
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        KeyboardUtil.hideKeyboard(context);
+                        _clinic.name = name;
+                        _clinic.phone = phoneNumber;
+                        _clinic.address = address;
+                        _clinic.description = description;
+                        _clinicService
+                            .updateInfo(url, _clinic, _imageFile, _cookies)
+                            .then((res) {
+                          print('bodyyyyy');
+                          toast("Successfully");
+
+                          if (res.data['status'] == "success") {
+                            // _clinic = new Clinic.fromJson(
+                            //     res.data['data']['data']);
+                            print('update success');
+                          } else {
+                            print('fail to update');
+                          }
+                        });
+                      }
+                    },
+                    child: Text('Save change')),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(
           child: SizedBox(
             width: double.infinity,
@@ -399,33 +449,6 @@ class _ClinicProfileState extends State<ClinicProfile> {
                           buildAddressField(),
                           SizedBox(height: getProportionateScreenHeight(30)),
                           buildDescriptionField(),
-                          //FormError(errors: errors),
-                          SizedBox(height: getProportionateScreenHeight(40)),
-                          DefaultButton(
-                            text: "Save change",
-                            press: () {
-                              if (_formKey.currentState.validate()) {
-                                _clinic.name = name;
-                                _clinic.phone = phoneNumber;
-                                _clinic.address = address;
-                                _clinic.description = description;
-                                _clinicService
-                                    .updateInfo(
-                                        url, _clinic, _imageFile, _cookies)
-                                    .then((res) {
-                                  print('bodyyyyy');
-                                  KeyboardUtil.hideKeyboard(context);
-                                  if (res.data['status'] == "success") {
-                                    _clinic = new Clinic.fromJson(
-                                        res.data['data']['data']);
-                                    print('update success');
-                                  } else {
-                                    print('fail to update');
-                                  }
-                                });
-                              }
-                            },
-                          ),
                         ],
                       ),
                     ),

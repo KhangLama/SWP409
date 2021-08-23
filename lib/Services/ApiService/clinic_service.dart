@@ -124,17 +124,8 @@ class ClinicService {
         String _filename = path.path.split('/').last;
         String _filepath = path.path;
         var formData = new FormData.fromMap({
-          "sunday": schedule[0],
-          "monday": schedule[1],
-          "tuesday": schedule[2],
-          "wednesday": schedule[3],
-          "thursday": schedule[4],
-          "friday": schedule[5],
-          "saturday": schedule[6],
-          "specialists": _spec,
           "email": clinic.email,
           "phone": clinic.phone,
-          "geometry": geo,
           "description": clinic.description,
           "name": clinic.name,
           "address": clinic.address,
@@ -146,17 +137,8 @@ class ClinicService {
         response = await dio.patch(url, data: formData, options: options);
       } else {
         var formData = new FormData.fromMap({
-          "sunday": schedule[0],
-          "monday": schedule[1],
-          "tuesday": schedule[2],
-          "wednesday": schedule[3],
-          "thursday": schedule[4],
-          "friday": schedule[5],
-          "saturday": schedule[6],
-          "specialists": _spec,
           "email": clinic.email,
           "phone": clinic.phone,
-          "geometry": geo,
           "description": clinic.description,
           "name": clinic.name,
           "address": clinic.address,
@@ -164,6 +146,28 @@ class ClinicService {
         print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);
       }
+    } on DioError catch (e) {
+      print(e..response);
+      return response = e.response;
+    }
+    return response;
+  }
+
+  Future<Response> updateSpecialists(url, Clinic clinic, cookies) async {
+    List<String> _specialists = <String>[];
+    for (int i = 0; i < clinic.specialists.length; i++) {
+      _specialists.add(clinic.specialists[i].id);
+    }
+    String _spec = jsonEncode(_specialists);
+    try {
+      Map<String, dynamic> headers = new Map();
+      print('cook update');
+      var token = cookies[0].split(';')[0];
+      print(token);
+      headers['Cookie'] = token;
+      Options options = new Options(headers: headers);
+      response =
+          await dio.patch(url, data: {"specialists": _spec}, options: options);
     } on DioError catch (e) {
       print(e..response);
       return response = e.response;
