@@ -16,9 +16,9 @@ class searchBySymptomScreen extends StatefulWidget {
 }
 
 class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
-  List<bool> listIsSelected = [];
-  List listSymptoms = [];
-  List filter = [];
+  List<Symptom> listSymptoms = <Symptom>[];
+  List temp = [];
+  List<Symptom> filter = <Symptom>[];
   ClinicService _clinicService = new ClinicService();
   User _user;
   List<String> _cookies;
@@ -29,13 +29,15 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
   void initState() {
     fetchSymptoms().then((value) {
       setState(() {
-        listSymptoms = value;
-        filter = listSymptoms;
+        temp = value;
       });
     });
     super.initState();
     _cookies = widget.cookies;
     _user = widget.user;
+    setState(() {
+      filter = listSymptoms;
+    });
   }
 
   @override
@@ -101,8 +103,9 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
                 onChanged: (text) {
                   setState(() {
                     filter = listSymptoms
-                        .where((val) =>
-                            (val.toLowerCase().contains(text.toLowerCase())))
+                        .where((val) => (val.name
+                            .toLowerCase()
+                            .contains(text.toLowerCase())))
                         .toList();
                   });
                 },
@@ -128,14 +131,14 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
                 onPressed: () {
                   String urlSymptoms = "";
                   bool check = true;
-                  for (int i = 0; i < listIsSelected.length; i++) {
-                    if (listIsSelected[i]) {
+                  for (int i = 0; i < filter.length; i++) {
+                    if (filter[i].status) {
                       if (check) {
-                        urlSymptoms += listSymptoms[i];
+                        urlSymptoms += filter[i].name;
                         check = false;
                       } else {
                         urlSymptoms += ",";
-                        urlSymptoms += listSymptoms[i];
+                        urlSymptoms += filter[i].name;
                       }
                     }
                   }
@@ -161,15 +164,15 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(
-              filter[index],
+              filter[index].name,
               style: TextStyle(
-                color: listIsSelected[index] ? kPrimaryColor : Colors.black,
+                color: filter[index].status ? kPrimaryColor : Colors.black,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             tileColor: null,
-            trailing: listIsSelected[index]
+            trailing: filter[index].status
                 ? Icon(
                     Icons.check_outlined,
                     color: kPrimaryColor,
@@ -177,7 +180,7 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
                 : Icon(Icons.check_box_outline_blank, color: Colors.black),
             onTap: () {
               setState(() {
-                listIsSelected[index] = !listIsSelected[index];
+                filter[index].status = !filter[index].status;
               });
             },
           );
@@ -189,8 +192,14 @@ class _searchBySymptomScreenState extends State<searchBySymptomScreen> {
     List list = <String>[];
     list = fetchdata.data['data']['data'] as List;
     for (int i = 0; i < list.length; i++) {
-      listIsSelected.add(false);
+      listSymptoms.add(Symptom(list[i], false));
     }
     return list;
   }
+}
+
+class Symptom {
+  String name;
+  bool status = false;
+  Symptom(this.name, this.status);
 }
