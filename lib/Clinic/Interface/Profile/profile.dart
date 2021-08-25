@@ -135,6 +135,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
   TextFormField buildAddressField() {
     return TextFormField(
       initialValue: _clinic.address ?? "",
+      readOnly: true,
       onSaved: (newValue) => address = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

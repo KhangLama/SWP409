@@ -414,6 +414,11 @@ class _SignUpFormState extends State<SignUpForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
+        } else if (value.contains(' ') == true) {
+          removeError(error: "Full name must at least 2 words");
+        } else if (RegExp(r'[!@#<>?/{}":_`~;,.[\]\\|=+)(*&^%0-9-]')
+            .hasMatch(value)) {
+          removeError(error: "Full name is invalid");
         }
         name = value;
         return null;
@@ -422,6 +427,15 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isEmpty) {
           addError(error: kNamelNullError);
           return kNamelNullError;
+        }
+        if (value.contains(' ') == false) {
+          addError(error: "Full name must at least 2 words");
+          return "Full name must at least 2 words";
+        }
+        if (RegExp(r'[!@#<>?/{}":_`~;,.[\]\\|=+)(*&^%0-9-]').hasMatch(value)) {
+          addError(error: "Full name is invalid");
+          print("checkkk");
+          return "Full name is invalid";
         }
         return null;
       },

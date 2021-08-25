@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:swp409/Interface/Home/mainScreen.dart';
@@ -84,7 +81,8 @@ class _BookingState extends State<Booking> {
                   ),
                   onPressed: () {
                     var time = select_time.hour * 60 + select_time.minute;
-                    List<WorkingHours> list = getDayOfWeek(_clinic);
+                    List<WorkingHours> list =
+                        getDayOfWeek(_clinic, _selectedDay);
                     bool check = list.length == 0 ? true : false;
                     for (int i = 0; i < list.length; i++) {
                       if (list[i].startTime < time && list[i].endTime > time) {
@@ -208,13 +206,12 @@ class _BookingState extends State<Booking> {
     }
   }
 
-  List<WorkingHours> getDayOfWeek(Clinic clinic) {
-    var now = new DateTime.now();
+  List<WorkingHours> getDayOfWeek(Clinic clinic, DateTime date) {
     int checkDate = 0;
-    if (now.weekday == 7) {
+    if (date.weekday == 7) {
       checkDate = 0;
     } else {
-      checkDate = now.weekday;
+      checkDate = date.weekday;
     }
     return clinic.schedule[checkDate].workingHours;
   }
