@@ -73,6 +73,7 @@ class _ReviewCmtScreenState extends State<ReviewCmtScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: kPrimaryBackground,
         appBar: AppBar(

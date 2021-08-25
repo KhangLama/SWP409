@@ -39,6 +39,7 @@ class _ChangeSpecialistsScreenState extends State<ChangeSpecialistsScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           leading: BackButton(

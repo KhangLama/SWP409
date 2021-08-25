@@ -15,10 +15,7 @@ class ListClinicSearchBySymp extends StatefulWidget {
   List<String> cookies;
   User user;
   String urlSymptoms;
-  LocationData locationData;
-
-  ListClinicSearchBySymp(
-      {Key key, this.cookies, this.user, this.urlSymptoms, this.locationData})
+  ListClinicSearchBySymp({Key key, this.cookies, this.user, this.urlSymptoms})
       : super(key: key);
 
   @override
@@ -30,15 +27,16 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
   List<String> _cookies;
   String urlSymp;
   LocationData _locationData;
+  Location location = new Location();
   List<Clinic> _clinics = <Clinic>[];
   List<Clinic> _filteredclinic = <Clinic>[];
   ClinicService _clinicService = new ClinicService();
   Dio dio = new Dio();
   List listDistance = [];
+
   @override
   void initState() {
     _cookies = widget.cookies;
-    _locationData = widget.locationData;
     _user = widget.user;
     urlSymp = widget.urlSymptoms;
     fetchClinics().then((value) {
@@ -82,6 +80,7 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: kPrimaryBackground,
         appBar: AppBar(
@@ -167,6 +166,10 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
                                 ],
                               ),
                               SizedBox(height: 10),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [Text(listDistance[index] ?? "")]),
+                              SizedBox(height: 10),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: kPrimaryColor, // background
@@ -203,6 +206,7 @@ class _ListClinicSearchBySympState extends State<ListClinicSearchBySymp> {
   }
 
   Future<List<Clinic>> fetchClinics() async {
+    _locationData = await location.getLocation();
     String urlGet = "$ServerIP/api/v1/clinics/symptom?symptoms=$urlSymp";
     var fetchdata = await _clinicService.getClinics(urlGet);
     List<Clinic> clinics = <Clinic>[];

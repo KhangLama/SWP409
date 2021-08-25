@@ -1,3 +1,4 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -32,9 +33,11 @@ class _AppointmentState extends State<Appointment> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: kPrimaryBackground,
         appBar: AppBar(
+          leading: BackButton(onPressed: () => Navigator.pop(context)),
           title: Text(
             'Appointment',
             style: TextStyle(color: kPrimaryLightColor),
@@ -49,81 +52,87 @@ class _AppointmentState extends State<Appointment> {
   }
 
   Widget buildList() {
-    return ListView.builder(
-      itemCount: _booking.length,
-      itemBuilder: (context, index) => Container(
-        width: MediaQuery.of(context).size.width,
-        child: GestureDetector(
-          child: Card(
-              margin: const EdgeInsets.only(
-                  top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 20, bottom: 20, left: 0, right: 16),
-                child: Row(
-                  children: [
-                    Image(
-                      image: NetworkImage(_booking[index].user.avatar.url),
-                      width: 150,
-                      height: 100,
-                    ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                _booking[index].user.name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Feather.clock,
-                                  color: Colors.black, size: 17),
-                              SizedBox(width: 10),
-                              Text(
-                                '${DateFormat('yyyy-MM-dd').format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
-                                style: TextStyle(fontSize: 17),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Feather.mail, color: Colors.black, size: 17),
-                              SizedBox(width: 10),
-                              Text(
-                                _booking[index].user.email,
-                                style: TextStyle(fontSize: 17),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Feather.phone,
-                                  color: Colors.black, size: 17),
-                              SizedBox(width: 10),
-                              Text(
-                                _booking[index].user.phone,
-                                style: TextStyle(fontSize: 17),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                        ],
+    return DelayedDisplay(
+      delay: Duration(seconds: 1),
+      child: ListView.builder(
+        itemCount: _booking.length,
+        itemBuilder: (context, index) => Container(
+          width: MediaQuery.of(context).size.width,
+          child: GestureDetector(
+            child: Card(
+                margin: const EdgeInsets.only(
+                    top: 5.0, bottom: 10.0, left: 10.0, right: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 20, left: 0, right: 16),
+                  child: Row(
+                    children: [
+                      Image(
+                        image: NetworkImage(_booking[index].user.avatar.url),
+                        width: 150,
+                        height: 100,
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  _booking[index].user.name,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Feather.clock,
+                                    color: Colors.black, size: 17),
+                                SizedBox(width: 10),
+                                Text(
+                                  '${DateFormat('yyyy-MM-dd').format(_booking[index].bookedDate)}, ${(_booking[index].bookedTime ~/ 60).toString().padLeft(2, '0')}:${(_booking[index].bookedTime % 60).toInt().toString().padLeft(2, '0')}',
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Feather.mail,
+                                    color: Colors.black, size: 17),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    _booking[index].user.email,
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Feather.phone,
+                                    color: Colors.black, size: 17),
+                                SizedBox(width: 10),
+                                Text(
+                                  _booking[index].user.phone,
+                                  style: TextStyle(fontSize: 17),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          ),
         ),
       ),
     );
