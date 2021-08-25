@@ -87,7 +87,8 @@ class _BookingState extends State<Booking> {
                     List<WorkingHours> list = getDayOfWeek(_clinic);
                     bool check = list.length == 0 ? true : false;
                     for (int i = 0; i < list.length; i++) {
-                      if (list[i].startTime < time && list[i].endTime > time) {
+                      if (list[i].startTime <= time &&
+                          list[i].endTime >= time) {
                         break;
                       } else {
                         check = true;

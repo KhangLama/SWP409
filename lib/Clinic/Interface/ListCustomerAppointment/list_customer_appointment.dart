@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:swp409/Clinic/Interface/Appointment/appointment.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/change_password.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/specialists.dart';
 import 'package:swp409/Clinic/Interface/UpdateClinicInfo/working_hours.dart';
@@ -22,7 +23,8 @@ import 'package:url_launcher/url_launcher.dart';
 class ListCustomerAppointment extends StatefulWidget {
   User user;
   List<String> cookies;
-  ListCustomerAppointment.user({Key key, this.user, this.cookies})
+  Clinic clinic;
+  ListCustomerAppointment.user({Key key, this.user, this.clinic, this.cookies})
       : super(key: key);
   @override
   _ListCustomerAppointmentState createState() =>
@@ -98,7 +100,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
           DrawerHeader(
             child: Center(
               child: Text(
-                'Hello, ${widget.user.name}',
+                'Hello, ${_clinic.name}',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
@@ -112,6 +114,16 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
             title: Text('Home'),
             onTap: () {
               Navigator.of(context).pop();
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.shopping_bag),
+            title: Text('Appointment'),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                    builder: (context) => Appointment(cookies: _cookies)),
+              );
             },
           ),
           ListTile(
@@ -291,7 +303,7 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                               url,
                                                               status,
                                                               _cookies)
-                                                          .then((value) {
+                                                          .then((value) async {
                                                         if (value.data[
                                                                 'status'] ==
                                                             'success') {
@@ -344,29 +356,26 @@ class _ListCustomerAppointmentState extends State<ListCustomerAppointment> {
                                                           end.timeZone =
                                                               "GTM+07:00";
                                                           _event.end = end;
+                                                          insertEvent(_event);
+                                                          setState(() {
+                                                            _booking.removeWhere(
+                                                                (r) =>
+                                                                    r.id ==
+                                                                    _pendingBook[
+                                                                            index]
+                                                                        .id);
 
-                                                          if (insertEvent(
-                                                                  _event) ==
-                                                              'confirmed') {
-                                                            fetchBookings()
-                                                                .then((value) {
-                                                              setState(() {
-                                                                _booking =
-                                                                    value;
+                                                            _pendingBook
+                                                                .clear();
+                                                            _booking
+                                                                .forEach((b) {
+                                                              if (b.status ==
+                                                                  'pending') {
                                                                 _pendingBook
-                                                                    .clear();
-                                                                _booking
-                                                                    .forEach(
-                                                                        (b) {
-                                                                  if (b.status ==
-                                                                      'pending') {
-                                                                    _pendingBook
-                                                                        .add(b);
-                                                                  }
-                                                                });
-                                                              });
+                                                                    .add(b);
+                                                              }
                                                             });
-                                                          }
+                                                          });
                                                         }
                                                       });
 

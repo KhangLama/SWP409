@@ -28,7 +28,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
   ];
   Future loading;
   User _user = new User();
@@ -65,13 +64,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                     color: Colors.orange,
                   )),
               BottomNavigationBarItem(
-                  icon: Icon(Feather.shopping_bag, color: Colors.grey),
-                  label: Text('Appointment').toString(),
-                  activeIcon: Icon(
-                    Feather.shopping_bag,
-                    color: Colors.orange,
-                  )),
-              BottomNavigationBarItem(
                   icon: Icon(Feather.message_square, color: Colors.grey),
                   label: Text('Review  comment').toString(),
                   activeIcon: Icon(
@@ -97,7 +89,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
             navigatorKeys: _navigatorKeys,
             pages: <Widget>[
               ListCustomerAppointment.user(user: _user, cookies: _cookies),
-              Appointment(cookies: _cookies),
               ReviewCmtScreen(user: _user, cookies: _cookies),
               ClinicProfile(user: _user, cookies: _cookies),
             ],

@@ -94,7 +94,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     return TextFormField(
       initialValue: _clinic.description ?? "",
       maxLines: 3,
-      maxLength: 150,
+      maxLength: 1000,
       onSaved: (newValue) => description = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -324,143 +324,149 @@ class _ClinicProfileState extends State<ClinicProfile> {
     return DelayedDisplay(
       delay: Duration(seconds: 1),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Home',
-            style: TextStyle(color: kPrimaryLightColor),
-          ),
-          backgroundColor: kPrimaryAppbar,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kPrimaryColor,
-                      // background
-                      onPrimary: Colors.white,
-                      textStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      minimumSize: Size(SizeConfig.screenWidth - 40, 60),
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.all(
-                              Radius.circular(10))), // foreground
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        KeyboardUtil.hideKeyboard(context);
-                        _clinic.name = name;
-                        _clinic.phone = phoneNumber;
-                        _clinic.address = address;
-                        _clinic.description = description;
-                        _clinicService
-                            .updateInfo(url, _clinic, _imageFile, _cookies)
-                            .then((res) {
-                          print('bodyyyyy');
-                          toast("Successfully");
-
-                          if (res.data['status'] == "success") {
-                            // _clinic = new Clinic.fromJson(
-                            //     res.data['data']['data']);
-                            print('update success');
-                          } else {
-                            print('fail to update');
-                          }
-                        });
-                      }
-                    },
-                    child: Text('Save change')),
-              ],
+            appBar: AppBar(
+              title: Text(
+                'Home',
+                style: TextStyle(color: kPrimaryLightColor),
+              ),
+              backgroundColor: kPrimaryAppbar,
             ),
-          ),
-        ),
-        body: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: SingleChildScrollView(
-                child: Column(
+            bottomNavigationBar: BottomAppBar(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: SizeConfig.screenHeight * 0.02),
-                    SizedBox(
-                      height: 250,
-                      width: 350,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        fit: StackFit.expand,
-                        children: [
-                          Image(
-                            image: _imageFile == null
-                                ? NetworkImage(_clinic.coverImage
-                                    .url) //AssetImage('images/0.jpg')
-                                : FileImage(File(_imageFile.path)),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: kPrimaryColor,
+                          // background
+                          onPrimary: Colors.white,
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Positioned(
-                            right: 25,
-                            bottom: 0,
-                            child: SizedBox(
-                              height: 45,
-                              width: 45,
-                              // ignore: deprecated_member_use
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                  side: BorderSide(color: Color(0xFFDFDFE3)),
-                                ),
-                                padding: EdgeInsets.all(10.0),
-                                child: Column(
-                                  // Replace with a Row for horizontal icon + text
-                                  children: <Widget>[
-                                    Icon(Icons.camera_alt),
-                                  ],
-                                ),
-                                color: Color(0xFFDFDFE3),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: ((builder) => bottomSheet()));
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: SizeConfig.screenHeight * 0.03),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          buildNameField(),
-                          SizedBox(height: getProportionateScreenHeight(30)),
-                          buildEmailField(),
-                          SizedBox(height: getProportionateScreenHeight(30)),
-                          buildPhoneField(),
-                          SizedBox(height: getProportionateScreenHeight(30)),
-                          buildAddressField(),
-                          SizedBox(height: getProportionateScreenHeight(30)),
-                          buildDescriptionField(),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: getProportionateScreenHeight(30)),
+                          minimumSize: Size(SizeConfig.screenWidth - 40, 60),
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.all(
+                                  Radius.circular(10))), // foreground
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            KeyboardUtil.hideKeyboard(context);
+                            _clinic.name = name;
+                            _clinic.phone = phoneNumber;
+                            _clinic.address = address;
+                            _clinic.description = description;
+                            _clinicService
+                                .updateInfo(url, _clinic, _imageFile, _cookies)
+                                .then((res) {
+                              print('bodyyyyy');
+                              toast("Successfully");
+
+                              if (res.data['status'] == "success") {
+                                // _clinic = new Clinic.fromJson(
+                                //     res.data['data']['data']);
+                                print('update success');
+                              } else {
+                                print('fail to update');
+                              }
+                            });
+                          }
+                        },
+                        child: Text('Save change')),
                   ],
                 ),
               ),
             ),
-          ),
-        ),
-      )),
+            body: SafeArea(
+              child: SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(20)),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: SizeConfig.screenHeight * 0.02),
+                        SizedBox(
+                          height: 250,
+                          width: 350,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            fit: StackFit.expand,
+                            children: [
+                              Image(
+                                image: _imageFile == null
+                                    ? NetworkImage(_clinic.coverImage
+                                        .url) //AssetImage('images/0.jpg')
+                                    : FileImage(File(_imageFile.path)),
+                              ),
+                              Positioned(
+                                right: 25,
+                                bottom: 0,
+                                child: SizedBox(
+                                  height: 45,
+                                  width: 45,
+                                  // ignore: deprecated_member_use
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      side:
+                                          BorderSide(color: Color(0xFFDFDFE3)),
+                                    ),
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      // Replace with a Row for horizontal icon + text
+                                      children: <Widget>[
+                                        Icon(Icons.camera_alt),
+                                      ],
+                                    ),
+                                    color: Color(0xFFDFDFE3),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: ((builder) =>
+                                              bottomSheet()));
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: SizeConfig.screenHeight * 0.03),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              buildNameField(),
+                              SizedBox(
+                                  height: getProportionateScreenHeight(30)),
+                              buildEmailField(),
+                              SizedBox(
+                                  height: getProportionateScreenHeight(30)),
+                              buildPhoneField(),
+                              SizedBox(
+                                  height: getProportionateScreenHeight(30)),
+                              buildAddressField(),
+                              SizedBox(
+                                  height: getProportionateScreenHeight(30)),
+                              buildDescriptionField(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: getProportionateScreenHeight(30)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )),
     );
   }
 

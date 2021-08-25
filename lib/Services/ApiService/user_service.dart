@@ -42,8 +42,7 @@ class UserService {
     }
   }
 
-  Future<Response> updateInfo(
-      url, _name, _phone, _avatar, email, cookies) async {
+  Future<Response> updateInfo(url, user, _avatar, cookies) async {
     try {
       Map<String, dynamic> headers = new Map();
       print('cook update');
@@ -56,21 +55,20 @@ class UserService {
         String _filename = _avatar.path.split('/').last;
         String _filepath = _avatar.path;
         var formData = new FormData.fromMap({
-          "email": email,
-          "name": _name,
-          "phone": _phone,
+          "email": user.email,
+          "name": user.name,
+          "phone": user.phone,
           "avatar":
               await MultipartFile.fromFile(_filepath, filename: _filename),
-          "filename": _filename,
+          "filename": user.avatar.filename,
         });
         response = await dio.put(url, data: formData, options: options);
       } else {
-        var formData = new FormData.fromMap({});
         response = await dio.put(url,
             data: {
-              "email": email,
-              "name": _name,
-              "phone": _phone,
+              "email": user.email,
+              "name": user.name,
+              "phone": user.phone,
             },
             options: options);
       }
