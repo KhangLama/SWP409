@@ -132,6 +132,7 @@ class ClinicService {
           "coverImage":
               await MultipartFile.fromFile(_filepath, filename: _filename),
           "deleteCoverImage": clinic.coverImage.filename,
+          "specialists": _spec
         });
         print(formData.fields);
         response = await dio.patch(url, data: formData, options: options);

@@ -327,7 +327,7 @@ class _BodyState extends State<Body> {
                           String url = '$ServerIP/api/v1/users/${_user.id}';
                           if (_formKey.currentState.validate()) {
                             _userService
-                                .updateInfo(url, _user, _imageFile, cookies)
+                                .updateInfo(url, name, phoneNumber, _imageFile, _user.email, _user.avatar.filename, cookies)
                                 .then((res) {
                               toast("Update successfully");
                               KeyboardUtil.hideKeyboard(context);
